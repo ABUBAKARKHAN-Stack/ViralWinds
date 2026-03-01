@@ -1,0 +1,15 @@
+     body {
+         cursor: auto !important;
+     }
+
+     a,
+     button,
+     [role="button"] {
+         cursor: pointer !important ;
+     }
+ 
+
+     input,
+     textarea {
+         cursor:    text !important ;
+     }
