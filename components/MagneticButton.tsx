@@ -7,7 +7,7 @@ interface MagneticButtonProps {
   children: ReactNode;
   className?: string;
   strength?: number;
-}
+} 
 
 const MagneticButton = forwardRef<HTMLDivElement, MagneticButtonProps>(
   ({ children, className = "", strength = 0.15 }, forwardedRef) => {
