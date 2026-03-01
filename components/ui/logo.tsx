@@ -23,8 +23,9 @@ const Logo = ({ className = "", ...props }: LogoProps) => {
             height={50}
             width={50}
             {...props}
+            unoptimized
             className={cn(
-                "h-12.5 w-auto object-contain invert drop-shadow-[0_6px_16px_hsl(var(--foreground)/0.18)] ",
+                "h-12.5 w-auto object-contain drop-shadow-[0_6px_16px_hsl(var(--foreground)/0.18)] ",
                 className
             )}
         />

@@ -1,14 +1,13 @@
 "use client"
 
 import MagneticButton from '@/components/MagneticButton';
-import { APP_NAME } from '@/constants/app.constants';
 import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { Dispatch, FC, SetStateAction } from 'react';
-import ThemeToggle from '@/components/ui/theme-toggle';
 import { useSiteSettings } from '@/context/SiteSettingsContext';
 import { resolveUrl } from '@/lib/menu-utils';
+import Logo from '@/components/ui/logo';
 
 type Props = {
     isOpen: boolean;
@@ -41,18 +40,12 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                     >
                         <MagneticButton strength={0.2}>
                             <Link href="/" className="relative z-50">
-                                <motion.img
-                                    src={"/assets/logo.webp"}
-                                    alt={APP_NAME}
-                                    className="h-16 sm:h-20 w-auto object-contain dark:invert invert-0 "
-                                    whileHover={{ scale: 1.05 }}
-                                />
+                              
+                                <Logo />
                             </Link>
                         </MagneticButton>
 
                         <div className="flex items-center gap-4">
-                            <ThemeToggle className="border-background/20
-                             hover:dark:bg-[#000ba3]/10 hover:bg-[#ffd11a]/10 dark:hover:border-[#000ba3] hover:border-[#ffd11a] " />
                             <MagneticButton strength={0.18}>
                                 <button
                                     className="relative z-50 p-2 bg-muted text-muted-foreground"
@@ -92,8 +85,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                                                 lg:text-7xl
                                                 text-background
                                                 transition-colors
-                                                hover:dark:text-[#000ba3]
-                                                hover:text-[#ffd11a]
+                                                hover:text-accent
                                             "
                                         >
                                             {item.label}
@@ -127,8 +119,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                                                         tracking-wide
                                                         text-background/60   
                                                         transition-colors
-                                                        hover:dark:text-[#000ba3]
-                                                        hover:text-[#ffd11a]
+                                                        hover:text-accent
                                                     ">
                                                         {child.label}
                                                     </span>
@@ -165,8 +156,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                                     lg:text-7xl
                                     text-background
                                     transition-colors
-                                    hover:dark:text-[#000ba3]
-                                    hover:text-[#ffd11a]
+                                   hover:text-accent
                                 "
                             >
                                 {settings?.footerCTA?.buttonText || "Start a Project"}
@@ -187,8 +177,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                             tracking-[0.25em]
                             uppercase
                             transition-colors
-                            hover:dark:text-[#000ba3]
-                            hover:text-[#ffd11a]
+                            hover:text-accent
                         "
                     >
                         {email}

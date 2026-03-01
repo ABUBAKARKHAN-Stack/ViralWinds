@@ -1,6 +1,5 @@
 "use client"
 import { Toaster } from '@/components/ui/sonner'
-import { ThemeProvider } from 'next-themes'
 import { FC, ReactNode } from 'react'
 
 type Props = {
@@ -13,10 +12,10 @@ const RootProvider: FC<Props> = ({
 
 
     return (
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="mohsin-desings-theme" disableTransitionOnChange>
+        <>
             <Toaster />
             {children}
-        </ThemeProvider>
+        </>
     )
 }
 

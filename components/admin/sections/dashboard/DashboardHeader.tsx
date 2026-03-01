@@ -3,7 +3,6 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import ThemeToggle from '@/components/ui/theme-toggle';
 import { usePathname } from 'next/navigation';
 
 const DashboardHeader = () => {
@@ -40,9 +39,7 @@ const DashboardHeader = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="flex items-center gap-3">
-        <ThemeToggle />
-      </div>
+
     </header>
   )
 }

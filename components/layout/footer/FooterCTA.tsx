@@ -11,7 +11,7 @@ const FooterCTA = () => {
   const cta = settings?.footerCTA;
 
   const hoverVariants = {
-    hovered: { rotate: 45, backgroundColor: "var(--color-foreground)" },
+    hovered: { rotate: 45, backgroundColor: "var(--color-foreground)",color: "var(--color-background)"  },
     rest: { rotate: 0, backgroundColor: "var(--color-accent)" },
   };
 
@@ -61,8 +61,9 @@ const FooterCTA = () => {
               <motion.div
                 className="flex items-center justify-center w-20 h-20 md:w-28 md:h-28"
                 variants={hoverVariants}
+              
               >
-                <ArrowUpRight className="w-8 h-8 md:w-10 md:h-10 text-accent-foreground" />
+                <ArrowUpRight className="w-8 h-8 md:w-10 md:h-10" />
               </motion.div>
             </MagneticButton>
           </div>

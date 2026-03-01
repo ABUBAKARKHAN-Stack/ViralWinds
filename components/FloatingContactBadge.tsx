@@ -14,7 +14,7 @@ const FloatingContactBadge = () => {
     >
       <Link
         href="/contact"
-        className="group flex flex-col items-center gap-3 hover:bg-foreground hover:text-secondary-foreground px-3 py-6 shadow-lg bg-accent text-accent-foreground transition-colors duration-300"
+        className="group flex flex-col items-center gap-3 hover:bg-foreground hover:text-background px-3 py-6 shadow-lg bg-accent text-accent-foreground transition-colors duration-300"
       >
         <motion.div
           animate={{ y: [0, -3, 0] }}

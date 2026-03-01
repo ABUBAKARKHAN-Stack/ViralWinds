@@ -137,22 +137,10 @@
   -webkit-text-fill-color: transparent;
 }
 
-@utility dark {
-  .gradient-text {
-    background: linear-gradient(135deg,
-        hsl(48 100% 55%) 0%,
-        hsl(40 100% 60%) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-}
-
 @utility gradient-text {
   background: linear-gradient(135deg,
       hsl(50, 100%, 50%) 0%,
-      hsl(236, 100%, 37%) 100%);
+      hsl(55, 100%, 55%) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -177,7 +165,7 @@
 
     /* Secondary: accent color with proper contrast */
     --secondary: 50, 100%, 50%;
-    --secondary-foreground: 0, 0%, 100%;
+    --secondary-foreground: 0, 0%, 0%;
 
     /* Muted: low emphasis, background-friendly */
     --muted: 45 15% 92%;
@@ -185,7 +173,7 @@
 
     /* Accent: action color with strong contrast */
     --accent: 50, 100%, 50%;
-    --accent-foreground: 0, 0%, 100%;
+    --accent-foreground: 0, 0%, 0%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -198,17 +186,17 @@
 
     /* Sidebar mirrors dark mode relationships */
 
-    --sidebar: 45 30% 97%;
+    --sidebar: 0 0% 100%;
     --sidebar-foreground: 0, 0%, 0%;
 
-    --sidebar-primary: 236 100% 32%;
-    --sidebar-primary-foreground: 0, 0%, 100%;
+    --sidebar-primary: 50, 100%, 50%;
+    --sidebar-primary-foreground: 0, 0%, 0%;
 
-    --sidebar-accent: 236 100% 32%;
-    --sidebar-accent-foreground: 0, 0%, 100%;
+    --sidebar-accent: 50, 100%, 50%;
+    --sidebar-accent-foreground: 0, 0%, 0%;
 
     --sidebar-border: 45 20% 88%;
-    --sidebar-ring: 236 100% 32%;
+    --sidebar-ring: 50, 100%, 50%;
 
   }
 

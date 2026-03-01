@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ArrowUpRight, ChevronDown } from "lucide-react";
 import MagneticButton from "@/components/MagneticButton";
-import ThemeToggle from "@/components/ui/theme-toggle";
 import Link from "next/link";
 import ContainerLayout from "../ContainerLayout";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
@@ -180,11 +179,9 @@ const DesktopNav: FC<Props> = ({
                                     <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                 </Link>
                             </MagneticButton>
-                            <ThemeToggle />
                         </div>
 
                         <div className="lg:hidden flex items-center gap-4">
-                            <ThemeToggle />
                             <MagneticButton strength={0.18}>
                                 <button
                                     className="relative z-50 p-2"
