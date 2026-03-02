@@ -12,8 +12,6 @@ const CustomCursor = () => {
   const cursorY = useMotionValue(-100);
 
   //* Dot & Ring Config
-  // const dotSpringConfig = { damping: 30, stiffness: 500, mass: 0.5 };
-  // const ringSpringConfig = { damping: 20, stiffness: 150, mass: 0.8 };
   const dotSpringConfig = { damping: 38, stiffness: 900, mass: 0.4 };
   const ringSpringConfig = { damping: 32, stiffness: 360, mass: 0.7 };
 

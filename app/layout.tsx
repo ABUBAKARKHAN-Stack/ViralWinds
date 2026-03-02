@@ -43,8 +43,8 @@ export const metadata: Metadata = {
 
   icons: {
     icon: {
-      url: "/assets/logo.webp",
-      type: "image/webp",
+      url: "/assets/favicon.png",
+      type: "image/png",
       sizes: "any",
     },
   },

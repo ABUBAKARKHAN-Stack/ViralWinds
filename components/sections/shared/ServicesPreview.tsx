@@ -65,7 +65,7 @@ const ServicesPreview = () => {
           >
             <Link
               href={servicesPreviewData?.buttonUrl || "/services"}
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-primary-foreground font-medium hover:bg-accent/90 transition-all duration-300 shadow-[0_10px_30px_-10px_hsl(var(--accent)/0.5)]"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all duration-300 shadow-[0_10px_30px_-10px_hsl(var(--accent)/0.5)]"
             >
               <span>{servicesPreviewData?.buttonText || "View All Services"}</span>
               <ArrowUpRight className="size-4.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -90,7 +90,7 @@ const ServicesPreview = () => {
         >
           <Link
             href={servicesPreviewData?.buttonUrl || "/services"}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-primary-foreground font-medium hover:bg-accent/90 transition-all duration-300"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all duration-300"
           >
             <span>{servicesPreviewData?.buttonText || "View All Services"}</span>
             <ArrowUpRight className="size-4.5" />

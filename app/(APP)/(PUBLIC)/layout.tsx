@@ -123,7 +123,6 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 export default async function PublicLayout({ children }: Props) {
 
-
     const [
         siteSettingsResult,
         globalContentResult
@@ -134,6 +133,9 @@ export default async function PublicLayout({ children }: Props) {
 
     const siteSettings = siteSettingsResult.status === "fulfilled" ? siteSettingsResult.value : null;
     const globalContent = globalContentResult.status === "fulfilled" ? globalContentResult.value : null;
+
+
+    
 
 
     return (

@@ -60,7 +60,7 @@ const PortfolioPreview = () => {
           >
             <Link
               href={portfolioPreviewData?.buttonUrl || "/portfolio"}
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-primary-foreground font-medium hover:bg-accent/90 transition-all duration-300 shadow-[0_10px_30px_-10px_hsl(var(--accent)/0.5)]"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all duration-300 shadow-[0_10px_30px_-10px_hsl(var(--accent)/0.5)]"
             >
               <span>{portfolioPreviewData?.buttonText || "View All Projects"}</span>
               <ArrowUpRight className="size-4.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
@@ -103,7 +103,7 @@ const PortfolioPreview = () => {
       >
         <Link
           href={`/portfolio`}
-          className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-primary-foreground font-medium hover:bg-accent/90 transition-all duration-300"
+          className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-accent-foreground font-medium hover:bg-accent/90 transition-all duration-300"
         >
           View All Projects
           <ArrowUpRight className="size-4.5" />

@@ -4,12 +4,15 @@ export const useIsTouchDevice = () => {
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
-        const touch =
+        if (typeof window === "undefined") return;
+
+        const hasTouch =
+            "ontouchstart" in window ||
             navigator.maxTouchPoints > 0 ||
             window.matchMedia("(pointer: coarse)").matches;
 
-        setIsTouchDevice(touch);
+        setIsTouchDevice(hasTouch);
     }, []);
 
-    return isTouchDevice
-}
+    return isTouchDevice;
+};
