@@ -11,7 +11,7 @@ import { GlobalContentProvider } from "@/context/GlobalContentContext";
 import { getGlobalSections } from "@/helpers/global-sections.helpers";
 import { Metadata } from "next";
 import { urlFor } from "@/sanity/lib/image";
-import { BASE_URL } from "@/constants/app.constants";
+import { APP_NAME, BASE_URL, BRAND_DESCRIPTION, TAGLINE } from "@/constants/app.constants";
 
 
 
@@ -24,8 +24,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
     if (!siteSettings) {
         return {
-            title: "Creative Design Agency for Branding, Web & Digital Growth | Mohsin Designs",
-            description: "Mohsin Designs is a creative design agency delivering logo design, branding, websites, apps, SEO, and digital solutions that help brands grow with confidence.",
+            title: `${TAGLINE} | ${APP_NAME}`,
+            description: BRAND_DESCRIPTION,
             keywords: [
                 "creative design agency",
                 "branding agency",
@@ -33,7 +33,19 @@ export const generateMetadata = async (): Promise<Metadata> => {
                 "web design agency",
                 "digital design agency",
                 "branding and web development",
-                "creative agency for startups"
+                "creative agency for startups",
+                "AI marketing agency",
+                "digital marketing with AI",
+                "AI-powered marketing",
+                "viral marketing agency",
+                "social media marketing agency",
+                "performance marketing agency",
+                "growth marketing agency",
+                "AI-driven branding",
+                "marketing automation agency",
+                "content marketing agency",
+                "digital growth strategies",
+                "brand engagement campaigns"
             ],
             alternates: {
                 canonical: "/",
@@ -135,32 +147,31 @@ export default async function PublicLayout({ children }: Props) {
     const globalContent = globalContentResult.status === "fulfilled" ? globalContentResult.value : null;
 
 
-    
 
 
     return (
 
         <SiteSettingsProvider settings={siteSettings}>
-                <GlobalContentProvider globalContent={globalContent}>
+            <GlobalContentProvider globalContent={globalContent}>
 
-                    <JsonLd schemas={siteSettings?.seo?.schemas} />
-                    <PublicProvider>
-                        
-                        <div className="min-h-screen flex flex-col">
-                                <SanityLive />
-                                <Navbar />
+                <JsonLd schemas={siteSettings?.seo?.schemas} />
+                <PublicProvider>
 
-                                <main className="flex-1 pt-20">
-                                    <AnimatePresence mode="wait">
-                                        {children}
-                                    </AnimatePresence>
-                                </main>
+                    <div className="min-h-screen flex flex-col">
+                        <SanityLive />
+                        <Navbar />
 
-                                <FloatingContactBadge />
-                                <Footer />
-                        </div>
-                    </PublicProvider>
-                </GlobalContentProvider>
+                        <main className="flex-1 pt-20">
+                            <AnimatePresence mode="wait">
+                                {children}
+                            </AnimatePresence>
+                        </main>
+
+                        <FloatingContactBadge />
+                        <Footer />
+                    </div>
+                </PublicProvider>
+            </GlobalContentProvider>
         </SiteSettingsProvider>
 
     );

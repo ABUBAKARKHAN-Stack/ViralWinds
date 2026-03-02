@@ -99,7 +99,7 @@ export function BlogForm({
             slug: { current: "" },
             publishedAt: new Date().toISOString(),
             featured: false,
-            author: "Mohsin Ali",
+            author: "Abdul Samad",
             tags: [],
             categories: categories
                 .filter(cat => cat.title?.toLowerCase() === 'all')
@@ -304,7 +304,7 @@ export function BlogForm({
                                                     <FormItem>
                                                         <FormLabel>Author Name <span className="text-destructive">*</span></FormLabel>
                                                         <FormControl>
-                                                            <Input {...field} placeholder="e.g. Mohsin Ali" />
+                                                            <Input {...field} placeholder="e.g. Abdul Samad" />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>

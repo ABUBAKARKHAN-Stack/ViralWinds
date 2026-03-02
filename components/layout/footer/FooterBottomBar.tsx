@@ -1,5 +1,6 @@
 "use client"
 
+import { APP_NAME } from "@/constants/app.constants";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const FooterBottomBar = () => {
@@ -12,7 +13,7 @@ const FooterBottomBar = () => {
                 {settings?.copyright ? (
                     <span>{settings.copyright.replace("{year}", currentYear.toString())}</span>
                 ) : (
-                    <span>© {currentYear} Mohsin Designs. All rights reserved.</span>
+                    <span>© {currentYear} {APP_NAME}. All rights reserved.</span>
                 )}
             </p>
         </div>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import RootProvider from "@/provider/RootProvider";
-import { APP_NAME, BASE_URL } from "@/constants/app.constants";
+import { APP_NAME, BASE_URL, BRAND_DESCRIPTION, TAGLINE } from "@/constants/app.constants";
 
 
 const sans = Inter({
@@ -36,10 +36,10 @@ const display = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: `Creative Design Agency for Branding, Web & Digital Growth | ${APP_NAME}`,
+    default: `${TAGLINE} | ${APP_NAME}`,
     template: `%s | ${APP_NAME}`,
   },
-  description: "Mohsin Designs is a creative design agency delivering logo design, branding, websites, apps, SEO, and digital solutions that help brands grow with confidence.",
+  description: BRAND_DESCRIPTION,
 
   icons: {
     icon: {

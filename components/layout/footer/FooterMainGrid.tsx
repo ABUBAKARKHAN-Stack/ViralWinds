@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Logo from "@/components/ui/logo";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
-
 import { resolveUrl } from "@/lib/menu-utils";
+import { BRAND_DESCRIPTION } from "@/constants/app.constants";
 
 const FooterMainGrid = () => {
 
@@ -25,7 +25,7 @@ const FooterMainGrid = () => {
                     className="h-16 w-auto mb-6"
                 />
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                    {settings?.footerText || "A creative design agency crafting memorable brands and digital experiences that drive results."}
+                    {settings?.footerText || BRAND_DESCRIPTION}
                 </p>
             </div>
 
