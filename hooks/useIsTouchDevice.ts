@@ -6,12 +6,18 @@ export const useIsTouchDevice = () => {
     useEffect(() => {
         if (typeof window === "undefined") return;
 
-        const hasTouch =
-            "ontouchstart" in window ||
-            navigator.maxTouchPoints > 0 ||
-            window.matchMedia("(pointer: coarse)").matches;
+        const mediaQuery = window.matchMedia("(hover: none) and (pointer: coarse)");
 
-        setIsTouchDevice(hasTouch);
+        const handleChange = () => {
+            setIsTouchDevice(mediaQuery.matches);
+        }; 
+
+        handleChange();
+        mediaQuery.addEventListener("change", handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener("change", handleChange);
+        };
     }, []);
 
     return isTouchDevice;

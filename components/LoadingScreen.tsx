@@ -3,12 +3,10 @@
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import Logo from "./ui/logo";
-import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
   const [showLogo, setShowLogo] = useState(false);
-  const { settings } = useSiteSettings()
 
 
   useEffect(() => {
@@ -81,7 +79,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
           <span>Loading</span>
           <span className="font-mono">{Math.min(Math.round(progress), 100)}%</span>
         </div>
-        <div className="h-px bg-border overflow-hidden">
+        <div className="h-1 bg-border overflow-hidden">
           <motion.div
             className="h-full bg-accent"
             initial={{ width: 0 }}
@@ -91,21 +89,7 @@ const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
         </div>
       </motion.div>
 
-      {/* Bottom tagline */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8 }}
-        className="absolute bottom-6 sm:bottom-8 md:bottom-12 flex flex-col items-center gap-2 px-4"
-      >
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="w-4 sm:w-6 md:w-8 h-px bg-accent" />
-          <span className="text-[10px]  max-w-md sm:text-xs tracking-[0.2em] sm:tracking-[0.4em] uppercase text-muted-foreground text-center">
-            {settings?.tagline || "Creative Design Agency"}
-          </span>
-          <div className="w-4 sm:w-6 md:w-8 h-px bg-accent" />
-        </div>
-      </motion.div>
+    
     </motion.div>
   );
 };
