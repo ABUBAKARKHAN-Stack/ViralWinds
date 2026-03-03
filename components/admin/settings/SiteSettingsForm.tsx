@@ -109,6 +109,8 @@ export function SiteSettingsForm({ initialData, menus: initialMenus }: SiteSetti
         menu: !!(formErrors.headerMenu || formErrors.footerMenu),
     }
 
+
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -375,7 +377,7 @@ export function SiteSettingsForm({ initialData, menus: initialMenus }: SiteSetti
                                 <FormInput control={formControl} name="copyright" label="Copyright Notice" />
                             </CardContent>
                         </Card>
-                        
+
                         <Card>
                             <CardHeader>
                                 <CardTitle>Call to Action</CardTitle>
@@ -447,11 +449,18 @@ export function SiteSettingsForm({ initialData, menus: initialMenus }: SiteSetti
                                                             <SelectValue placeholder="Select a menu for Header" />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            {menus.filter(menu => menu.location === 'header').map((menu) => (
+                                                            {menus.length > 0 && menus.filter(menu => menu.location === 'header').map((menu) => (
                                                                 <SelectItem key={menu._id} value={menu._id}>
                                                                     {menu.title}
                                                                 </SelectItem>
                                                             ))}
+                                                            {(menus.length === 0 || menus.filter(menu => menu.location === 'header').length === 0) && (
+                                                                <SelectItem
+                                                                    value="none"
+                                                                >
+                                                                    Header Menus Not Found
+                                                                </SelectItem>
+                                                            )}
                                                         </SelectContent>
                                                     </Select>
                                                 </FormControl>
@@ -484,11 +493,19 @@ export function SiteSettingsForm({ initialData, menus: initialMenus }: SiteSetti
                                                             <SelectValue placeholder="Select a menu for Footer" />
                                                         </SelectTrigger>
                                                         <SelectContent>
-                                                            {menus.filter(menu => menu.location === 'footer').map((menu) => (
+                                                            {menus.length > 0 && menus.filter(menu => menu.location === 'footer').map((menu) => (
                                                                 <SelectItem key={menu._id} value={menu._id}>
                                                                     {menu.title}
                                                                 </SelectItem>
                                                             ))}
+
+                                                            {(menus.length === 0 || menus.filter(menu => menu.location === 'footer').length === 0) && (
+                                                                <SelectItem
+                                                                    value="none"
+                                                                >
+                                                                    Footer Menus Not Found
+                                                                </SelectItem>
+                                                            )}
                                                         </SelectContent>
                                                     </Select>
                                                 </FormControl>

@@ -2,7 +2,8 @@ import {
     DashboardWelcome,
     PermissionsCard,
     QuickActions,
-    StatsSection
+    StatsSection,
+    CmsHealthcheck
 } from "@/components/admin/sections/dashboard";
 
 export default function DashboardPage() {
@@ -13,14 +14,20 @@ export default function DashboardPage() {
             {/* Welcome Section */}
             <DashboardWelcome />
 
+            {/* CMS Healthcheck */}
+            <CmsHealthcheck />
+
             {/* Stats  Cards */}
             <StatsSection />
 
             {/* Quick Actions */}
             <QuickActions />
 
-            {/* Permissions Overview */}
-            <PermissionsCard />
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="col-span-full">
+                    <PermissionsCard />
+                </div>
+            </div>
 
 
         </div>
