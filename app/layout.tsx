@@ -41,6 +41,7 @@ export const metadata: Metadata = {
   },
   description: BRAND_DESCRIPTION,
 
+
   icons: {
     icon: {
       url: "/assets/favicon.png",

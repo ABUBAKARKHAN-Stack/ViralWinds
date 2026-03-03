@@ -27,25 +27,12 @@ export const generateMetadata = async (): Promise<Metadata> => {
             title: `${TAGLINE} | ${APP_NAME}`,
             description: BRAND_DESCRIPTION,
             keywords: [
-                "creative design agency",
-                "branding agency",
-                "logo design agency",
-                "web design agency",
-                "digital design agency",
-                "branding and web development",
-                "creative agency for startups",
-                "AI marketing agency",
-                "digital marketing with AI",
-                "AI-powered marketing",
-                "viral marketing agency",
-                "social media marketing agency",
-                "performance marketing agency",
-                "growth marketing agency",
-                "AI-driven branding",
-                "marketing automation agency",
-                "content marketing agency",
-                "digital growth strategies",
-                "brand engagement campaigns"
+                "commerce Marketing Agency",
+                "Shopify Marketing Experts",
+                "Meta Ads Specialist",
+                "Instagram Branding Agency",
+                "Performance Marketing Agency",
+                "Social Media Marketing for Ecommerce"
             ],
             alternates: {
                 canonical: "/",
@@ -65,6 +52,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
     const openGraphImage = siteSettings?.logo?._id ? urlFor(siteSettings?.logo?._id)
         .width(1200)
         .height(630)
+        .bg("ffffff")
+        .pad(50)
         .url() : "";
 
     return {
