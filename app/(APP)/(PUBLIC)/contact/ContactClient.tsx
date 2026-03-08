@@ -16,6 +16,7 @@ import { errorToast, successToast } from "@/lib/toastNotifications"
 
 import { useSiteSettings } from "@/context/SiteSettingsContext"
 import { LinkProcessor } from "@/components/ui/LinkProcessor"
+import { cn } from "@/lib/utils"
 
 interface ContactClientProps {
     pageData: any
@@ -28,8 +29,6 @@ export default function ContactClient({ pageData }: ContactClientProps) {
     const [formData, setFormData] = useState<Record<string, any>>({})
 
     const hero = pageData?.hero || {}
-    const contactForm = pageData?.contactForm || {}
-    const formConfig = contactForm?.form || null
     const faqs = pageData?.faqs || {}
     const faqItems = faqs?.faqItems || []
 
@@ -52,7 +51,6 @@ export default function ContactClient({ pageData }: ContactClientProps) {
         if (!formData.name) newErrors.name = "Name is required"
         if (!formData.email) newErrors.email = "Email is required"
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email address"
-        if (!formData.phone) newErrors.phone = "Phone is required"
         if (!formData.message) newErrors.message = "Message is required"
 
         if (Object.keys(newErrors).length > 0) {
@@ -183,49 +181,65 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                             ) : (
                                 <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
                                     <div className="mb-8">
-                                        <h3 className="text-xl sm:text-2xl font-display font-bold mb-2">{contactForm.formHeading || "Send us a message"}</h3>
+                                        <h3 className="text-xl sm:text-2xl font-display font-bold mb-2">Send us a message</h3>
                                         <p className="text-muted-foreground">
-
-                                            <LinkProcessor text={contactForm.formDescription || "Fill out the form below."} />
+                                            Fill out the form below.
                                         </p>
                                     </div>
 
-                                    <div>
-                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
-                                            Name *
-                                        </label>
-                                        <Input
-                                            name="name"
-                                            value={formData.name || ""}
-                                            onChange={handleChange}
-                                            placeholder="Your Name"
-                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.name ? 'border-destructive' : 'border-border focus-visible:border-accent'
-                                                }`}
-                                        />
-                                        {errors.name && <p className="text-sm text-destructive mt-2">{errors.name}</p>}
+                                    <div className="grid md:grid-cols-2 grid-cols-1 gap-8">
+                                        <div>
+                                            <label htmlFor="name" className={cn(
+                                                "text-sm uppercase tracking-widest block mb-3",
+                                                errors.name ? "text-destructive" : "text-muted-foreground"
+                                            )}>
+                                                Name *
+                                            </label>
+                                            <Input
+                                                id="name"
+                                                name="name"
+                                                value={formData.name || ""}
+                                                onChange={handleChange}
+                                                placeholder="Your Name"
+                                                className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.name ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                    }`}
+                                            />
+                                            {errors.name && <p className="text-sm text-destructive mt-2">{errors.name}</p>}
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                htmlFor="email"
+                                                className={cn(
+                                                    "text-sm uppercase tracking-widest block mb-3",
+                                                    errors.email ? "text-destructive" : "text-muted-foreground"
+                                                )}
+                                            >
+                                                Email *
+                                            </label>
+                                            <Input
+                                                id="email"
+                                                name="email"
+                                                type="email"
+                                                value={formData.email || ""}
+                                                onChange={handleChange}
+                                                placeholder="Your Email"
+                                                className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.email ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                    }`}
+                                            />
+                                            {errors.email && <p className="text-sm text-destructive mt-2">{errors.email}</p>}
+                                        </div>
                                     </div>
 
-                                    <div>
-                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
-                                            Email *
-                                        </label>
-                                        <Input
-                                            name="email"
-                                            type="email"
-                                            value={formData.email || ""}
-                                            onChange={handleChange}
-                                            placeholder="Your Email"
-                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.email ? 'border-destructive' : 'border-border focus-visible:border-accent'
-                                                }`}
-                                        />
-                                        {errors.email && <p className="text-sm text-destructive mt-2">{errors.email}</p>}
-                                    </div>
 
                                     <div>
-                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
-                                            Phone *
+                                        <label
+                                            htmlFor="phone"
+                                            className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                            Phone
                                         </label>
                                         <Input
+                                            id="phone"
                                             name="phone"
                                             type="tel"
                                             value={formData.phone || ""}
@@ -238,10 +252,17 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                     </div>
 
                                     <div>
-                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                        <label
+                                            htmlFor="message"
+                                            className={cn(
+                                                "text-sm uppercase tracking-widest block mb-3",
+                                                errors.message ? "text-destructive" : "text-muted-foreground"
+                                            )}
+                                        >
                                             Message *
                                         </label>
                                         <Textarea
+                                            id="message"
                                             name="message"
                                             value={formData.message || ""}
                                             onChange={handleChange}

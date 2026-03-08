@@ -1,5 +1,7 @@
 "use server"
 
+import { APP_NAME } from "@/constants/app.constants";
+import { transporter } from "@/lib/nodemailer";
 import { ContactFormType } from "@/schemas/contact.schema";
 import nodemailer from "nodemailer";
 
@@ -9,88 +11,97 @@ type SubmitContactFormResult = {
     error?: string;
 };
 
-export async function submitContactForm(data: ContactFormType): Promise<SubmitContactFormResult> {
+export async function submitContactForm(
+    data: ContactFormType
+): Promise<SubmitContactFormResult> {
     try {
-        // 1. Send email via Nodemailer
-        const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: parseInt(process.env.SMTP_PORT || '587'),
-            secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
-            auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
-            },
-        });
+        const adminEmail = process.env.SMTP_USER!;
+        const fromEmail =  process.env.SMTP_USER!;
+        const submittedAt = new Date().toLocaleString();
 
-        // Email to admin
-        await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
-            to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-            subject: `New Contact Form Submission from ${data.name}`,
+        const adminMail = {
+            from: `"Viral Winds Contact Form" <${fromEmail}>`,
+            to: `"Viral Winds Admin" <${adminEmail}>`,
+            replyTo: `"${data.name}" <${data.email}>`,
+            subject: `New Contact Form Submission - ${data.name}`,
             html: `
-                <h2>New Contact Form Submission</h2>
-                <p><strong>Name:</strong> ${data.name}</p>
-                <p><strong>Email:</strong> ${data.email}</p>
-                <p><strong>Phone:</strong> ${data.phone}</p>
-                <p><strong>Message:</strong></p>
-                <p>${data.message.replace(/\n/g, '<br>')}</p>
-                <hr>
-                <p><small>Submitted at: ${new Date().toLocaleString()}</small></p>
-            `,
+        <h2>New Contact Form Submission</h2>
+
+        <p><strong>Name:</strong> ${data.name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        ${data.phone ? `<p><strong>Phone:</strong> ${data.phone}</p>` : ""}
+
+        <p><strong>Message:</strong></p>
+        <p>${data.message.replace(/\n/g, "<br>")}</p>
+
+        <hr>
+        <p><small>Submitted at: ${submittedAt}</small></p>
+      `,
             text: `
 New Contact Form Submission
 
 Name: ${data.name}
 Email: ${data.email}
-Phone: ${data.phone}
+Phone: ${data.phone || "N/A"}
 
 Message:
 ${data.message}
 
-Submitted at: ${new Date().toLocaleString()}
-            `
-        });
+Submitted at: ${submittedAt}
+      `,
+        };
 
-        // Optional: Send confirmation email to user
-        await transporter.sendMail({
-            from: process.env.SMTP_FROM || process.env.SMTP_USER,
-            to: data.email,
-            subject: 'Thank you for contacting us',
+        const userMail = {
+            from: `"Viral Winds Support" <${fromEmail}>`,
+            to: `"${data.name}" <${data.email}>`,
+            subject: "We received your message - Viral Winds",
             html: `
-                <h2>Thank you for reaching out!</h2>
-                <p>Hi ${data.name},</p>
-                <p>We've received your message and will get back to you within 24 hours.</p>
-                <p><strong>Your message:</strong></p>
-                <p>${data.message.replace(/\n/g, '<br>')}</p>
-                <hr>
-                <p>Best regards,<br>Viral Winds Team</p>
-            `,
-            text: `
-Thank you for reaching out!
+        <h2>Thank you for reaching out!</h2>
 
+        <p>Hi ${data.name},</p>
+
+        <p>We've received your message and our team will get back to you within 24 hours.</p>
+
+        <p><strong>Your message:</strong></p>
+        <p>${data.message.replace(/\n/g, "<br>")}</p>
+
+        <hr>
+
+        <p>
+          Best regards,<br>
+          <strong>Viral Winds Team</strong>
+        </p>
+      `,
+            text: `
 Hi ${data.name},
 
-We've received your message and will get back to you within 24 hours.
+Thank you for contacting Viral Winds. We've received your message and will respond within 24 hours.
 
 Your message:
 ${data.message}
 
 Best regards,
 Viral Winds Team
-            `
-        });
+      `,
+        };
+
+        //* Send both emails in parallel
+        await Promise.all([
+            transporter.sendMail(adminMail),
+            transporter.sendMail(userMail),
+        ]);
 
         return {
             success: true,
-            message: 'Thank you for your message! We\'ll get back to you soon.'
+            message: "Thank you for your message! We'll get back to you soon.",
         };
-
     } catch (error) {
-        console.error('Contact form submission error:', error);
+        console.error("Contact form submission error:", error);
+
         return {
             success: false,
-            message: 'Failed to send message. Please try again later.',
-            error: error instanceof Error ? error.message : 'Unknown error'
+            message: "Failed to send message. Please try again later.",
+            error: error instanceof Error ? error.message : "Unknown error",
         };
     }
 }
