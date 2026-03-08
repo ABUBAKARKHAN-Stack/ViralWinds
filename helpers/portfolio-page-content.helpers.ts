@@ -1,6 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { defineQuery } from "next-sanity";
-import { PortfolioPageContentData } from "@/types/form.types";
 
 export const PORTFOLIO_PAGE_CONTENT_QUERY = defineQuery(`*[_type == "portfolioPageContent"][0] {
   "hero": {
@@ -56,7 +55,7 @@ export async function getPortfolioPageContent() {
       query: PORTFOLIO_PAGE_CONTENT_QUERY,
       perspective: "published"
     });
-    return data as PortfolioPageContentData;
+    return data;
   } catch (error) {
     console.error("Failed to fetch portfolio page content:", error);
     return null;
