@@ -1,9 +1,7 @@
 "use server"
 
-import { APP_NAME } from "@/constants/app.constants";
 import { transporter } from "@/lib/nodemailer";
 import { ContactFormType } from "@/schemas/contact.schema";
-import nodemailer from "nodemailer";
 
 type SubmitContactFormResult = {
     success: boolean;
