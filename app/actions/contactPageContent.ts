@@ -22,10 +22,7 @@ async function ensureDocumentExists() {
                     title: "Let's talk",
                     description: "Have a project in mind? We'd love to hear about it. Drop us a line and let's create something extraordinary together.",
                 },
-                contactForm: {
-                    formHeading: "Send us a message",
-                    formDescription: "Fill out the form below and we'll get back to you within 24 hours.",
-                },
+
                 faqs: {
                     sectionHeading: {
                         eyebrow: "FAQs",
@@ -61,7 +58,6 @@ export async function updateContactPageContent(data: ContactPageContentValues) {
             _type: 'contactPageContent',
             _id: CONTACT_PAGE_CONTENT_ID,
             hero: validatedFields.hero,
-            contactForm: validatedFields.contactForm,
             faqs: validatedFields.faqs,
             seo: validatedFields.seo
         }

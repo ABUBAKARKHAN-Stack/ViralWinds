@@ -7,10 +7,7 @@ export const contactPageContentSchema = z.object({
         subtitle: localizedStringSchema.optional(),
         description: localizedTextSchema,
     }),
-    contactForm: z.object({
-        formHeading: z.string().min(1, "Heading is required"),
-        formDescription: z.string().min(1, "Description is required"),
-    }),
+   
     faqs: z.object({
         sectionHeading: sectionHeadingSchema.optional(),
         faqItems: z.array(z.object({

@@ -36,28 +36,6 @@ export const contactPageContentType = defineType({
             ],
         }),
 
-        // CONTACT FORM SECTION
-        defineField({
-            name: "contactForm",
-            title: "Contact Form Section",
-            type: "object",
-            fields: [
-                defineField({
-                    name: "formHeading",
-                    title: "Form Heading",
-                    type: "localizedString",
-                    description: 'e.g., "Send us a message"',
-                }),
-                defineField({
-                    name: "formDescription",
-                    title: "Form Description",
-                    type: "localizedText",
-                    description: "Fill out the form below...",
-                }),
-            ],
-        }),
-
-
         // FAQS SECTION
         defineField({
             name: "faqs",

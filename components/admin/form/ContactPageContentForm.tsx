@@ -22,10 +22,9 @@ interface ContactPageContentFormProps {
     initialData?: any
     hasDraft?: boolean
     draftUpdatedAt?: string | null
-    availableForms?: any[]
 }
 
-export function ContactPageContentForm({ initialData, hasDraft, draftUpdatedAt, availableForms = [] }: ContactPageContentFormProps) {
+export function ContactPageContentForm({ initialData, hasDraft, draftUpdatedAt }: ContactPageContentFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [isSavingDraft, setIsSavingDraft] = useState(false)
     const [lastSaved, setLastSaved] = useState<Date | null>(
@@ -107,7 +106,7 @@ export function ContactPageContentForm({ initialData, hasDraft, draftUpdatedAt, 
                     <div>
                         <h1 className="text-2xl font-bold">Contact Page Content</h1>
                         <div className="flex items-center gap-3 text-muted-foreground text-sm mt-1">
-                            <p>Manage hero, contact form, and FAQs</p>
+                            <p>Manage hero, FAQs and SEO</p>
                             {isSavingDraft && (
                                 <span className="flex items-center gap-1 text-blue-600">
                                     <Spinner className="h-3 w-3" />
@@ -144,10 +143,6 @@ export function ContactPageContentForm({ initialData, hasDraft, draftUpdatedAt, 
                             Hero
                             {formErrors.hero && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
                         </TabsTrigger>
-                        <TabsTrigger value="contactForm" className="relative data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
-                            Contact Form
-                            {formErrors.contactForm && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
-                        </TabsTrigger>
                         <TabsTrigger value="faqs" className="relative data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">
                             FAQs
                             {formErrors.faqs && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
@@ -163,46 +158,12 @@ export function ContactPageContentForm({ initialData, hasDraft, draftUpdatedAt, 
                             <CardHeader><CardTitle>Hero Section</CardTitle></CardHeader>
                             <CardContent className="space-y-6">
                                 <FormInput control={formControl} name="hero.title" label="Title" />
-                                <FormInput control={formControl} name="hero.subtitle" label="Subtitle" />
+                                <FormInput control={formControl} name="hero.subtitle" label="Eyebrow" />
                                 <FormInput control={formControl} name="hero.description" label="Description" isTextarea />
                             </CardContent>
                         </Card>
                     </TabsContent>
 
-                    <TabsContent value="contactForm">
-                        <Card>
-                            <CardHeader><CardTitle>Contact Form Settings</CardTitle></CardHeader>
-                            <CardContent className="space-y-6">
-                                <FormInput control={formControl} name="contactForm.formHeading" label="Form Heading" />
-                                <FormInput control={formControl} name="contactForm.formDescription" label="Form Description" isTextarea />
-
-                                <FormField
-                                    control={formControl}
-                                    name="contactForm.formReference"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Select Form</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select a form to display" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {availableForms.map((f) => (
-                                                        <SelectItem key={f._id} value={f._id}>
-                                                            {f.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
 
                     <TabsContent value="faqs" className="space-y-6">
                         <SectionHeadingCard control={formControl} baseName="faqs.sectionHeading" title="FAQs Section Heading" />
@@ -247,11 +208,6 @@ function getDefaultValues(): ContactPageContentValues {
             subtitle: "",
             description: "",
         },
-        contactForm: {
-            formHeading: "",
-            formDescription: "",
-            formReference: "",
-        },
         faqs: {
             sectionHeading: { eyebrow: "", title: "", description: "" },
             faqItems: [],
@@ -271,13 +227,6 @@ function mergeWithDefaults(data: any): ContactPageContentValues {
     return {
         ...data,
         hero: { ...defaults.hero, ...data.hero },
-        contactForm: {
-            ...defaults.contactForm,
-            ...data.contactForm,
-            formReference: typeof data.contactForm?.formReference === 'object'
-                ? data.contactForm.formReference?._ref
-                : data.contactForm?.formReference || ""
-        },
         faqs: {
             sectionHeading: { ...defaults.faqs?.sectionHeading, ...data.faqs?.sectionHeading },
             faqItems: data.faqs?.faqItems || defaults.faqs?.faqItems || [],
