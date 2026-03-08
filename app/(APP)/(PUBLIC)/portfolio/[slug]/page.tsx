@@ -13,6 +13,7 @@ import {
     ProjectHeroImage
 } from "@/components/sections/portfolio/project-details"
 import { LinkProcessor } from "@/components/ui/LinkProcessor"
+import { DataMissing } from "@/components/ui/DataMissing"
 
 interface Props {
     params: Promise<{

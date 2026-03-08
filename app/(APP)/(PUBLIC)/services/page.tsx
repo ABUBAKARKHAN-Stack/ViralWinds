@@ -3,7 +3,6 @@ import {
     AllServices,
     CTA,
     ProcessTimeline,
-    ServicesBlogs,
     ServicesIntro,
     ServicesPageHero,
     WhyWorkWithUs
@@ -12,6 +11,7 @@ import { JsonLd } from '@/components/SEO/JsonLd'
 import { getServicesCTA } from '@/helpers/service.helpers'
 import { getServicesPageContent } from '@/helpers/services-page-content.helpers'
 import { Metadata } from 'next'
+import { DataMissing } from "@/components/ui/DataMissing"
 
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -27,10 +27,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
     }
 
     //* Base Metadata
-    const title = pageContent?.seo?.metaTitle;
-    const description = pageContent.seo.description;
-    const focusKeyword = pageContent.seo.focusKeyword;
-    const relatedKeywords = pageContent.seo.relatedKeywords;
+    const title = pageContent?.seo?.metaTitle || "Our Services";
+    const description = pageContent?.seo?.description || "";
+    const focusKeyword = pageContent?.seo?.focusKeyword;
+    const relatedKeywords = pageContent?.seo?.relatedKeywords;
 
 
     return {
@@ -60,58 +60,55 @@ const ServicesPage = async () => {
 
     //* Provide fallback if content not found
     if (!pageContent || !cta) {
-        throw new Error("Services page content not found");
+        return (
+            <DataMissing
+                title="Services Overview Pending"
+                description="We're currently detailing our specialized service offerings. Please explore our individual service categories below."
+            />
+        )
     }
 
     return (
         <PageWrapper>
 
             {/* JSON-LD Schema */}
-            <JsonLd schemas={pageContent.seo?.schemas} />
+            <JsonLd schemas={pageContent?.seo?.schemas} />
 
             {/* Hero Section */}
             <ServicesPageHero
-                title={pageContent.hero.title}
-                subtitle={pageContent.hero.subtitle}
-                description={pageContent.hero.description}
+                title={pageContent?.hero?.title}
+                subtitle={pageContent?.hero?.subtitle}
+                description={pageContent?.hero?.description}
             />
 
             {/* Intro Section */}
             <ServicesIntro
-                badgeText={pageContent.intro.badgeText}
-                heading={pageContent.intro.heading}
-                headingAccent={pageContent.intro.headingAccent}
-                description={pageContent.intro.description}
+                badgeText={pageContent?.intro?.badgeText}
+                heading={pageContent?.intro?.heading}
+                headingAccent={pageContent?.intro?.headingAccent}
+                description={pageContent?.intro?.description}
             />
 
             {/* All Services Section */}
             <AllServices
-             sectionHeading={pageContent.servicesList.sectionHeading}
-                services={pageContent.servicesList.services}
+                sectionHeading={pageContent?.servicesList?.sectionHeading}
+                services={pageContent?.servicesList?.services || []}
             />
 
             {/* Process Timeline Section */}
             <ProcessTimeline
-                sectionHeading={pageContent.process.sectionHeading}
-                steps={pageContent.process.steps}
+                sectionHeading={pageContent?.process?.sectionHeading}
+                steps={pageContent?.process?.steps || []}
             />
             {/* Why Work With Us Section */}
             <WhyWorkWithUs
-                sectionHeading={pageContent.whyChooseUs.sectionHeading}
-                guaranteePoints={pageContent.whyChooseUs.guaranteePoints}
-                benefits={pageContent.whyChooseUs.benefits}
+                sectionHeading={pageContent?.whyChooseUs?.sectionHeading}
+                guaranteePoints={pageContent?.whyChooseUs?.guaranteePoints || []}
+                benefits={pageContent?.whyChooseUs?.benefits || []}
             />
 
             {/* CTA Section */}
             <CTA cta={cta} />
-
-            {/* Services Blogs Section */}
-            <ServicesBlogs
-                sectionHeading={pageContent.serviceBlogs.sectionHeading}
-                blogs={pageContent.serviceBlogs.blogs}
-                buttonText={pageContent.serviceBlogs.buttonText}
-                buttonUrl={pageContent.serviceBlogs.buttonUrl}
-            />
         </PageWrapper>
     )
 }

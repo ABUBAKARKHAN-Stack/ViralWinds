@@ -11,11 +11,12 @@ const baseMenuItemSchema = z.object({
         _ref: z.string().optional().nullable(),
     }).optional().nullable(),
     url: z.string().optional().nullable(),
+    slug: z.string().optional().nullable(),
 }).superRefine((data, ctx) => {
-    if (data.type === 'custom' && (!data.url || data.url.trim() === "")) {
+    if (data.type === 'custom' && (!data.url || data.url.trim() === "") && (!data.slug || data.slug.trim() === "")) {
         ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "URL is required for custom links",
+            message: "URL or Slug is required for custom links",
             path: ['url'],
         });
     }

@@ -40,6 +40,7 @@ const SITE_SETTINGS_QUERY = `{
       "description": description,
       type,
       "url": url,
+      "slug": slug,
       "reference": reference-> {
         _type,
         "title": coalesce(title.en, title),
@@ -50,6 +51,7 @@ const SITE_SETTINGS_QUERY = `{
         "description": description,
         type,
         "url": url,
+        "slug": slug,
         "reference": reference-> {
           _type,
           "title": coalesce(title.en, title),
@@ -60,6 +62,7 @@ const SITE_SETTINGS_QUERY = `{
           "description": description,
           type,
           "url": url,
+          "slug": slug,
           "reference": reference-> {
             _type,
             "title": coalesce(title.en, title),
@@ -77,6 +80,7 @@ const SITE_SETTINGS_QUERY = `{
       "description": description,
       type,
       "url": url,
+      "slug": slug,
       "reference": reference-> {
         _type,
         "title": coalesce(title.en, title),
@@ -87,6 +91,7 @@ const SITE_SETTINGS_QUERY = `{
         "description": description,
         type,
         "url": url,
+        "slug": slug,
         "reference": reference-> {
           _type,
           "title": coalesce(title.en, title),
@@ -97,6 +102,7 @@ const SITE_SETTINGS_QUERY = `{
           "description": description,
           type,
           "url": url,
+          "slug": slug,
           "reference": reference-> {
             _type,
             "title": coalesce(title.en, title),
@@ -120,6 +126,7 @@ export type MenuItemData = {
   description?: string;
   type: 'reference' | 'custom';
   url?: string;
+  slug?: string;
   reference?: {
     _type: string;
     title: string;

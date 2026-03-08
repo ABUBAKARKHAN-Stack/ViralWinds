@@ -70,21 +70,25 @@ export function MenuItemEditor({
         name: "items"
     })
 
-    const usedReferenceIds = useMemo(() => {
-        const ids = new Set<string>()
-        const extractIds = (items: any[]) => {
+    const { usedReferenceIds, usedSlugs } = useMemo(() => {
+        const refs = new Set<string>()
+        const slugs = new Set<string>()
+        const extractData = (items: any[]) => {
             if (!items) return
             items.forEach(item => {
                 if (item.type === 'reference' && item.reference?._ref) {
-                    ids.add(item.reference._ref)
+                    refs.add(item.reference._ref)
+                }
+                if (item.type === 'custom' && item.slug) {
+                    slugs.add(item.slug)
                 }
                 if (item.children && item.children.length > 0) {
-                    extractIds(item.children)
+                    extractData(item.children)
                 }
             })
         }
-        extractIds(allItems)
-        return ids
+        extractData(allItems)
+        return { usedReferenceIds: refs, usedSlugs: slugs }
     }, [allItems])
 
     const hasError = !!errors?.[index]
@@ -159,24 +163,26 @@ export function MenuItemEditor({
                 <div className="flex items-center gap-2">
                     {isOpen && (
                         <div className="animate-in fade-in zoom-in-95 duration-200 flex items-center gap-2">
-                            <Button
-                                type="button"
-                                size="sm"
-                                variant="ghost"
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    append({
-                                        label: "",
-                                        description: "",
-                                        type: "reference",
-                                        children: []
-                                    })
-                                    setIsOpen(true)
-                                }}
-                                className="h-8 text-[11px] gap-1 hover:bg-primary/10 hover:text-primary"
-                            >
-                                <Plus className="h-3.5 w-3.5" /> Sub-link
-                            </Button>
+                            {((itemLabel === 'Services' || (location === 'footer' && (itemLabel === 'Navigation' || itemLabel === 'Services'))) && depth === 0) && (
+                                <Button
+                                    type="button"
+                                    size="sm"
+                                    variant="ghost"
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        append({
+                                            label: "",
+                                            description: "",
+                                            type: location === 'footer' && itemLabel === 'Navigation' ? 'custom' : 'reference',
+                                            children: []
+                                        })
+                                        setIsOpen(true)
+                                    }}
+                                    className="h-8 text-[11px] gap-1 hover:bg-primary/10 hover:text-primary"
+                                >
+                                    <Plus className="h-3.5 w-3.5" /> Sub-link
+                                </Button>
+                            )}
                             <div className="h-6 w-px bg-border mx-1" />
                         </div>
                     )}
@@ -240,7 +246,7 @@ export function MenuItemEditor({
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        <SelectItem value="reference">Reference (Page/Service)</SelectItem>
+                                                        <SelectItem value="reference">Reference (Services)</SelectItem>
                                                         <SelectItem value="custom">Custom URL</SelectItem>
                                                     </SelectContent>
                                                 </Select>
@@ -282,14 +288,6 @@ export function MenuItemEditor({
                                                                 ))}
                                                             </>
                                                         )}
-                                                        {linkableContent.pages.length > 0 && (
-                                                            <>
-                                                                <div className="px-2 py-1.5 text-[10px] font-bold text-primary/60 uppercase tracking-widest bg-primary/5 rounded my-1">Pages</div>
-                                                                {linkableContent.pages.map(p => (
-                                                                    <SelectItem key={p._id} value={p._id} className="pl-6 text-xs">{p.title}</SelectItem>
-                                                                ))}
-                                                            </>
-                                                        )}
                                                     </SelectContent>
                                                 </Select>
                                                 <FormMessage />
@@ -297,12 +295,20 @@ export function MenuItemEditor({
                                         )}
                                     />
                                 ) : (
-                                    <FormInput
-                                        control={control}
-                                        name={`${fieldPath}.url`}
-                                        label="External or Relative URL"
-                                        compact
-                                    />
+                                    <div className="space-y-4">
+                                        <FormInput
+                                            control={control}
+                                            name={`${fieldPath}.url`}
+                                            label="External or Relative URL"
+                                            compact
+                                        />
+                                        <FormInput
+                                            control={control}
+                                            name={`${fieldPath}.slug`}
+                                            label="Internal Path/Slug"
+                                            compact
+                                        />
+                                    </div>
                                 )
                             )}
 
@@ -314,63 +320,115 @@ export function MenuItemEditor({
                         </div>
                     </div>
 
-                    <div className="space-y-4 pt-4 border-t">
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                            <h5 className="text-[10px] font-bold uppercase tracking-widest text-primary/60 flex items-center gap-2">
-                                <Hash className="h-3 w-3" /> Sub-menu Structure
-                            </h5>
+                    {(fields.length > 0 || (depth === 0 && (itemLabel === 'Services' || (location === 'footer' && (itemLabel === 'Navigation' || itemLabel === 'Services'))))) && (
+                        <div className="space-y-4 pt-4 border-t">
+                            {depth === 0 && (
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    {(itemLabel === 'Services') && (
+                                        <>
+                                            <h5 className="text-[10px] font-bold uppercase tracking-widest text-primary/60 flex items-center gap-2">
+                                                <Hash className="h-3 w-3" /> Services Sub-links
+                                            </h5>
 
-                            <div className="flex flex-wrap items-center gap-1.5">
-                                <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mr-1">Quick Add:</span>
-                                {linkableContent.pages.filter(p => ["Home", "About", "Services", "Portfolio", "Contact"].includes(p.title)).map(p => (
-                                    <Button
-                                        key={p._id}
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        disabled={usedReferenceIds.has(p._id)}
-                                        className="h-6 text-[9px] px-2 rounded-full border-primary/10 hover:border-primary/30 hover:bg-accent/5 hover:text-accent disabled:opacity-30 disabled:grayscale transition-all"
-                                        onClick={() => append({
-                                            label: p.title,
-                                            type: "reference",
-                                            reference: {
-                                                _type: "reference",
-                                                _ref: p._id
-                                            },
-                                            children: []
-                                        })}
-                                    >
-                                        <Plus className="h-2.5 w-2.5 mr-1" /> {p.title}
-                                    </Button>
-                                ))}
-                            </div>
+                                            <div className="flex flex-wrap items-center gap-1.5">
+                                                <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mr-1">Quick Add:</span>
+                                                {linkableContent.services.slice(0, 5).map(s => (
+                                                    <Button
+                                                        key={s._id}
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        disabled={usedReferenceIds.has(s._id)}
+                                                        className="h-6 text-[9px] px-2 rounded-full border-primary/10 hover:border-primary/30 hover:bg-accent/5 hover:text-accent disabled:opacity-30 disabled:grayscale transition-all"
+                                                        onClick={() => append({
+                                                            label: s.title,
+                                                            type: "reference",
+                                                            reference: {
+                                                                _type: "reference",
+                                                                _ref: s._id
+                                                            },
+                                                            children: []
+                                                        })}
+                                                    >
+                                                        <Plus className="h-2.5 w-2.5 mr-1" /> {s.title}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+
+                                    {(location === 'footer' && itemLabel === 'Navigation') && (
+                                        <>
+                                            <h5 className="text-[10px] font-bold uppercase tracking-widest text-primary/60 flex items-center gap-2">
+                                                <Hash className="h-3 w-3" /> Navigation Links
+                                            </h5>
+
+                                            <div className="flex flex-wrap items-center gap-1.5">
+                                                <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mr-1">Quick Add:</span>
+                                                {[
+                                                    { title: "Home", slug: "/" },
+                                                    { title: "About", slug: "/about" },
+                                                    { title: "Services", slug: "/services" },
+                                                    { title: "Portfolio", slug: "/portfolio" },
+                                                    { title: "Contact", slug: "/contact" }
+                                                ].map(p => (
+                                                    <Button
+                                                        key={p.slug}
+                                                        type="button"
+                                                        variant="outline"
+                                                        size="sm"
+                                                        disabled={usedSlugs.has(p.slug)}
+                                                        className="h-6 text-[9px] px-2 rounded-full border-primary/10 hover:border-primary/30 hover:bg-accent/5 hover:text-accent disabled:opacity-30 disabled:grayscale transition-all"
+                                                        onClick={() => append({
+                                                            label: p.title,
+                                                            type: "custom",
+                                                            slug: p.slug,
+                                                            children: []
+                                                        })}
+                                                    >
+                                                        <Plus className="h-2.5 w-2.5 mr-1" /> {p.title}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+
+                            {fields.length > 0 ? (
+                                <div className="space-y-3">
+                                    {fields.map((child, childIndex) => (
+                                        <MenuItemEditor
+                                            key={child.id}
+                                            control={control}
+                                            name={`${fieldPath}.children`}
+                                            index={childIndex}
+                                            remove={removeChild}
+                                            move={moveChild}
+                                            total={fields.length}
+                                            depth={depth + 1}
+                                            linkableContent={linkableContent}
+                                            setValue={setValue}
+                                            errors={errors?.[index]?.children}
+                                            location={location}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                (depth === 0 && (itemLabel === 'Services' || (location === 'footer' && (itemLabel === 'Navigation' || itemLabel === 'Services')))) && (
+                                    <div className="py-8 border border-dashed rounded-lg bg-muted/20 text-center">
+                                        <p className="text-[11px] text-muted-foreground italic">
+                                            {itemLabel === 'Services'
+                                                ? "No service sub-links yet. Use Quick Add or the Sub-link button to add services."
+                                                : itemLabel === 'Navigation'
+                                                    ? "No navigation links yet. Use Quick Add or the Sub-link button to add pages."
+                                                    : "No sub-links yet. Use the Sub-link button to add items."}
+                                        </p>
+                                    </div>
+                                )
+                            )}
                         </div>
-
-                        {fields.length > 0 ? (
-                            <div className="space-y-3">
-                                {fields.map((child, childIndex) => (
-                                    <MenuItemEditor
-                                        key={child.id}
-                                        control={control}
-                                        name={`${fieldPath}.children`}
-                                        index={childIndex}
-                                        remove={removeChild}
-                                        move={moveChild}
-                                        total={fields.length}
-                                        depth={depth + 1}
-                                        linkableContent={linkableContent}
-                                        setValue={setValue}
-                                        errors={errors?.[index]?.children}
-                                        location={location}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="py-8 border border-dashed rounded-lg bg-muted/20 text-center">
-                                <p className="text-[11px] text-muted-foreground italic">No sub-links yet. Use Quick Add or the Sub-link button to add items.</p>
-                            </div>
-                        )}
-                    </div>
+                    )}
                 </CardContent>
             )}
         </Card>

@@ -129,17 +129,9 @@ export async function getLinkableContent() {
             sanityFetch({ query: servicesQuery })
         ])
 
-        const pages = [
-            { _id: 'landingPageContent', _type: 'landingPageContent', title: 'Home' },
-            { _id: 'aboutPageContent', _type: 'aboutPageContent', title: 'About' },
-            { _id: 'servicesPageContent', _type: 'servicesPageContent', title: 'Services' },
-            { _id: 'portfolioPageContent', _type: 'portfolioPageContent', title: 'Portfolio' },
-            { _id: 'contactPageContent', _type: 'contactPageContent', title: 'Contact' }
-        ]
-
         return {
             services: services.data || [],
-            pages: pages
+            pages: []
         }
     } catch (error) {
         console.error("Failed to fetch linkable content:", error)

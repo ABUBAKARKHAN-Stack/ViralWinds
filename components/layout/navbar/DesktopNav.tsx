@@ -40,7 +40,7 @@ const DesktopNav: FC<Props> = ({
 
     const { settings } = useSiteSettings()
 
-    const menuItems = settings?.headerMenu?.items as any[]
+    const menuItems = (settings?.headerMenu?.items || []) as any[]
 
 
     return (
@@ -69,7 +69,7 @@ const DesktopNav: FC<Props> = ({
                         {/* Center nav links */}
                         <div className="hidden lg:flex items-center gap-1">
                             {menuItems.map((item, index) => {
-                                const path = item.type === 'custom' && item.url?.startsWith('/') ? item.url : resolveUrl(item)
+                                const path = resolveUrl(item)
                                 const hasChildren = item.children && item.children.length > 0
 
                                 return (
@@ -136,9 +136,9 @@ const DesktopNav: FC<Props> = ({
                                                                                     <span className="block text-[10px] text-muted-foreground mt-0.5">
                                                                                         {child.description}
                                                                                     </span>
-                                                                                ) : child.reference?.items && (
+                                                                                ) : (child.reference as any)?.items && (
                                                                                     <span className="block text-[10px] text-muted-foreground mt-0.5">
-                                                                                        {child.reference.items.slice(0, 2).map((item: any) => item).join(', ')}
+                                                                                        {(child.reference as any).items.slice(0, 2).map((item: any) => item).join(', ')}
                                                                                     </span>
                                                                                 )}
                                                                             </Link>

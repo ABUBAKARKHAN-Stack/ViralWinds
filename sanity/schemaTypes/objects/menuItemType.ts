@@ -37,13 +37,7 @@ export const menuItemType = defineType({
             title: 'Reference',
             type: 'reference',
             to: [
-                { type: 'service' },
-                { type: 'page' },
-                { type: 'landingPageContent' },
-                { type: 'aboutPageContent' },
-                { type: 'servicesPageContent' },
-                { type: 'portfolioPageContent' },
-                { type: 'contactPageContent' }
+                { type: 'service' }
             ],
             hidden: ({ parent }) => parent?.type !== 'reference'
         }),
@@ -52,6 +46,13 @@ export const menuItemType = defineType({
             title: 'Custom URL',
             type: 'localizedString',
             description: 'Enter a full URL or a relative path (e.g. /about)',
+            hidden: ({ parent }) => parent?.type !== 'custom'
+        }),
+        defineField({
+            name: 'slug',
+            title: 'Path/Slug',
+            type: 'string',
+            description: 'Internal routing path (e.g. /about)',
             hidden: ({ parent }) => parent?.type !== 'custom'
         }),
         defineField({

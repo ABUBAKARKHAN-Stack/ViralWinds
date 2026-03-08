@@ -55,21 +55,25 @@ export function MenuForm({ initialData, linkableContent }: MenuFormProps) {
         name: "items"
     })
 
-    const usedReferenceIds = useMemo(() => {
-        const ids = new Set<string>()
-        const extractIds = (items: any[]) => {
+    const { usedReferenceIds, usedSlugs } = useMemo(() => {
+        const refs = new Set<string>()
+        const slugs = new Set<string>()
+        const extractData = (items: any[]) => {
             if (!items) return
             items.forEach(item => {
                 if (item.type === 'reference' && item.reference?._ref) {
-                    ids.add(item.reference._ref)
+                    refs.add(item.reference._ref)
+                }
+                if (item.type === 'custom' && item.slug) {
+                    slugs.add(item.slug)
                 }
                 if (item.children && item.children.length > 0) {
-                    extractIds(item.children)
+                    extractData(item.children)
                 }
             })
         }
-        extractIds(watchedItems)
-        return ids
+        extractData(watchedItems)
+        return { usedReferenceIds: refs, usedSlugs: slugs }
     }, [watchedItems])
 
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -125,7 +129,7 @@ export function MenuForm({ initialData, linkableContent }: MenuFormProps) {
                     </div>
                 </div>
 
-                <div className="grid  gap-8">
+                <div className="grid gap-8">
                     <div className="space-y-6">
                         <Card>
                             <CardHeader>
@@ -192,74 +196,126 @@ export function MenuForm({ initialData, linkableContent }: MenuFormProps) {
                     </div>
 
                     <div className=" space-y-6">
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div className="flex flex-col  justify-between gap-4">
                             <h2 className="text-xl font-bold flex items-center gap-2">
                                 Menu Items
                                 <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">{fields.length}</span>
                             </h2>
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground mr-1">Quick Add:</span>
-                                {linkableContent.pages.filter(p => ["Home", "About", "Services", "Portfolio", "Blog", "Contact"].includes(p.title)).map(p => (
-                                    <Button
-                                        key={p._id}
-                                        type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        disabled={usedReferenceIds.has(p._id)}
-                                        className="h-7 text-[10px] px-2 rounded-full border-primary/20 hover:border-primary/20 hover:bg-accent/5 hover:text-accent disabled:opacity-30 disabled:grayscale transition-all"
-                                        onClick={() => append({
-                                            label: p.title,
-                                            type: "reference",
-                                            reference: {
-                                                _type: "reference",
-                                                _ref: p._id
-                                            },
-                                            children: []
-                                        })}
-                                    >
-                                        <Plus className="h-3 w-3 mr-1" /> {p.title}
-                                    </Button>
-                                ))}
-                                <div className="h-6 w-px bg-border mx-2 hidden sm:block" />
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    onClick={() => append({
-                                        label: "",
-                                        description: "",
-                                        type: "reference",
-                                        children: []
-                                    })}
-                                    className="bg-primary hover:bg-primary/90"
-                                >
-                                    <Plus className="h-4 w-4 mr-2" /> Add Top-level Item
-                                </Button>
-                            </div>
-                        </div>
+                            <div className="flex flex-col gap-4">
+                                {form.watch("location") !== 'footer' && (
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground mr-1">Quick Add Pages:</span>
+                                        {[
+                                            { title: "Home", slug: "/" },
+                                            { title: "About", slug: "/about" },
+                                            { title: "Services", slug: "/services" },
+                                            { title: "Portfolio", slug: "/portfolio" },
+                                            { title: "Contact", slug: "/contact" }
+                                        ].map(p => (
+                                            <Button
+                                                key={p.slug}
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                disabled={usedSlugs.has(p.slug)}
+                                                className="h-7 text-[10px] px-2 rounded-full border-primary/20 hover:border-primary/20 hover:bg-accent/5 hover:text-accent disabled:opacity-30 disabled:grayscale transition-all"
+                                                onClick={() => append({
+                                                    label: p.title,
+                                                    type: "custom",
+                                                    slug: p.slug,
+                                                    children: []
+                                                })}
+                                            >
+                                                <Plus className="h-3 w-3 mr-1" /> {p.title}
+                                            </Button>
+                                        ))}
+                                    </div>
+                                )}
 
-                        <div className="space-y-4">
-                            {fields.map((field, index) => (
-                                <MenuItemEditor
-                                    key={field.id}
-                                    control={form.control}
-                                    name="items"
-                                    index={index}
-                                    remove={remove}
-                                    move={move}
-                                    total={fields.length}
-                                    linkableContent={linkableContent}
-                                    setValue={form.setValue}
-                                    errors={form.formState.errors.items}
-                                    location={form.watch("location")}
-                                />
-                            ))}
-                            <div ref={bottomRef} />
+                                <div className="flex items-center justify-between gap-4 pt-2 border-t border-dashed">
+                                    <p className="text-[10px] text-muted-foreground italic max-w-sm">
+                                        {form.watch("location") === 'footer'
+                                            ? "Footer layout is restricted to 2 columns: 'Navigation' and 'Services'."
+                                            : "Add items to your navigation. Only 'Services' can have sub-links in the header."}
+                                    </p>
 
-                            {fields.length === 0 && (
-                                <div className="text-center py-20 border-2 border-dashed rounded-xl bg-muted/30">
-                                    <p className="text-muted-foreground italic">No items yet. Click "Add Top-level Item" to start building your menu.</p>
+                                    <div className="flex items-center gap-2">
+                                        {form.watch("location") === 'footer' ? (
+                                            <>
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    variant="outline"
+                                                    disabled={fields.some(f => f.label === 'Navigation') || fields.length >= 2}
+                                                    onClick={() => append({
+                                                        label: "Navigation",
+                                                        type: "custom",
+                                                        slug: "#",
+                                                        children: []
+                                                    })}
+                                                    className="border-primary/20"
+                                                >
+                                                    <Plus className="h-4 w-4 mr-2" /> Add Navigation Column
+                                                </Button>
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    variant="outline"
+                                                    disabled={fields.some(f => f.label === 'Services') || fields.length >= 2}
+                                                    onClick={() => append({
+                                                        label: "Services",
+                                                        type: "custom",
+                                                        slug: "/services",
+                                                        children: []
+                                                    })}
+                                                    className="border-primary/20"
+                                                >
+                                                    <Plus className="h-4 w-4 mr-2" /> Add Services Column
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <Button
+                                                type="button"
+                                                size="sm"
+                                                onClick={() => append({
+                                                    label: "",
+                                                    description: "",
+                                                    type: "reference",
+                                                    children: []
+                                                })}
+                                                className="bg-primary hover:bg-primary/90"
+                                            >
+                                                <Plus className="h-4 w-4 mr-2" /> Add Top-level Item
+                                            </Button>
+                                        )}
+                                    </div>
                                 </div>
-                            )}
+                            </div>
+
+                            <div className="space-y-4">
+                                {fields.map((field, index) => (
+                                    <MenuItemEditor
+                                        key={field.id}
+                                        control={form.control}
+                                        name="items"
+                                        index={index}
+                                        remove={remove}
+                                        move={move}
+                                        total={fields.length}
+                                        linkableContent={linkableContent}
+                                        setValue={form.setValue}
+                                        errors={form.formState.errors.items}
+                                        location={form.watch("location")}
+                                    />
+                                ))}
+                                <div ref={bottomRef} />
+
+                                {fields.length === 0 && (
+                                    <div className="text-center py-20 border-2 border-dashed rounded-xl bg-muted/30">
+                                        <p className="text-muted-foreground italic">No items yet. Click "Add Top-level Item" to start building your menu.</p>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

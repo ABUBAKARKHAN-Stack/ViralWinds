@@ -1,8 +1,8 @@
 import ContactClient from "./ContactClient";
-import { Metadata } from "next";
-import { getContactPageContent } from "@/helpers/contact-page-content";
-import { PageWrapper } from "@/components/layout";
 import { JsonLd } from "@/components/SEO/JsonLd";
+import { DataMissing } from "@/components/ui/DataMissing";
+import { getContactPageContent } from "@/helpers/contact-page-content";
+import { Metadata } from "next";
 
 export const generateMetadata = async (): Promise<Metadata> => {
 
@@ -17,10 +17,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
     }
 
     //* Base Metadata
-    const title = pageContent?.seo?.metaTitle;
-    const description = pageContent.seo.metaDescription;
-    const focusKeyword = pageContent.seo.focusKeyword;
-    const relatedKeywords = pageContent.seo.relatedKeywords;
+    const title = pageContent?.seo?.metaTitle || "Contact Us";
+    const description = pageContent?.seo?.metaDescription || "";
+    const focusKeyword = pageContent?.seo?.focusKeyword;
+    const relatedKeywords = pageContent?.seo?.relatedKeywords;
 
 
     return {
@@ -38,11 +38,20 @@ export const generateMetadata = async (): Promise<Metadata> => {
 }
 
 export default async function ContactPage() {
-    const pageData = await getContactPageContent();    
+    const pageData = await getContactPageContent();
+
+    if (!pageData) {
+        return (
+            <DataMissing
+                title="Contact Page Under Maintenance"
+                description="We're currently updating our contact channels. Please try again in a few minutes."
+            />
+        )
+    }
 
     return (
         <>
-            <JsonLd schemas={pageData.seo.schemas} />
+            <JsonLd schemas={pageData?.seo?.schemas} />
             <ContactClient
                 pageData={pageData}
             />

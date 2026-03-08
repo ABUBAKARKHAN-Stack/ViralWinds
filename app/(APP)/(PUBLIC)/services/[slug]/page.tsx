@@ -14,7 +14,6 @@ import {
     IndustriesSection,
     AreasWeServeSection,
     IntroSection,
-    ServiceBlogs,
 } from "@/components/sections/services/service-details/";
 import { APP_NAME } from "@/constants/app.constants";
 import {
@@ -55,20 +54,20 @@ export async function generateMetadata(
     }
 
     //* Base Metadata
-    const title = service.seo.metaTitle;
+    const title = service?.seo?.metaTitle || service?.title || "Service";
     const description =
-        service.seo.metaDescription;
-    const focusKeyword = service.seo.focusKeyword;
-    const relatedKeywords = service.seo.relatedKeywords;
+        service?.seo?.metaDescription || "";
+    const focusKeyword = service?.seo?.focusKeyword;
+    const relatedKeywords = service?.seo?.relatedKeywords;
 
     //* Open Graph Metadata
-    const imageUrl = urlFor(service.heroImage.source)
+    const imageUrl = service?.heroImage?.source ? urlFor(service.heroImage.source)
         .quality(85)
         .width(1200)
         .fit("clip")
         .format("jpg")
-        .url();
-    const imageAlt = service.heroImage.alt;
+        .url() : "";
+    const imageAlt = service?.heroImage?.alt || title;
 
     //* URL
     const serviceUrl = `/services/${slug}`;
@@ -129,7 +128,7 @@ const ServiceDetailPage = async ({
 
     return (
         <PageWrapper>
-            <JsonLd schemas={service.seo?.schemas} />
+            <JsonLd schemas={service?.seo?.schemas} />
 
             {/* Service Page Hero Section */}
 
@@ -218,13 +217,6 @@ const ServiceDetailPage = async ({
             {/* Service CTA Section */}
             <CTA
                 cta={cta}
-            />
-
-            <ServiceBlogs
-                blogs={service.blogs}
-                blogsSectionHeader={service.blogsSection}
-                blogsButtonText={service.blogsButtonText}
-                blogsButtonUrl={service.blogsButtonUrl}
             />
 
             {/* Other Services Section */}

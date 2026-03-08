@@ -17,10 +17,11 @@ import {
     OurApproach,
 
 } from "@/components/sections/shared/";
-import { AboutPageContentProvider } from '@/context/AboutPageContentContext';
-import { getAboutPageContent } from '@/helpers/about-page-content.helpers';
-import { Metadata } from 'next';
-import { JsonLd } from '@/components/SEO/JsonLd';
+import { AboutPageContentProvider } from "@/context/AboutPageContentContext"
+import { getAboutPageContent } from "@/helpers/about-page-content.helpers"
+import { Metadata } from "next"
+import { JsonLd } from "@/components/SEO/JsonLd"
+import { DataMissing } from "@/components/ui/DataMissing"
 
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -36,10 +37,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
     }
 
     //* Base Metadata
-    const title = pageContent?.seo?.metaTitle;
-    const description = pageContent.seo.metaDescription;
-    const focusKeyword = pageContent.seo.focusKeyword;
-    const relatedKeywords = pageContent.seo.relatedKeywords;
+    const title = pageContent?.seo?.metaTitle || "About Us";
+    const description = pageContent?.seo?.metaDescription || "";
+    const focusKeyword = pageContent?.seo?.focusKeyword;
+    const relatedKeywords = pageContent?.seo?.relatedKeywords;
 
 
     return {
@@ -62,14 +63,19 @@ const About = async () => {
     const pageContent = await getAboutPageContent()
 
     if (!pageContent) {
-        throw new Error("About page content not found");
+        return (
+            <DataMissing
+                title="About Us Page Coming Soon"
+                description="Our story is currently being written. Stay tuned to learn more about our mission and vision."
+            />
+        )
     }
 
 
     return (
         <AboutPageContentProvider aboutPageContent={pageContent}>
             <PageWrapper>
-                <JsonLd schemas={pageContent.seo.schemas} />
+                <JsonLd schemas={pageContent?.seo?.schemas} />
                 <AboutPageHero />
                 <IntroSection />
                 <MissionVisionSection />

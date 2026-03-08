@@ -24,6 +24,7 @@ import { JsonLd } from "@/components/SEO/JsonLd";
 import { LandingPageContentProvider } from "@/context/LandingPageContentContext";
 import { getLandingPageContent } from "@/helpers/landing-page-content.helpers";
 import { Metadata } from "next";
+import { DataMissing } from "@/components/ui/DataMissing";
 
 export const generateMetadata = async (): Promise<Metadata> => {
 
@@ -38,10 +39,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 
   //* Base Metadata
-  const title = pageContent?.seo?.metaTitle;
-  const description = pageContent.seo.metaDescription;
-  const focusKeyword = pageContent.seo.focusKeyword;
-  const relatedKeywords = pageContent.seo.relatedKeywords;
+  const title = pageContent?.seo?.metaTitle || "Home";
+  const description = pageContent?.seo?.metaDescription || "";
+  const focusKeyword = pageContent?.seo?.focusKeyword;
+  const relatedKeywords = pageContent?.seo?.relatedKeywords;
 
 
   return {
@@ -62,14 +63,19 @@ const HomePage = async () => {
   const pageContent = await getLandingPageContent();
 
   if (!pageContent) {
-    throw new Error("Home page content not found");
+    return (
+      <DataMissing
+        title="Home Page Under Construction"
+        description="We're currently setting up our home page to bring you the best experience. Please explore our services in the meantime."
+      />
+    )
   }
 
   return (
     <LandingPageContentProvider landingPageContent={pageContent}>
       <PageWrapper>
         {/* SEO */}
-        <JsonLd schemas={pageContent.seo.schemas} />
+        <JsonLd schemas={pageContent?.seo?.schemas} />
 
         {/* Hero */}
         <Hero />

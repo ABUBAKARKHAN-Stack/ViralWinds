@@ -7,7 +7,7 @@ export const resolveUrl = (item: any) => {
 
     // 1. Handle Custom URLs
     if (item.type === 'custom') {
-        return item.url || '#';
+        return item.slug || item.url || '#';
     }
 
     // 2. Handle References

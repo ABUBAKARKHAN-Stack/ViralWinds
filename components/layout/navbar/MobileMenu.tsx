@@ -17,9 +17,9 @@ type Props = {
 export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
     const { settings } = useSiteSettings()
 
-    const menuItems = settings?.headerMenu?.items as any[]
+    const menuItems = (settings?.headerMenu?.items || []) as any[]
 
-    const email = settings?.contact.filter(item => item.label.toLowerCase().includes('email'))[0]?.value
+    const email = settings?.contact?.filter(item => item.label.toLowerCase().includes('email'))[0]?.value
 
     return (
         <AnimatePresence>
@@ -40,7 +40,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                     >
                         <MagneticButton strength={0.2}>
                             <Link href="/" className="relative z-50">
-                              
+
                                 <Logo />
                             </Link>
                         </MagneticButton>
@@ -61,7 +61,7 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                     {/* Navigation */}
                     <nav className="flex flex-col items-center gap-6">
                         {menuItems.map((item, i) => {
-                            const path = item.type === 'custom' && item.url?.startsWith('/') ? item.url : resolveUrl(item)
+                            const path = resolveUrl(item)
                             const hasChildren = item.children && item.children.length > 0
 
                             return (
