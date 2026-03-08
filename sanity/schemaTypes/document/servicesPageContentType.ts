@@ -221,40 +221,7 @@ export const servicesPageContentType = defineType({
             ]
         }),
 
-        // SERVICE BLOGS SECTION
-        defineField({
-            name: 'serviceBlogs',
-            title: 'Service Blogs Section',
-            type: 'object',
-            fields: [
-                defineField({
-                    name: 'sectionHeading',
-                    title: 'Section Heading',
-                    type: 'sectionHeading',
-                    validation: Rule => Rule.required()
-                }),
-                defineField({
-                    name: 'blogs',
-                    title: 'Blog Posts',
-                    type: 'array',
-                    description: 'Select blog posts to display (filtered to show only posts with service reference)',
-                    of: [{ type: 'reference', to: [{ type: 'post' }] }],
-                    validation: Rule => Rule.max(8)
-                }),
-                defineField({
-                    name: 'buttonText',
-                    title: 'CTA Button Text',
-                    type: 'localizedString',
-                    description: 'Text for the call-to-action button'
-                }),
-                defineField({
-                    name: 'buttonUrl',
-                    title: 'CTA Button URL',
-                    type: 'string',
-                    description: 'URL for the CTA button (e.g., /blog or https://example.com)'
-                })
-            ]
-        }),
+
 
         // SERVICES LIST SECTION
         defineField({
@@ -276,7 +243,7 @@ export const servicesPageContentType = defineType({
                     of: [{ type: 'reference', to: [{ type: 'service' }] }],
                     validation: Rule => Rule.max(12)
                 }),
-               
+
             ]
         }),
 

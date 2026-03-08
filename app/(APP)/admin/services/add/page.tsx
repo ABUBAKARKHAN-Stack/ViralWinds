@@ -1,10 +1,8 @@
 import { ServiceForm } from "@/components/admin/services/ServiceForm"
-import { getDashboardPosts } from "@/app/actions/blog"
 import { getDashboardServices } from "@/app/actions/service"
 
 export default async function AddServicePage() {
     const serviceId = crypto.randomUUID()
-    const blogs = await getDashboardPosts()
     const services = await getDashboardServices()
 
     return (
@@ -17,7 +15,6 @@ export default async function AddServicePage() {
             </div>
             <ServiceForm
                 serviceId={serviceId}
-                availableBlogs={blogs}
                 availableServices={services}
             />
         </div>

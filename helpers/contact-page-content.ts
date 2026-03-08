@@ -6,9 +6,6 @@ export async function getContactPageContent() {
             ...,
             contactForm {
                 ...,
-                "form": formReference-> {
-                    ...
-                }
             },
             faqs {
                 ...
@@ -17,6 +14,7 @@ export async function getContactPageContent() {
                 ...
             }
         }`
+
         const { data } = await sanityFetch({ query })
         return data
     } catch (error) {

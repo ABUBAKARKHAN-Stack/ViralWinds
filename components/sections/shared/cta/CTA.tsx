@@ -8,7 +8,8 @@ import { useRef } from "react";
 import MagneticButton from "@/components/MagneticButton";
 import { ContainerLayout } from "@/components/layout";
 import { Controller, useForm } from "react-hook-form";
-import { ContactFormType } from "@/schemas/contact.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ContactFormType, contactSchema } from "@/schemas/contact.schema";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 import DecorativeElements from "./DecorativeElements";
@@ -16,9 +17,8 @@ import AnimatedBadge from "@/components/ui/animated-badge";
 import { Spinner } from "@/components/ui/spinner";
 import { useGlobalContent } from "@/context/GlobalContentContext";
 import { submitContactForm } from "@/app/actions/submitContactForm";
-import { getForm, submitDynamicForm } from "@/app/actions/formActions";
 import { successToast, errorToast } from "@/lib/toastNotifications";
-import { useState, useEffect } from "react";
+import { } from "react";
 import { LinkProcessor } from "@/components/ui/LinkProcessor";
 
 const CTA = () => {
@@ -31,83 +31,37 @@ const CTA = () => {
 
   const { globalContent } = useGlobalContent();
   const ctaData = globalContent?.cta;
-  const [dynamicForm, setDynamicForm] = useState<any>(null);
-  const [isLoadingForm, setIsLoadingForm] = useState(false);
 
-  // Fetch dynamic form if formId is provided
-  useEffect(() => {
-    async function fetchForm() {
-      if (ctaData?.formId) {
-        setIsLoadingForm(true);
-        try {
-          const result = await getForm(ctaData.formId);
-          if (result.success && result.data) {
-            setDynamicForm(result.data);
-          }
-        } catch (error) {
-          console.error("Failed to load form:", error);
-        } finally {
-          setIsLoadingForm(false);
-        }
-      } else {
-        setDynamicForm(null);
-      }
+  const form = useForm<ContactFormType>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: ""
     }
-    fetchForm();
-  }, [ctaData?.formId]);
-
-  const form = useForm({
-    // Dynamic fields handle their own validation via rules in Controller
   })
-
-  // Initialize form defaults when dynamicForm is loaded or cleared
-  useEffect(() => {
-    if (dynamicForm) {
-      const defaults: Record<string, any> = {};
-      dynamicForm.fields.forEach((f: any) => {
-        defaults[f.fieldName] = "";
-      });
-      form.reset(defaults);
-    } else {
-      form.reset({
-        name: "",
-        email: "",
-        subject: "",
-        message: ""
-      });
-    }
-  }, [dynamicForm, form]);
 
   const {
     isSubmitting,
   } = form.formState
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: ContactFormType) => {
     try {
-      if (dynamicForm) {
-        const result = await submitDynamicForm(dynamicForm._id, data);
+      const result = await submitContactForm(data);
 
-        if (result.success) {
-          successToast(result.message || "Form submitted successfully!");
-          form.reset();
-        } else {
-          errorToast(result.error || "Failed to submit form");
-        }
+      if (result.success) {
+        successToast(result.message);
+        form.reset();
       } else {
-        // Use default contact form submission
-        const result = await submitContactForm(data as ContactFormType);
-
-        if (result.success) {
-          successToast(result.message);
-          form.reset();
-        } else {
-          errorToast(result.message);
-        }
+        errorToast(result.message);
       }
     } catch (error) {
+      console.error(error);
       errorToast('An unexpected error occurred. Please try again.');
     }
   }
+
 
   const fieldBaseClass = "bg-foreground/5! border-foreground/10! text-foreground/80! placeholder:text-foreground/40! focus:border-accent! h-12 rounded-xl"
 
@@ -179,169 +133,122 @@ const CTA = () => {
                 <span className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
                   <Send className="w-5 h-5 text-accent-foreground" />
                 </span>
-               Send Us Message
+                Send Us Message
               </h3>
 
-              {isLoadingForm ? (
-                <div className="flex justify-center py-12">
-                  <Spinner className="size-8 text-accent" />
-                </div>
-              ) : (
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <FieldGroup>
-                    {dynamicForm ? (
-                      <div className="grid gap-4">
-                        {dynamicForm.fields.map((field: any) => (
-                          <Controller
-                            key={field._key || field.fieldName}
-                            name={field.fieldName}
-                            control={form.control}
-                            rules={{ required: field.required }}
-                            render={({ field: rField, fieldState }) => (
-                              <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor={field.fieldName}>
-                                  {field.label} {field.required && "*"}
-                                </FieldLabel>
-                                {field.fieldType === 'textarea' ? (
-                                  <Textarea
-                                    {...rField}
-                                    id={field.fieldName}
-                                    placeholder={field.placeholder}
-                                    className={cn(fieldBaseClass, "resize-none")}
-                                  />
-                                ) : (
-                                  <Input
-                                    {...rField}
-                                    id={field.fieldName}
-                                    type={field.fieldType === 'email' ? 'email' : 'text'}
-                                    placeholder={field.placeholder}
-                                    className={fieldBaseClass}
-                                    autoComplete="off"
-                                  />
-                                )}
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </Field>
-                            )}
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FieldGroup>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <Controller
+                      name="name"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor="name">
+                            Name *
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id="name"
+                            placeholder="Enter your name"
+                            className={fieldBaseClass}
+                            autoComplete="off"
                           />
-                        ))}
-                      </div>
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                    <Controller
+                      name="email"
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <FieldLabel htmlFor="email">
+                            Email *
+                          </FieldLabel>
+                          <Input
+                            {...field}
+                            id="email"
+                            placeholder="Enter your email"
+                            className={fieldBaseClass}
+                            autoComplete="off"
+                          />
+                          {fieldState.invalid && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </Field>
+                      )}
+                    />
+                  </div>
+
+                  <Controller
+                    name="phone"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="phone">
+                          Phone *
+                        </FieldLabel>
+                        <Input
+                          {...field}
+                          id="phone"
+                          placeholder="Enter your phone number"
+                          className={fieldBaseClass}
+                          autoComplete="off"
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+
+                  <Controller
+                    name="message"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor="message">
+                          Message *
+                        </FieldLabel>
+                        <Textarea
+                          {...field}
+                          id="message"
+                          placeholder="Tell us about your project..."
+                          className={cn(
+                            fieldBaseClass,
+                            "resize-none"
+                          )}
+                        />
+                        {fieldState.invalid && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                </FieldGroup>
+
+                <MagneticButton strength={0.05} className="w-full">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90 rounded-xl font-semibold text-sm group"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <Spinner className="size-4.5!" />
                     ) : (
                       <>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <Controller
-                            name="name"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                              <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor="name">
-                                  Name *
-                                </FieldLabel>
-                                <Input
-                                  {...field}
-                                  id="name"
-                                  placeholder="Enter your name"
-                                  className={fieldBaseClass}
-                                  autoComplete="off"
-                                />
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </Field>
-                            )}
-                          />
-                          <Controller
-                            name="email"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                              <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor="email">
-                                  Email *
-                                </FieldLabel>
-                                <Input
-                                  {...field}
-                                  id="email"
-                                  placeholder="Enter your email"
-                                  className={fieldBaseClass}
-                                  autoComplete="off"
-                                />
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </Field>
-                            )}
-                          />
-                        </div>
-
-                        <Controller
-                          name="subject"
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <FieldLabel htmlFor="subject">
-                                Subject *
-                              </FieldLabel>
-                              <Input
-                                {...field}
-                                id="subject"
-                                placeholder="Project inquiry"
-                                className={fieldBaseClass}
-                                autoComplete="off"
-                              />
-                              {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                              )}
-                            </Field>
-                          )}
-                        />
-
-                        <Controller
-                          name="message"
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <FieldLabel htmlFor="message">
-                                Message *
-                              </FieldLabel>
-                              <Textarea
-                                {...field}
-                                id="message"
-                                placeholder="Tell us about your project..."
-                                className={cn(
-                                  fieldBaseClass,
-                                  "resize-none"
-                                )}
-                              />
-                              {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                              )}
-                            </Field>
-                          )}
-                        />
+                        {"Start Your Project"}
+                        <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                       </>
                     )}
-                  </FieldGroup>
+                  </Button>
+                </MagneticButton>
+              </form>
 
-                  <MagneticButton strength={0.05} className="w-full">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="w-full h-12 bg-accent text-accent-foreground hover:bg-accent/90 rounded-xl font-semibold text-sm group"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <Spinner className="size-4.5!" />
-                      ) : (
-                        <>
-                          {dynamicForm?.submitButtonText || "Start Your Project"}
-                          <Send className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        </>
-                      )}
-                    </Button>
-                  </MagneticButton>
-                </form>
-              )}
             </div>
           </motion.div>
         </div>

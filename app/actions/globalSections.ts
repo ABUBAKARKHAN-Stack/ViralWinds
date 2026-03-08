@@ -96,10 +96,6 @@ export async function updateGlobalSections(data: GlobalSectionsValues) {
             leadership: validatedFields.leadership,
             cta: {
                 ...validatedFields.cta,
-                formId: validatedFields.cta.formId ? {
-                    _type: 'reference',
-                    _ref: validatedFields.cta.formId
-                } : undefined
             }
         }
 
@@ -170,14 +166,6 @@ export async function saveGlobalSectionsDraft(data: Partial<GlobalSectionsValues
             }))
         }
 
-        // Normalize CTA formId to reference if it's a string
-        if (updateData.cta && typeof updateData.cta.formId === 'string') {
-            updateData.cta.formId = {
-                _type: 'reference',
-                _ref: updateData.cta.formId
-            }
-        }
-
         await adminClient.createOrReplace(updateData)
         return { success: true }
     } catch (error: any) {
@@ -193,10 +181,6 @@ export async function getGlobalSectionsDraft() {
             // Flatten Services references
             if (draft.servicesPreview?.featuredServices) {
                 draft.servicesPreview.featuredServices = draft.servicesPreview.featuredServices.map((ref: any) => ref._ref || ref)
-            }
-            // Flatten CTA form reference
-            if (draft.cta?.formId?._ref) {
-                draft.cta.formId = draft.cta.formId._ref
             }
         }
         return draft

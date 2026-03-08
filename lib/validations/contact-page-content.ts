@@ -8,9 +8,8 @@ export const contactPageContentSchema = z.object({
         description: localizedTextSchema,
     }),
     contactForm: z.object({
-        formHeading: localizedStringSchema.optional(),
-        formDescription: localizedTextSchema.optional(),
-        formReference: z.string().min(1, "Form is required"),
+        formHeading: z.string().min(1, "Heading is required"),
+        formDescription: z.string().min(1, "Description is required"),
     }),
     faqs: z.object({
         sectionHeading: sectionHeadingSchema.optional(),

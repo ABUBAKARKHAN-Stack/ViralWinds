@@ -61,17 +61,11 @@ export async function updateContactPageContent(data: ContactPageContentValues) {
             _type: 'contactPageContent',
             _id: CONTACT_PAGE_CONTENT_ID,
             hero: validatedFields.hero,
-            contactForm: {
-                formHeading: validatedFields.contactForm.formHeading,
-                formDescription: validatedFields.contactForm.formDescription,
-                formReference: validatedFields.contactForm.formReference ? {
-                    _type: 'reference',
-                    _ref: validatedFields.contactForm.formReference
-                } : undefined
-            },
+            contactForm: validatedFields.contactForm,
             faqs: validatedFields.faqs,
             seo: validatedFields.seo
         }
+
 
         await adminClient.createOrReplace(updateData)
         revalidatePath('/admin/contact/page-content')
@@ -91,16 +85,7 @@ export async function saveContactPageDraft(data: Partial<ContactPageContentValue
             _id: `drafts.${CONTACT_PAGE_CONTENT_ID}`,
         }
 
-        // Handle formReference properly in draft
-        if (data.contactForm?.formReference) {
-            updateData.contactForm = {
-                ...data.contactForm,
-                formReference: {
-                    _type: 'reference',
-                    _ref: data.contactForm.formReference
-                }
-            }
-        }
+
 
         await adminClient.createOrReplace(updateData)
         return { success: true }

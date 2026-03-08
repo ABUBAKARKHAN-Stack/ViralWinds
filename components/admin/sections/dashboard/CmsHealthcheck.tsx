@@ -12,7 +12,6 @@ type HealthMetrics = {
     about: boolean;
     servicesPage: boolean;
     portfolioPage: boolean;
-    blogPage: boolean;
     contactPage: boolean;
 
     headerMenu: boolean;
@@ -20,9 +19,7 @@ type HealthMetrics = {
     siteSettings: boolean;
 
     services: boolean;
-    posts: boolean;
     projects: boolean;
-    forms: boolean;
 }
 
 export const CmsHealthcheck = () => {
@@ -37,15 +34,12 @@ export const CmsHealthcheck = () => {
                     { key: "about", query: `defined(*[_type == "aboutPageContent"][0]._id)` },
                     { key: "servicesPage", query: `defined(*[_type == "servicesPageContent"][0]._id)` },
                     { key: "portfolioPage", query: `defined(*[_type == "portfolioPageContent"][0]._id)` },
-                    { key: "blogPage", query: `defined(*[_type == "blogPageContent"][0]._id)` },
                     { key: "contactPage", query: `defined(*[_type == "contactPageContent"][0]._id)` },
                     { key: "headerMenu", query: `defined(*[_type == "menu" && location == "header"][0]._id)` },
                     { key: "footerMenu", query: `defined(*[_type == "menu" && location == "footer"][0]._id)` },
                     { key: "siteSettings", query: `defined(*[_type == "siteSettings"][0]._id)` },
                     { key: "services", query: `defined(*[_type == "service"][0]._id)` },
-                    { key: "posts", query: `defined(*[_type == "post"][0]._id)` },
-                    { key: "projects", query: `defined(*[_type == "project"][0]._id)` },
-                    { key: "forms", query: `defined(*[_type == "form"][0]._id)` }
+                    { key: "projects", query: `defined(*[_type == "project"][0]._id)` }
                 ]
 
                 // Execute all queries concurrently
@@ -124,7 +118,6 @@ export const CmsHealthcheck = () => {
                 { label: "About Page", defined: metrics.about },
                 { label: "Services Page", defined: metrics.servicesPage },
                 { label: "Portfolio Page", defined: metrics.portfolioPage },
-                { label: "Blog Page", defined: metrics.blogPage },
                 { label: "Contact Page", defined: metrics.contactPage }
             ]
         },
@@ -132,9 +125,7 @@ export const CmsHealthcheck = () => {
             title: "Content Collections",
             items: [
                 { label: "Services Items", defined: metrics.services },
-                { label: "Blog Posts", defined: metrics.posts },
                 { label: "Portfolio Projects", defined: metrics.projects },
-                { label: "Contact Forms", defined: metrics.forms }
             ]
         },
         {

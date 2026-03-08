@@ -53,7 +53,6 @@ export const useRoleBasedNavigation = (role: Roles): NavigationGroup[] => {
                         { title: "About Page Content", url: "/admin/about/page-content" },
                         { title: "Services Page Content", url: "/admin/services/page-content" },
                         { title: "Portfolio Page Content", url: "/admin/portfolio/page-content" },
-                        { title: "Blog Page Content", url: "/admin/blogs/page-content" },
                         { title: "Contact Page Content", url: "/admin/contact/page-content" },
                     ]
                 }
@@ -82,27 +81,13 @@ export const useRoleBasedNavigation = (role: Roles): NavigationGroup[] => {
                         { title: "About Page Content", url: "/admin/about/page-content" },
                         { title: "Services Page Content", url: "/admin/services/page-content" },
                         { title: "Portfolio Page Content", url: "/admin/portfolio/page-content" },
-                        { title: "Blog Page Content", url: "/admin/blogs/page-content" },
                         { title: "Contact Page Content", url: "/admin/contact/page-content" },
                     ]
                 },
                 { title: "Services", url: "/admin/services", icon: Briefcase },
-                {
-                    title: "Blogs",
-                    url: "/admin/blogs",
-                    icon: FileText,
-                    isOpenByDefault: true,
-                    subItems: [
-                        { title: "All Blogs", url: "/admin/blogs" },
-                        { title: "Categories", url: "/admin/blogs/categories" },
-                        { title: "Locations", url: "/admin/blogs/locations" },
-                    ]
-                },
                 { title: "Portfolio", url: "/admin/portfolio", icon: Image },
-                { title: "Forms", url: "/admin/forms", icon: Layers },
                 { title: "Global Sections", url: "/admin/global-sections", icon: Layers },
                 { title: "Menus", url: "/admin/menus", icon: MenuIcon },
-                { title: "Contact Submissions", url: "/admin/contact-submissions", icon: Inbox },
             ]
         },
         {
@@ -143,26 +128,12 @@ export const useRoleBasedNavigation = (role: Roles): NavigationGroup[] => {
                         { title: "About Page Content", url: "/admin/about/page-content" },
                         { title: "Services Page Content", url: "/admin/services/page-content" },
                         { title: "Portfolio Page Content", url: "/admin/portfolio/page-content" },
-                        { title: "Blog Page Content", url: "/admin/blogs/page-content" },
                         { title: "Contact Page Content", url: "/admin/contact/page-content" },
                     ]
                 },
                 { title: "Services", url: "/admin/services", icon: Briefcase },
-                {
-                    title: "Blogs",
-                    url: "/admin/blogs",
-                    icon: FileText,
-                    isOpenByDefault: true,
-                    subItems: [
-                        { title: "All Blogs", url: "/admin/blogs" },
-                        { title: "Categories", url: "/admin/blogs/categories" },
-                        { title: "Locations", url: "/admin/blogs/locations" },
-                    ]
-                },
                 { title: "Portfolio", url: "/admin/portfolio", icon: Image },
-                { title: "Forms", url: "/admin/forms", icon: Layers },
                 { title: "Global Sections", url: "/admin/global-sections", icon: Layers },
-                { title: "Contact Submissions", url: "/admin/contact-submissions", icon: Inbox },
                 { title: "Media", url: "/admin/media", icon: FolderOpen },
             ]
         },
@@ -195,7 +166,6 @@ export const useRoleBasedNavigation = (role: Roles): NavigationGroup[] => {
                         { title: "About Page Content", url: "/admin/about/page-content" },
                         { title: "Services Page Content", url: "/admin/services/page-content" },
                         { title: "Portfolio Page Content", url: "/admin/portfolio/page-content" },
-                        { title: "Blog Page Content", url: "/admin/blogs/page-content" },
                         { title: "Contact Page Content", url: "/admin/contact/page-content" },
                     ]
                 }
@@ -236,18 +206,15 @@ export const useRoleBasedNavigation = (role: Roles): NavigationGroup[] => {
                         { title: "About Page Content", url: "/admin/about/page-content" },
                         { title: "Services Page Content", url: "/admin/services/page-content" },
                         { title: "Portfolio Page Content", url: "/admin/portfolio/page-content" },
-                        { title: "Blog Page Content", url: "/admin/blogs/page-content" },
                         { title: "Contact Page Content", url: "/admin/contact/page-content" },
                     ]
                 },
                 { title: "Services", url: "/admin/services", icon: Briefcase },
-                { title: "Blogs", url: "/admin/blogs", icon: FileText },
                 { title: "Portfolio", url: "/admin/portfolio", icon: Image },
-                { title: "Forms", url: "/admin/forms", icon: Layers },
-                { title: "Contact Submissions", url: "/admin/contact-submissions", icon: Inbox },
             ]
         },
     ];
+
 
     switch (role) {
         case Roles.ADMIN:

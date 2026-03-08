@@ -33,7 +33,7 @@ async function ensureDocumentExists() {
                     ctaText: '',
                     ctaUrl: ''
                 },
-                blogPreview: { sectionHeading: { title: '' } },
+
                 serviceHighlightsMarquee: { highlights: [] },
                 trustedByBrands: { sectionHeading: { title: '' }, brandLogos: [] },
                 caseStudiesPreview: { sectionHeading: { title: '' } },
@@ -61,10 +61,7 @@ export async function getLandingPageContentForAdmin() {
                 ...,
                 "featuredProjects": featuredProjects[]._ref
             },
-            blogPreview {
-                ...,
-                "featuredBlogs": featuredBlogs[]._ref
-            },
+
             caseStudiesPreview {
                 ...,
                 "featuredCaseStudies": featuredCaseStudies[]._ref
@@ -103,14 +100,7 @@ export async function updateLandingPageContent(data: LandingPageContentValues) {
                 }))
             },
             aboutPreview: validatedFields.aboutPreview,
-            blogPreview: {
-                ...validatedFields.blogPreview,
-                featuredBlogs: validatedFields.blogPreview.featuredBlogs?.map(id => ({
-                    _type: 'reference',
-                    _ref: id,
-                    _key: id
-                }))
-            },
+
             serviceHighlightsMarquee: validatedFields.serviceHighlightsMarquee,
             trustedByBrands: validatedFields.trustedByBrands,
             caseStudiesPreview: {
@@ -168,13 +158,7 @@ export async function saveLandingPageDraft(data: Partial<LandingPageContentValue
             }))
         }
 
-        if (updateData.blogPreview?.featuredBlogs) {
-            updateData.blogPreview.featuredBlogs = updateData.blogPreview.featuredBlogs.map((id: string) => ({
-                _type: 'reference',
-                _ref: id,
-                _key: id
-            }))
-        }
+
 
         if (updateData.caseStudiesPreview?.featuredCaseStudies) {
             updateData.caseStudiesPreview.featuredCaseStudies = updateData.caseStudiesPreview.featuredCaseStudies.map((id: string) => ({
@@ -211,9 +195,7 @@ export async function getLandingPageDraft() {
             if (draft.portfolioPreview && Array.isArray(draft.portfolioPreview.featuredProjects)) {
                 draft.portfolioPreview.featuredProjects = draft.portfolioPreview.featuredProjects.map((p: any) => p._ref || p)
             }
-            if (draft.blogPreview && Array.isArray(draft.blogPreview.featuredBlogs)) {
-                draft.blogPreview.featuredBlogs = draft.blogPreview.featuredBlogs.map((p: any) => p._ref || p)
-            }
+
             if (draft.caseStudiesPreview && Array.isArray(draft.caseStudiesPreview.featuredCaseStudies)) {
                 draft.caseStudiesPreview.featuredCaseStudies = draft.caseStudiesPreview.featuredCaseStudies.map((p: any) => p._ref || p)
             }
@@ -281,13 +263,4 @@ export async function getCaseStudyOptions() {
     }
 }
 
-export async function getBlogPostOptions() {
-    try {
-        const query = `*[_type == "post"] { _id, title }`
-        const posts = await adminClient.fetch(query)
-        return posts || []
-    } catch (error) {
-        console.error("Failed to fetch post options:", error)
-        return []
-    }
-}
+

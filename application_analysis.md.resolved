@@ -1,0 +1,49 @@
+# Application Analysis: Viral Winds Portfolio
+
+Based on the structure and configuration files, here is an overview of what is inside your application.
+
+## 1. Tech Stack
+- **Frontend Framework**: Next.js 16.1.1 (App Router)
+- **UI & Styling**: Tailwind CSS (v4), Radix UI (accessible components), Framer Motion (`motion`), `styled-components`, `lucide-react` (icons).
+- **Backend & CMS**: Sanity.io CMS for content management (`sanity`, `next-sanity`), MongoDB, Better-Auth for authentication, Nodemailer for sending emails.
+- **Language**: TypeScript throughout the project.
+
+## 2. Repository Structure
+
+### `app/` Directory (Next.js App Router)
+The application uses route groups (`(APP)`) to separate different layouts and contexts:
+- **`(PUBLIC)`**: Contains the front-facing website pages:
+  - `/about`, `/blog`, `/contact`, `/portfolio`, `/services`.
+- **`admin/`**: Contains the internal dashboard and CMS admin interfaces:
+  - `/admin/dashboard`, `/admin/blogs`, `/admin/portfolio`, `/admin/services`, `/admin/users`, `/admin/site-settings`, etc.
+  - This acts as a custom backend dashboard to manage website content and users.
+- **`api/`**: Contains API routes, currently showing an `auth` route group for Better-Auth.
+
+### `components/` Directory
+Contains all modular React components organized into logical folders:
+- `admin/`: Components specific to the admin dashboard (tables, forms, layouts).
+- `sections/`: Reusable page sections (e.g., Hero, Testimonials).
+- `ui/`: Core UI components (likely from Shadcn/Radix UI such as buttons, dialogs, dropdowns).
+- `layout/`: Layout components like Navbar, Footer, etc.
+- **Interactive UI**: Contains custom interactive components like [CustomCursor.tsx](file:///c:/Users/Abubakar%20Aijaz/Desktop/viral_winds/components/CustomCursor.tsx), [MagneticButton.tsx](file:///c:/Users/Abubakar%20Aijaz/Desktop/viral_winds/components/MagneticButton.tsx), and [LanguageSwitcher.tsx](file:///c:/Users/Abubakar%20Aijaz/Desktop/viral_winds/components/LanguageSwitcher.tsx).
+
+### `sanity/` Directory
+Contains Sanity CMS configuration and schemas.
+- **Schemas (`sanity/schemaTypes`)**:
+  - `postType.ts` (Blog posts)
+  - `projectType.ts` (Portfolio projects)
+  - `categoryType.ts`
+  - `blockContentType.ts` (Rich text content)
+  - `imageAssetType.ts`, `locationType.ts`
+  - `document/` and `objects/` folders containing more specific schema definitions.
+
+### `lib/` Directory
+Contains utility functions, services, and configurations:
+- **Auth**: `auth.ts`, `auth-client.ts` (Better-Auth integration).
+- **Database**: `db.ts` (MongoDB connection).
+- **Email**: `nodemailer.ts`, `sendEmail.ts` for handling contact submissions.
+- **Validation**: Zod schemas inside `lib/validations/`.
+- **UI Utils**: `icon-mapper.ts`, `toastNotifications.tsx`, `utils.ts` (Tailwind merge utils).
+
+## Summary
+The application is a full-stack Next.js project acting as a comprehensive portfolio/agency website. It features a completely custom frontend (public pages) with rich animations (Framer Motion) and a robust, custom-built admin dashboard for managing users, form submissions, and content. The content itself is heavily integrated with **Sanity CMS**, while authentication and database management are handled by **Better-Auth** and **MongoDB**.

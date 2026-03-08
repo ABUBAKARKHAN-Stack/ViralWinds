@@ -26,8 +26,6 @@ import { Spinner } from "@/components/ui/spinner"
 import { Plus, Trash2, Save, Send, Clock, AlertCircle, ArrowUp, ArrowDown, Search, CheckCircle2 } from "lucide-react"
 import { ReferenceSelector } from "./ReferenceSelector"
 import { debounce } from "lodash"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Badge } from "@/components/ui/badge"
 import { SeoFormTab } from "./SeoFormTab"
 
 interface LandingPageContentFormProps {
@@ -37,8 +35,6 @@ interface LandingPageContentFormProps {
     services?: any[]
     projects?: any[]
     caseStudies?: any[]
-    posts?: any[]
-    forms?: { _id: string, name: string }[]
 }
 
 export function LandingPageContentForm({
@@ -48,8 +44,6 @@ export function LandingPageContentForm({
     services = [],
     projects = [],
     caseStudies = [],
-    posts = [],
-    forms = []
 }: LandingPageContentFormProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [isSavingDraft, setIsSavingDraft] = useState(false)
@@ -263,10 +257,7 @@ export function LandingPageContentForm({
                             Testimonials
                             {formErrors.testimonials && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
                         </TabsTrigger>
-                        <TabsTrigger value="blog" className="relative">
-                            Blog
-                            {formErrors.blogPreview && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
-                        </TabsTrigger>
+
                         <TabsTrigger value="seo" className="relative">
                             SEO
                             {formErrors.seo && <span className="absolute -top-1 -right-1 w-2 h-2 bg-destructive rounded-full" />}
@@ -578,8 +569,6 @@ export function LandingPageContentForm({
                                             </FormItem>
                                         )} />
 
-                                        <NestedLocationsField control={formControl} areaIndex={index} />
-
                                         <div className="grid grid-cols-2 gap-4">
                                             <FormField control={formControl} name={`areasWeServe.areas.${index}.clients`} render={({ field }) => (
                                                 <FormItem>
@@ -667,36 +656,6 @@ export function LandingPageContentForm({
                         </Card>
                     </TabsContent>
 
-                    {/* BLOG */}
-                    <TabsContent value="blog" className="space-y-6">
-                        <SectionHeadingCard control={formControl} baseName="blogPreview.sectionHeading" title="Blog Preview" />
-                        <Card>
-                            <CardHeader><CardTitle>Blog Posts</CardTitle></CardHeader>
-                            <CardContent className="space-y-6">
-                                <p className="text-muted-foreground text-sm leading-relaxed">
-                                    Recent blog posts are managed in the <strong>Blog</strong> section.
-                                    You can manually select and order which posts appear in this section below.
-                                </p>
-
-                                <ReferenceSelector
-                                    form={form}
-                                    fieldName="blogPreview.featuredBlogs"
-                                    items={posts}
-                                    label="Featured Blog Posts"
-                                    placeholder="Search blog posts..."
-                                />
-
-                                <div className="grid gap-4 pt-4 border-t">
-                                    <h4 className="font-medium text-sm">Call to Action Button</h4>
-                                    <div className="grid sm:grid-cols-2 gap-4">
-                                        <FormInput control={formControl} name="blogPreview.buttonText" placeholder="Button Text" label="Button Text" />
-                                        <FormInput control={formControl} name="blogPreview.buttonUrl" label="Button URL" />
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
                     {/* SEO */}
                     <TabsContent value="seo">
                         <SeoFormTab control={formControl} />
@@ -705,49 +664,6 @@ export function LandingPageContentForm({
                 </Tabs>
             </form>
         </Form>
-    )
-}
-
-function NestedLocationsField({ control, areaIndex }: { control: any; areaIndex: number }) {
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: `areasWeServe.areas.${areaIndex}.locations`,
-    })
-
-    return (
-        <div className="space-y-3 border-l-2 border-primary/20 pl-4">
-            <div className="flex justify-between items-center">
-                <h4 className="font-medium text-sm">Locations/Cities</h4>
-                <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => append("")}
-                >
-                    <Plus className="h-3 w-3 mr-1" /> Add Location
-                </Button>
-            </div>
-            {fields.map((field, index) => (
-                <div key={field.id} className="flex gap-2 items-start">
-                    <div className="flex-1">
-                        <FormInput
-                            control={control}
-                            name={`areasWeServe.areas.${areaIndex}.locations.${index}`}
-                            label={`Location ${index + 1}`}
-                        />
-                    </div>
-                    <Button
-                        type="button"
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => remove(index)}
-                        className="mt-8"
-                    >
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
-                </div>
-            ))}
-        </div>
     )
 }
 
@@ -776,7 +692,7 @@ function getDefaultValues(): CombinedValues {
             clientSatisfaction: { value: "", label: "", suffix: "" },
         },
         whyChooseUs: { sectionHeading: { eyebrow: "", title: "", description: "" }, benefits: [] },
-        blogPreview: { sectionHeading: { eyebrow: "", title: "", description: "" }, featuredBlogs: [], buttonText: "", buttonUrl: "" },
+
         faqs: { sectionHeading: { eyebrow: "", title: "", description: "" }, faqItems: [] },
         serviceHighlightsMarquee: { highlights: [] },
         trustedByBrands: { sectionHeading: { eyebrow: "", title: "", description: "" }, brandLogos: [] },
@@ -846,12 +762,6 @@ function mergeWithDefaults(data: any): CombinedValues {
             sectionHeading: { ...defaults.whyChooseUs.sectionHeading, ...data.whyChooseUs?.sectionHeading },
             benefits: data.whyChooseUs?.benefits || defaults.whyChooseUs.benefits
         },
-        blogPreview: {
-            sectionHeading: { ...defaults.blogPreview.sectionHeading, ...data.blogPreview?.sectionHeading },
-            featuredBlogs: data.blogPreview?.featuredBlogs || [],
-            buttonText: data.blogPreview?.buttonText || defaults.blogPreview.buttonText,
-            buttonUrl: data.blogPreview?.buttonUrl || defaults.blogPreview.buttonUrl
-        },
         faqs: {
             sectionHeading: { ...defaults.faqs.sectionHeading, ...data.faqs?.sectionHeading },
             faqItems: data.faqs?.faqItems || defaults.faqs.faqItems,
@@ -906,7 +816,6 @@ function mergeWithDefaults(data: any): CombinedValues {
             heading: data.cta?.heading || defaults.cta.heading,
             description: data.cta?.description || defaults.cta.description,
             benefits: data.cta?.benefits || defaults.cta.benefits,
-            formId: typeof data.cta?.formId === 'object' ? data.cta.formId?._ref : data.cta?.formId || undefined
         },
         seo: {
             ...defaults.seo,

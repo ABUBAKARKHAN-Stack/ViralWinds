@@ -11,12 +11,12 @@ const QuickActions = () => {
     const permissions = usePermissions();
 
     const quickActions = [
-        { title: "Manage Blogs", description: "Edit blog posts", icon: FileText, href: "/admin/blogs", show: permissions.content.read },
         { title: "Manage Portfolio", description: "Portfolio projects", icon: Layers, href: "/admin/portfolio", show: permissions.content.manage },
         { title: "Manage Services", description: "Service offerings", icon: Briefcase, href: "/admin/services", show: permissions.content.manage },
         { title: "Site Settings", description: "Global configuration", icon: Settings, href: "/admin/site-settings", show: permissions.seo.read },
         { title: "Manage Users", description: "Team members", icon: Users, href: "/admin/users", show: permissions.users.manage },
     ].filter(a => a.show);
+
 
     return (
         quickActions.length > 0 && (

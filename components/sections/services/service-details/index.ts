@@ -10,7 +10,7 @@ import IndustriesSection from "./IndustriesSection";
 import AreasWeServeSection from "./AreasWeServe";
 import CaseStudiesSection from "./CaseStudiesSection";
 import FAQSection from "./FaqsSection";
-import ServiceBlogs from "./ServiceBlogs";
+
 
 
 
@@ -26,6 +26,6 @@ export {
     CaseStudiesSection,
     FAQSection,
     IndustriesSection,
-    ServiceBlogs,
+
     AreasWeServeSection
 }

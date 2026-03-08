@@ -1,6 +1,5 @@
 "use server"
 
-import { adminClient } from "@/sanity/lib/admin-client";
 import { ContactFormType } from "@/schemas/contact.schema";
 import nodemailer from "nodemailer";
 
@@ -12,18 +11,7 @@ type SubmitContactFormResult = {
 
 export async function submitContactForm(data: ContactFormType): Promise<SubmitContactFormResult> {
     try {
-        // 1. Save to Sanity
-        const submission = await adminClient.create({
-            _type: 'contactSubmission',
-            name: data.name,
-            email: data.email,
-            subject: data.subject,
-            message: data.message,
-            status: 'new',
-            submittedAt: new Date().toISOString()
-        });
-
-        // 2. Send email via Nodemailer
+        // 1. Send email via Nodemailer
         const transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: parseInt(process.env.SMTP_PORT || '587'),
@@ -38,12 +26,12 @@ export async function submitContactForm(data: ContactFormType): Promise<SubmitCo
         await transporter.sendMail({
             from: process.env.SMTP_FROM || process.env.SMTP_USER,
             to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
-            subject: `New Contact Form Submission: ${data.subject}`,
+            subject: `New Contact Form Submission from ${data.name}`,
             html: `
                 <h2>New Contact Form Submission</h2>
                 <p><strong>Name:</strong> ${data.name}</p>
                 <p><strong>Email:</strong> ${data.email}</p>
-                <p><strong>Subject:</strong> ${data.subject}</p>
+                <p><strong>Phone:</strong> ${data.phone}</p>
                 <p><strong>Message:</strong></p>
                 <p>${data.message.replace(/\n/g, '<br>')}</p>
                 <hr>
@@ -54,7 +42,7 @@ New Contact Form Submission
 
 Name: ${data.name}
 Email: ${data.email}
-Subject: ${data.subject}
+Phone: ${data.phone}
 
 Message:
 ${data.message}
@@ -75,7 +63,7 @@ Submitted at: ${new Date().toLocaleString()}
                 <p><strong>Your message:</strong></p>
                 <p>${data.message.replace(/\n/g, '<br>')}</p>
                 <hr>
-                <p>Best regards,<br>Mohsin Designs</p>
+                <p>Best regards,<br>Viral Winds Team</p>
             `,
             text: `
 Thank you for reaching out!
@@ -88,7 +76,7 @@ Your message:
 ${data.message}
 
 Best regards,
-Mohsin Designs
+Viral Winds Team
             `
         });
 
@@ -106,3 +94,4 @@ Mohsin Designs
         };
     }
 }
+

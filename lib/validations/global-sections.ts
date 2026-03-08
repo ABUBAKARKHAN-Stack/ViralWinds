@@ -120,7 +120,6 @@ export const globalSectionsSchema = z.object({
             _key: z.string().optional(),
             text: requiredLocalizedStringSchema,
         })).min(1, "At least one benefit is required"),
-        formId: z.string().optional(), // Reference to form document
     }),
 });
 

@@ -11,8 +11,9 @@ import PageHero from "@/components/ui/page-hero"
 import { ContainerLayout, PageWrapper } from "@/components/layout"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import SectionHeading from "@/components/ui/section-heading"
-import { submitDynamicForm } from "@/app/actions/formActions"
+import { submitContactForm } from "@/app/actions/submitContactForm"
 import { errorToast, successToast } from "@/lib/toastNotifications"
+
 import { useSiteSettings } from "@/context/SiteSettingsContext"
 import { LinkProcessor } from "@/components/ui/LinkProcessor"
 
@@ -47,19 +48,12 @@ export default function ContactClient({ pageData }: ContactClientProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (!formConfig?._id) {
-            errorToast("Form configuration missing")
-            return
-        }
-
-        // Basic validation for required fields
         const newErrors: Record<string, string> = {}
-        formConfig.fields?.forEach((field: any) => {
-            if (field.required && !formData[field.fieldName]) {
-                const label = field.label || field.fieldName
-                newErrors[field.fieldName] = `${label} is required`
-            }
-        })
+        if (!formData.name) newErrors.name = "Name is required"
+        if (!formData.email) newErrors.email = "Email is required"
+        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email address"
+        if (!formData.phone) newErrors.phone = "Phone is required"
+        if (!formData.message) newErrors.message = "Message is required"
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors)
@@ -68,7 +62,7 @@ export default function ContactClient({ pageData }: ContactClientProps) {
 
         setLoading(true)
         try {
-            const result = await submitDynamicForm(formConfig._id, formData)
+            const result = await submitContactForm(formData as any)
             if (result.success) {
                 setSubmitted(true)
                 successToast(result.message || "Message sent successfully")
@@ -172,7 +166,7 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                     <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mb-6">
                                         <CheckCircle className="w-10 h-10 text-accent" />
                                     </div>
-                                    <h3 className="text-3xl font-display font-bold mb-4">{formConfig?.successMessage || "Thank you!"}</h3>
+                                    <h3 className="text-3xl font-display font-bold mb-4">Thank you!</h3>
                                     <p className="text-muted-foreground mb-8 max-w-sm">
                                         Your message has been received. We'll get back to you soon.
                                     </p>
@@ -196,40 +190,73 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                         </p>
                                     </div>
 
-                                    {formConfig?.fields?.map((field: any) => (
-                                        <div key={field.fieldName}>
-                                            <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
-                                                {field.label} {field.required && "*"}
-                                            </label>
-                                            {field.fieldType === 'textarea' ? (
-                                                <Textarea
-                                                    name={field.fieldName}
-                                                    value={formData[field.fieldName] || ""}
-                                                    onChange={handleChange}
-                                                    placeholder={field.placeholder || ""}
-                                                    rows={5}
-                                                    className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 resize-none bg-transparent transition-colors ${errors[field.fieldName] ? 'border-destructive' : 'border-border focus-visible:border-accent'
-                                                        }`}
-                                                />
-                                            ) : (
-                                                <Input
-                                                    name={field.fieldName}
-                                                    type={field.fieldType || 'text'}
-                                                    value={formData[field.fieldName] || ""}
-                                                    onChange={handleChange}
-                                                    placeholder={field.placeholder || ""}
-                                                    className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors[field.fieldName] ? 'border-destructive' : 'border-border focus-visible:border-accent'
-                                                        }`}
-                                                />
-                                            )}
-                                            {errors[field.fieldName] && <p className="text-sm text-destructive mt-2">{errors[field.fieldName]}</p>}
-                                        </div>
-                                    ))}
+                                    <div>
+                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                            Name *
+                                        </label>
+                                        <Input
+                                            name="name"
+                                            value={formData.name || ""}
+                                            onChange={handleChange}
+                                            placeholder="Your Name"
+                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.name ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                }`}
+                                        />
+                                        {errors.name && <p className="text-sm text-destructive mt-2">{errors.name}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                            Email *
+                                        </label>
+                                        <Input
+                                            name="email"
+                                            type="email"
+                                            value={formData.email || ""}
+                                            onChange={handleChange}
+                                            placeholder="Your Email"
+                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.email ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                }`}
+                                        />
+                                        {errors.email && <p className="text-sm text-destructive mt-2">{errors.email}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                            Phone *
+                                        </label>
+                                        <Input
+                                            name="phone"
+                                            type="tel"
+                                            value={formData.phone || ""}
+                                            onChange={handleChange}
+                                            placeholder="Your Phone Number"
+                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 bg-transparent transition-colors ${errors.phone ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                }`}
+                                        />
+                                        {errors.phone && <p className="text-sm text-destructive mt-2">{errors.phone}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="text-sm uppercase tracking-widest text-muted-foreground block mb-3">
+                                            Message *
+                                        </label>
+                                        <Textarea
+                                            name="message"
+                                            value={formData.message || ""}
+                                            onChange={handleChange}
+                                            placeholder="Your Message"
+                                            rows={5}
+                                            className={`border-0 border-b rounded-none px-0 focus-visible:ring-0 resize-none bg-transparent transition-colors ${errors.message ? 'border-destructive' : 'border-border focus-visible:border-accent'
+                                                }`}
+                                        />
+                                        {errors.message && <p className="text-sm text-destructive mt-2">{errors.message}</p>}
+                                    </div>
 
                                     <Button
                                         type="submit"
                                         className="w-full md:w-auto px-12 bg-accent text-accent-foreground hover:bg-accent/90 group"
-                                        disabled={loading || !formConfig}
+                                        disabled={loading}
                                     >
                                         {loading ? (
                                             <>
@@ -242,7 +269,7 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                             </>
                                         ) : (
                                             <>
-                                                {formConfig?.submitButtonText || "Send Message"}
+                                                Send Message
                                                 <Send className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                             </>
                                         )}
@@ -250,6 +277,7 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                 </form>
                             )}
                         </motion.div>
+
                     </div>
                 </ContainerLayout>
 
@@ -272,7 +300,7 @@ export default function ContactClient({ pageData }: ContactClientProps) {
                                     />
                                     <p className="text-muted-foreground mt-6 max-w-md">
                                         <LinkProcessor
-                                        text={faqs.sectionHeading?.description || "Everything you need to know about working with us."}
+                                            text={faqs.sectionHeading?.description || "Everything you need to know about working with us."}
                                         />
                                     </p>
                                 </motion.div>

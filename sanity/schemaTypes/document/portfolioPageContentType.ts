@@ -67,13 +67,6 @@ export const portfolioPageContentType = defineType({
                     title: 'Section Heading',
                     type: 'sectionHeading',
                 }),
-                defineField({
-                    name: 'formReference',
-                    title: 'Select Form',
-                    type: 'reference',
-                    to: [{ type: 'form' }],
-                    description: 'Select a custom form to display in this CTA section'
-                }),
             ]
         }),
         // SEO SECTION

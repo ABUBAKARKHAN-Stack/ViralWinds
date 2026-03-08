@@ -100,12 +100,6 @@ export interface ServiceData {
   faqsSection: SectionHeadingType
   faqs: FAQ[];
 
-  // Blogs
-  blogsSection: SectionHeadingType;
-  blogs: BlogData[];
-  blogsButtonText?: string;
-  blogsButtonUrl?: string;
-
   // Other Services
   otherServicesSection: SectionHeadingType;
   otherServices: ServiceLightWeight[];
@@ -115,17 +109,8 @@ export interface ServiceData {
   seo: SEOType;
 }
 
-export interface BlogData {
-  title: string;
-  description: string;
-  slug: string;
-  mainImage: SanityImage;
-  categories: string[];
-  publishedAt: string;
-  readTime: number;
-}
-
 export interface ServiceCTA {
+
   badgeText: string;
   title: string;
   description: string;

@@ -38,7 +38,6 @@ interface ServiceFormProps {
     serviceId?: string
     hasDraft?: boolean
     draftUpdatedAt?: string | null
-    availableBlogs?: any[]
     availableServices?: any[]
 }
 
@@ -47,7 +46,6 @@ export function ServiceForm({
     serviceId,
     hasDraft,
     draftUpdatedAt,
-    availableBlogs = [],
     availableServices = []
 }: ServiceFormProps) {
     const [isLoading, setIsLoading] = useState(false)
@@ -91,10 +89,7 @@ export function ServiceForm({
             caseStudies: [{ _key: Math.random().toString(36).substring(2, 9), title: "", problem: "", solution: "", result: "" }],
             faqsSection: { _key: Math.random().toString(36).substring(2, 9), title: "", description: "", eyebrow: "" },
             faqs: [{ _key: Math.random().toString(36).substring(2, 9), question: "", answer: "" }],
-            blogsSection: { _key: Math.random().toString(36).substring(2, 9), title: "", description: "", eyebrow: "" },
-            blogs: [],
-            blogsButtonText: "",
-            blogsButtonUrl: "",
+           
             otherServicesSection: { _key: Math.random().toString(36).substring(2, 9), title: "", description: "", eyebrow: "" },
             otherServices: [],
             otherServicesButtonText: "",
@@ -346,10 +341,7 @@ export function ServiceForm({
                                 FAQs
                                 {hasTabErrors(['faqsSection', 'faqs']) && <ErrorDot />}
                             </TabsTrigger>
-                            <TabsTrigger value="blogs" className="px-4 py-2 text-xs sm:text-sm relative">
-                                Blogs
-                                {hasTabErrors(['blogsSection', 'blogs']) && <ErrorDot />}
-                            </TabsTrigger>
+                         
                             <TabsTrigger value="otherServices" className="px-4 py-2 text-xs sm:text-sm relative">
                                 Other Services
                                 {hasTabErrors(['otherServicesSection', 'otherServices']) && <ErrorDot />}
@@ -827,93 +819,6 @@ export function ServiceForm({
                                         <Plus className="mr-2 h-4 w-4" /> Add FAQ
                                     </Button>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="blogs" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Blogs Section Heading</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <SectionHeadingInput control={formControl} name="blogsSection" label="Section Heading" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t">
-                                    <FormInput control={formControl} name="blogsButtonText" label="Button Text" placeholder="e.g. View All Blogs" />
-                                    <FormInput control={formControl} name="blogsButtonUrl" label="Button URL" placeholder="e.g. /blog" />
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Curated Blogs</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <FormField
-                                    control={formControl}
-                                    name="blogs"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto p-1">
-                                                {availableBlogs.map((blog) => {
-                                                    const isSelected = field.value?.includes(blog._id)
-                                                    const serviceTitle = form.watch("title");
-                                                    const areas = form.watch("areas") || [];
-
-                                                    const isRelated = blog.service?.title === serviceTitle ||
-                                                        areas.some((area: any) =>
-                                                            (area.locations || []).some((loc: string) =>
-                                                                (blog.locations || []).includes(loc) || (blog.locations || []).some((bl: any) => bl === loc)
-                                                            )
-                                                        )
-
-                                                    return (
-                                                        <div
-                                                            key={blog._id}
-                                                            className={cn(
-                                                                "flex items-start space-x-3 p-3 rounded-lg border transition-colors cursor-pointer",
-                                                                isSelected ? "bg-primary/5 border-primary" : "hover:bg-muted"
-                                                            )}
-                                                            onClick={() => {
-                                                                const current = field.value || []
-                                                                if (isSelected) {
-                                                                    field.onChange(current.filter((id: string) => id !== blog._id))
-                                                                } else {
-                                                                    field.onChange([...current, blog._id])
-                                                                }
-                                                            }}
-                                                        >
-                                                            <div className="pt-0.5">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary pointer-events-none"
-                                                                    checked={isSelected}
-                                                                    readOnly
-                                                                />
-                                                            </div>
-                                                            <div className="flex-1 space-y-1">
-                                                                <div className="flex items-center gap-2">
-                                                                    <p className="text-sm font-medium leading-none">{blog.title}</p>
-                                                                    {isRelated && (
-                                                                        <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-bold">RELATED</span>
-                                                                    )}
-                                                                </div>
-                                                                <p className="text-xs text-muted-foreground line-clamp-1">{blog.description}</p>
-                                                                <div className="flex flex-wrap gap-1 mt-1">
-                                                                    {blog.locations?.map((loc: string, i: number) => (
-                                                                        <span key={i} className="text-[10px] bg-muted px-1.5 py-0.5 rounded">{loc}</span>
-                                                                    ))}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
                             </CardContent>
                         </Card>
                     </TabsContent>

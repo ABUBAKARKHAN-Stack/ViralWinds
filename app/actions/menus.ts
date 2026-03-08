@@ -124,36 +124,22 @@ export async function deleteMenu(id: string) {
 export async function getLinkableContent() {
     try {
         const servicesQuery = `*[_type == "service"] { _id, "title": coalesce(title.en, title) }`
-        const pagesQuery = `*[
-            _type == "page" || 
-            _type == "landingPageContent" || 
-            _type == "aboutPageContent" || 
-            _type == "servicesPageContent" || 
-            _type == "portfolioPageContent" || 
-            _type == "blogPageContent" || 
-            _type == "contactPageContent"
-        ] { 
-            _id, 
-            _type,
-            "title": select(
-                _type == "landingPageContent" => "Home",
-                _type == "aboutPageContent" => "About",
-                _type == "servicesPageContent" => "Services",
-                _type == "portfolioPageContent" => "Portfolio",
-                _type == "blogPageContent" => "Blog",
-                _type == "contactPageContent" => "Contact",
-                coalesce(title.en, title)
-            )
-        }`
 
-        const [services, pages] = await Promise.all([
-            sanityFetch({ query: servicesQuery }),
-            sanityFetch({ query: pagesQuery })
+        const [services] = await Promise.all([
+            sanityFetch({ query: servicesQuery })
         ])
+
+        const pages = [
+            { _id: 'landingPageContent', _type: 'landingPageContent', title: 'Home' },
+            { _id: 'aboutPageContent', _type: 'aboutPageContent', title: 'About' },
+            { _id: 'servicesPageContent', _type: 'servicesPageContent', title: 'Services' },
+            { _id: 'portfolioPageContent', _type: 'portfolioPageContent', title: 'Portfolio' },
+            { _id: 'contactPageContent', _type: 'contactPageContent', title: 'Contact' }
+        ]
 
         return {
             services: services.data || [],
-            pages: pages.data || []
+            pages: pages
         }
     } catch (error) {
         console.error("Failed to fetch linkable content:", error)

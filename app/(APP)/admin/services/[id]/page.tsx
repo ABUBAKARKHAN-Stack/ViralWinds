@@ -217,11 +217,7 @@ export default async function ServiceViewPage({ params }: { params: Promise<{ id
                             isActive={!!(service.faqsSection?.title && service.faqs?.length > 0)}
                             count={service.faqs?.length}
                         />
-                        <SectionStatus
-                            label="Blogs"
-                            isActive={!!(service.blogsSection?.title && service.blogs?.length > 0)}
-                            count={service.blogs?.length}
-                        />
+
                         <SectionStatus
                             label="Others"
                             isActive={!!(service.otherServicesSection?.title && service.otherServices?.length > 0)}

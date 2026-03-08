@@ -54,15 +54,9 @@ export const contactPageContentType = defineType({
                     type: "localizedText",
                     description: "Fill out the form below...",
                 }),
-                defineField({
-                    name: "formReference",
-                    title: "Select Form",
-                    type: "reference",
-                    to: [{ type: "form" }],
-                    validation: (Rule) => Rule.required(),
-                }),
             ],
         }),
+
 
         // FAQS SECTION
         defineField({

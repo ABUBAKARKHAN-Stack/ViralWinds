@@ -5,7 +5,7 @@ import AboutPreview from "./about/AboutPreview";
 import PortfolioPreview from "./portfolio/PortfolioPreview";
 import Testimonials from "./testimonials/Testimonials";
 import FAQs from "./faqs/FAQS";
-import BlogPreview from "./blogs/BlogPreview";
+
 import CaseStudiesPreview from "./portfolio/CaseStudiesPreview";
 import AreasWeServe from "./about/AreasWeServe";
 
@@ -17,7 +17,7 @@ export {
     PortfolioPreview,
     Testimonials,
     FAQs,
-    BlogPreview,
+
     CaseStudiesPreview,
     AreasWeServe,
 }

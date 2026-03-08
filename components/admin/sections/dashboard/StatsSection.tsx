@@ -11,7 +11,6 @@ import { client } from '@/sanity/lib/client'
 import { Skeleton } from '@/components/ui/skeleton'
 
 type StatsData = {
-  blogs: number;
   projects: number;
   services: number;
 }
@@ -25,7 +24,6 @@ const StatsSection = () => {
     const fetchStats = async () => {
       try {
         const queries = [
-          { key: "blogs", query: `count(*[_type == "post"])` },
           { key: "projects", query: `count(*[_type == "project"])` },
           { key: "services", query: `count(*[_type == "service"])` }
         ]
@@ -35,9 +33,9 @@ const StatsSection = () => {
         )
 
         setStats({
-          blogs: results[0],
-          projects: results[1],
-          services: results[2]
+
+          projects: results[0],
+          services: results[1]
         })
       } catch (error) {
         console.error("Error fetching generic stats:", error)
@@ -48,7 +46,7 @@ const StatsSection = () => {
   }, [])
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Current Role</CardTitle>
@@ -61,25 +59,7 @@ const StatsSection = () => {
           </p>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Blogs</CardTitle>
-          <FileText className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          {stats ? (
-            <>
-              <div className="text-2xl font-bold">{stats.blogs}</div>
-              <p className="text-xs text-muted-foreground">Published to global feed</p>
-            </>
-          ) : (
-            <div className="space-y-2">
-              <Skeleton className="h-8 w-12" />
-              <Skeleton className="h-3 w-28" />
-            </div>
-          )}
-        </CardContent>
-      </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Portfolios</CardTitle>
@@ -99,25 +79,7 @@ const StatsSection = () => {
           )}
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Services</CardTitle>
-          <Layers className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          {stats ? (
-            <>
-              <div className="text-2xl font-bold">{stats.services}</div>
-              <p className="text-xs text-muted-foreground">Active service offerings</p>
-            </>
-          ) : (
-            <div className="space-y-2">
-              <Skeleton className="h-8 w-12" />
-              <Skeleton className="h-3 w-28" />
-            </div>
-          )}
-        </CardContent>
-      </Card>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Services</CardTitle>

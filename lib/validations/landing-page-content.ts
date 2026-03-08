@@ -59,13 +59,7 @@ export const landingPageContentSchema = z.object({
     }),
 
 
-    // Blog Preview Section
-    blogPreview: z.object({
-        sectionHeading: sectionHeadingSchema,
-        featuredBlogs: z.array(z.string()).max(10).optional(),
-        buttonText: z.string().optional(),
-        buttonUrl: z.string().optional(),
-    }),
+
 
 
     // Service Highlights Marquee

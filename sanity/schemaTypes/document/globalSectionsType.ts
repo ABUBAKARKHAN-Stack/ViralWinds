@@ -520,13 +520,6 @@ export const globalSectionsType = defineType({
                         }
                     }]
                 }),
-                defineField({
-                    name: 'formId',
-                    title: 'Contact Form',
-                    type: 'reference',
-                    to: [{ type: 'form' }],
-                    description: 'Select which form to display in the CTA section',
-                }),
             ]
         }),
     ],

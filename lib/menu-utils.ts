@@ -26,16 +26,14 @@ export const resolveUrl = (item: any) => {
                 return '/services';
             case 'portfolioPageContent':
                 return '/portfolio';
-            case 'blogPageContent':
-                return '/blog';
+
             case 'contactPageContent':
                 return '/contact';
             case 'service':
                 return slug ? `/services/${slug}` : '/services';
             case 'page':
                 return slug ? `/${slug}` : '#';
-            case 'post':
-                return slug ? `/blog/${slug}` : '/blog';
+
             default:
                 // Fallback for types that might use slugs
                 return slug ? `/${slug}` : '#';

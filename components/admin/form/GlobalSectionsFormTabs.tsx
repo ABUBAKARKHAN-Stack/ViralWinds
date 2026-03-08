@@ -4,7 +4,6 @@ import { useFieldArray } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from "@/components/ui/form"
 import { TabsContent, Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
 import { FormInput } from "@/components/admin/form/FormInput"
 import { IconSelect } from "@/components/admin/form/IconSelect"
 import { ImageUpload } from "@/components/admin/form/ImageUpload"
@@ -509,64 +508,12 @@ export function GlobalSectionsFormTabs({ form, control, errors, mode = 'shared',
                                             )}
                                         </div>
                                     </div>
-                                </div>
-
-                                <Card className="border-t-4 border-t-primary bg-primary/5">
-                                    <CardHeader className="py-4">
-                                        <CardTitle className="text-lg flex items-center gap-2"><Database className="h-4 w-4" /> Conversion Form Sync</CardTitle>
-                                        <CardDescription>Select the form that should capture user data in this specific CTA block.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="pb-6">
-                                        <FormField control={control} name="cta.formId" render={({ field }) => (
-                                            <FormItem className="max-w-md">
-                                                <FormLabel>Integrated Contact Form</FormLabel>
-                                                <FormSelectorDropdown field={field} />
-                                                <FormMessage />
-                                                <FormDescription className="text-[10px] mt-1 italic">Forms are managed in the dynamic forms builder dashboard.</FormDescription>
-                                            </FormItem>
-                                        )} />
-                                    </CardContent>
-                                </Card>
+                                </div>            
                             </CardContent>
                         </Card>
                     </TabsContent>
                 </div>
             </div>
         </Tabs>
-    )
-}
-
-
-
-function FormSelectorDropdown({ field }: { field: any }) {
-    const [forms, setForms] = useState<any[]>([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        async function loadForms() {
-            setIsLoading(true)
-            try {
-                const { getForms } = await import("@/app/actions/formActions")
-                const result = await getForms()
-                if (result.success && result.data) {
-                    setForms(result.data)
-                }
-            } catch (error) {
-                console.error("Failed to load forms:", error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-        loadForms()
-    }, [])
-
-    return (
-        <Select onValueChange={(v) => field.onChange(v === "__none__" ? undefined : v)} value={field.value || "__none__"}>
-            <FormControl><SelectTrigger><SelectValue placeholder={isLoading ? "Loading..." : "Click to select a form"} /></SelectTrigger></FormControl>
-            <SelectContent>
-                <SelectItem value="__none__" className="text-muted-foreground italic">Default generic contact form</SelectItem>
-                {forms.map((f: any) => <SelectItem key={f._id} value={f._id}>{f.name}</SelectItem>)}
-            </SelectContent>
-        </Select>
     )
 }

@@ -43,7 +43,6 @@ export const menuItemType = defineType({
                 { type: 'aboutPageContent' },
                 { type: 'servicesPageContent' },
                 { type: 'portfolioPageContent' },
-                { type: 'blogPageContent' },
                 { type: 'contactPageContent' }
             ],
             hidden: ({ parent }) => parent?.type !== 'reference'
@@ -80,7 +79,6 @@ export const menuItemType = defineType({
                     'aboutPageContent': 'About',
                     'servicesPageContent': 'Services',
                     'portfolioPageContent': 'Portfolio',
-                    'blogPageContent': 'Blog',
                     'contactPageContent': 'Contact'
                 };
 

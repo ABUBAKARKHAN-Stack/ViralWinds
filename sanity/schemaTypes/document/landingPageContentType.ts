@@ -260,40 +260,7 @@ export const landingPageContentType = defineType({
 
 
 
-        // BLOG PREVIEW SECTION
-        defineField({
-            name: 'blogPreview',
-            title: 'Blog Preview Section',
-            type: 'object',
-            validation: Rule => Rule.required(),
-            fields: [
-                defineField({
-                    name: 'sectionHeading',
-                    title: 'Section Heading',
-                    type: 'sectionHeading',
-                    validation: Rule => Rule.required()
-                }),
-                defineField({
-                    name: 'featuredBlogs',
-                    title: 'Featured Blogs',
-                    type: 'array',
-                    description: 'Select blog posts to display in the blog preview section (Max 10)',
-                    of: [{ type: 'reference', to: [{ type: 'post' }] }],
-                    validation: Rule => Rule.max(10)
-                }),
-                defineField({
-                    name: 'buttonText',
-                    title: 'Button Text',
-                    type: 'localizedString'
-                }),
-                defineField({
-                    name: 'buttonUrl',
-                    title: 'Button URL',
-                    type: 'string',
-                    description: 'Enter a relative path (e.g., /blog) or a full URL (e.g., https://example.com)'
-                })
-            ]
-        }),
+
 
 
         // SERVICE HIGHLIGHTS MARQUEE SECTION

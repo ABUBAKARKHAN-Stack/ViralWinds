@@ -7,7 +7,6 @@ import {
   PortfolioPreview,
   Testimonials,
   FAQs,
-  BlogPreview,
   CaseStudiesPreview,
   AreasWeServe,
 } from "@/components/sections/landing/";
@@ -112,7 +111,6 @@ const HomePage = async () => {
         <Leadership />
 
         {/* Blog Preview */}
-        <BlogPreview />
 
         {/* FAQs */}
         <FAQs />

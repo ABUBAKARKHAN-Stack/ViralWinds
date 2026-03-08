@@ -307,31 +307,8 @@ export const serviceType = defineType({
             }],
         }),
 
-        //* Blogs
-        defineField({
-            name: 'blogsSection',
-            type: 'sectionHeading',
-            validation: Rule => Rule.required()
-        }),
-
-        defineField({
-            name: 'blogs',
-            type: 'array',
-            of: [{ type: 'reference', to: [{ type: 'post' }] }],
-            title: 'Curated Blogs'
-        }),
-        defineField({
-            name: 'blogsButtonText',
-            type: 'localizedString',
-            title: 'Blogs Section Button Text'
-        }),
-        defineField({
-            name: 'blogsButtonUrl',
-            type: 'string',
-            title: 'Blogs Section Button URL'
-        }),
-
         //* Other Services
+
         defineField({
             name: 'otherServicesSection',
             type: 'sectionHeading',

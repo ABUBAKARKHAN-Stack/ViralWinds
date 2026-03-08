@@ -4,12 +4,8 @@ import type { StructureResolver } from 'sanity/structure'
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Blog')
+    .title('Content')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.divider(),
-
       S.listItem()
         .title('Services Page Content')
         .id('servicesPageContent')
@@ -43,14 +39,6 @@ export const structure: StructureResolver = (S) =>
             .documentId('portfolioPageContent')
         ),
       S.listItem()
-        .title('Blog Page Content')
-        .id('blogPageContent')
-        .child(
-          S.document()
-            .schemaType('blogPageContent')
-            .documentId('blogPageContent')
-        ),
-      S.listItem()
         .title('Contact Page Content')
         .id('contactPageContent')
         .child(
@@ -69,7 +57,7 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author', "service", "serviceCta", "siteSettings", "servicesPageContent", "landingPageContent", "aboutPageContent", "portfolioPageContent", "blogPageContent", "contactPageContent"].includes(item.getId()!),
+        (item) => item.getId() && !["service", "serviceCta", "siteSettings", "servicesPageContent", "landingPageContent", "aboutPageContent", "portfolioPageContent", "contactPageContent", "form", "contactSubmission"].includes(item.getId()!),
       ),
       S.divider(),
       S.listItem()

@@ -105,12 +105,7 @@ export const serviceFormSchema = z.object({
         answer: requiredLocalizedTextSchema
     })).min(1, "Add at least one FAQ"),
 
-    // SEO
-    // Blogs
-    blogsSection: sectionHeadingSchema,
-    blogs: z.array(z.string()).optional().default([]),
-    blogsButtonText: z.string().optional(),
-    blogsButtonUrl: z.string().optional(),
+
 
     // Other Services
     otherServicesSection: sectionHeadingSchema,

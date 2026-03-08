@@ -36,12 +36,7 @@ export async function updateServicesPageContent(data: ServicesPageContentValues)
                 guaranteePoints: validatedFields.whyChooseUs.guaranteePoints,
                 benefits: validatedFields.whyChooseUs.benefits,
             },
-            serviceBlogs: {
-                sectionHeading: { ...validatedFields.serviceBlogs.sectionHeading, _type: 'sectionHeading' },
-                blogs: validatedFields.serviceBlogs.blogs?.map(id => ({ _type: 'reference', _ref: id })) || [],
-                buttonText: validatedFields.serviceBlogs.buttonText,
-                buttonUrl: validatedFields.serviceBlogs.buttonUrl,
-            },
+
             servicesList: {
                 sectionHeading: { ...validatedFields.servicesList.sectionHeading, _type: 'sectionHeading' },
                 services: validatedFields.servicesList.services?.map(id => ({ _type: 'reference', _ref: id })) || [],
@@ -64,14 +59,7 @@ export async function saveServicesPageDraft(data: Partial<ServicesPageContentVal
     try {
         // Transform blogs to references if they exist as strings
         const transformedData = { ...data };
-        if (transformedData.serviceBlogs?.blogs) {
-            transformedData.serviceBlogs = {
-                ...transformedData.serviceBlogs,
-                blogs: transformedData.serviceBlogs.blogs.map((id: any) =>
-                    typeof id === 'string' ? { _type: 'reference', _ref: id } : id
-                )
-            };
-        }
+
         if (transformedData.servicesList?.services) {
             transformedData.servicesList = {
                 ...transformedData.servicesList,
@@ -116,19 +104,7 @@ export async function discardServicesPageDraft() {
     }
 }
 
-export async function getAllPostsWithService() {
-    try {
-        const query = `*[_type == "post" && defined(service)] {
-            _id,
-            title
-        }`
-        const { data } = await sanityFetch({ query })
-        return data || []
-    } catch (error) {
-        console.error("Failed to fetch posts with service:", error)
-        return []
-    }
-}
+
 
 export async function getAllServices() {
     try {
