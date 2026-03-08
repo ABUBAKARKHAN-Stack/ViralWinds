@@ -1,5 +1,5 @@
 import { urlFor } from '@/sanity/lib/image'
-import { PortableText, PortableTextComponents as PTComponents } from '@portabletext/react'
+import { PortableTextComponents as PTComponents } from '@portabletext/react'
 import Image from 'next/image'
 import Link from 'next/link'
 

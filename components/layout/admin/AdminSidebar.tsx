@@ -43,9 +43,11 @@ export function AppSidebar() {
 
     const pathname = usePathname()
 
+    if (!session) return null;
+
     const user = session.user;
     const navigationGroups = useRoleBasedNavigation(user.role as Roles)
-    const userInitial = user?.name.charAt(0).toUpperCase();
+    const userInitial = user?.name?.charAt(0).toUpperCase() || "A";
 
     const handleLogout = async () => await logout()
 

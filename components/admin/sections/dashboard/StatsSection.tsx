@@ -1,11 +1,8 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { roleLabels } from '@/constants/admin.constants'
 import { useSession } from '@/context/SessionContext'
-import { usePermissions } from '@/hooks/usePermissions'
-import { Roles } from '@/types/auth.types'
-import { FileText, Layers, Users } from 'lucide-react'
+import { Layers, Users } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { client } from '@/sanity/lib/client'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -16,7 +13,6 @@ type StatsData = {
 }
 
 const StatsSection = () => {
-  const permissions = usePermissions()
   const { session } = useSession()
   const [stats, setStats] = useState<StatsData | null>(null)
 
@@ -53,9 +49,9 @@ const StatsSection = () => {
           <Users className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{roleLabels[session.user.role as Roles]}</div>
+          <div className="text-2xl font-bold">{session?.user?.role}</div>
           <p className="text-xs text-muted-foreground">
-            {permissions.content.manage ? "Full access" : permissions.content.write ? "Can edit content" : "View only"}
+            Full access
           </p>
         </CardContent>
       </Card>

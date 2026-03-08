@@ -1,6 +1,5 @@
 import {
     DashboardWelcome,
-    PermissionsCard,
     QuickActions,
     StatsSection,
     CmsHealthcheck
@@ -22,12 +21,6 @@ export default function DashboardPage() {
 
             {/* Quick Actions */}
             <QuickActions />
-
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                <div className="col-span-full">
-                    <PermissionsCard />
-                </div>
-            </div>
 
 
         </div>

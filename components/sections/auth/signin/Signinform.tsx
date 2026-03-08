@@ -1,4 +1,5 @@
 "use client"
+
 import { SignInFormValues, signInSchema } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -9,12 +10,10 @@ import Logo from '@/components/ui/logo';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group';
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from 'lucide-react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { authClient } from '@/lib/auth-client';
 import { errorToast, successToast } from '@/lib/toastNotifications';
+import { useRouter } from 'next/navigation';
 
 const Signinform = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +23,6 @@ const Signinform = () => {
         defaultValues: {
             email: "",
             password: "",
-            rememberMe: false,
         },
     });
 
@@ -32,23 +30,32 @@ const Signinform = () => {
         isSubmitting
     } = form.formState
 
+    const router = useRouter();
+
     const onSubmit = async (formValues: SignInFormValues) => {
-        await authClient.signIn.email({
-            email: formValues.email,
-            password: formValues.password,
-            rememberMe: formValues.rememberMe,
-            callbackURL: "/admin/dashboard"
-        }, {
-            onSuccess(_context) {
-                successToast("Login Successful!")
-            },
-            onError(context) {
-                const errMsg = context.error.message || "Failed To Login."
-                errorToast(errMsg)
-            },
-        })
+        try {
+            const res = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: formValues.email,
+                    password: formValues.password,
+                }),
+            });
+
+            if (res.ok) {
+                successToast("Login Successful!");
+                router.push("/admin/dashboard");
+                router.refresh();
+            } else {
+                const data = await res.json();
+                errorToast(data.message || "Failed To Login.");
+            }
+        } catch (error) {
+            errorToast("An error occurred. Please try again.");
+        }
     };
-    
+
 
     return (
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12 bg-background">
@@ -136,32 +143,6 @@ const Signinform = () => {
                                 </FormItem>
                             )}
                         />
-
-                        <div className="flex items-center justify-between pt-1">
-                            <FormField
-                                control={form.control}
-                                name="rememberMe"
-                                render={({ field }) => (
-                                    <FormItem className="flex items-center ">
-                                        <FormControl>
-                                            <Checkbox
-                                                checked={field.value}
-                                                onCheckedChange={field.onChange}
-                                            />
-                                        </FormControl>
-                                        <FormLabel className="text-xs text-muted-foreground cursor-pointer">
-                                            Remember me
-                                        </FormLabel>
-                                    </FormItem>
-                                )}
-                            />
-                            <Link
-                                href="/auth/forgot-password"
-                                className="text-xs text-accent hover:text-accent/80 transition-colors hover:underline"
-                            >
-                                Forgot password?
-                            </Link>
-                        </div>
 
                         <Button
                             type="submit"

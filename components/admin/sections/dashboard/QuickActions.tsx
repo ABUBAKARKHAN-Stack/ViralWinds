@@ -4,18 +4,15 @@ import { ArrowRight, FileText, Layers, Search, Users, Briefcase, Settings } from
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { usePermissions } from '@/hooks/usePermissions';
 
 
 const QuickActions = () => {
-    const permissions = usePermissions();
 
     const quickActions = [
-        { title: "Manage Portfolio", description: "Portfolio projects", icon: Layers, href: "/admin/portfolio", show: permissions.content.manage },
-        { title: "Manage Services", description: "Service offerings", icon: Briefcase, href: "/admin/services", show: permissions.content.manage },
-        { title: "Site Settings", description: "Global configuration", icon: Settings, href: "/admin/site-settings", show: permissions.seo.read },
-        { title: "Manage Users", description: "Team members", icon: Users, href: "/admin/users", show: permissions.users.manage },
-    ].filter(a => a.show);
+        { title: "Manage Portfolio", description: "Portfolio projects", icon: Layers, href: "/admin/portfolio" },
+        { title: "Manage Services", description: "Service offerings", icon: Briefcase, href: "/admin/services" },
+        { title: "Site Settings", description: "Global configuration", icon: Settings, href: "/admin/site-settings" },
+    ];
 
 
     return (

@@ -3,16 +3,13 @@
 import { motion } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
-import {  useSession } from "@/context/SessionContext";
-import { Roles } from "@/types/auth.types";
-import { roleLabels } from "@/constants/admin.constants";
+import { useSession } from "@/context/SessionContext";
 
 
 
 export function DashboardWelcome() {
 
     const { session } = useSession()
-    const roleLabel = roleLabels[session.user.role as Roles]
 
     return (
         <motion.div
@@ -33,7 +30,7 @@ export function DashboardWelcome() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                     >
                         Welcome back,{" "}
-                        <span className="gradient-text">{session.user.name}</span>!
+                        <span className="gradient-text">{session?.user?.name || "Admin"}</span>!
                     </motion.h1>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
@@ -45,7 +42,7 @@ export function DashboardWelcome() {
                             className="px-3 py-1 text-xs font-medium bg-primary/10 text-primary border-0 hover:bg-primary/15 transition-colors"
                         >
                             <Sparkles className="h-3 w-3 mr-1.5" />
-                            {roleLabel}
+                            ADMIN
                         </Badge>
                     </motion.div>
                 </div>

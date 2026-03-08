@@ -5,11 +5,11 @@
      a,
      button,
      [role="button"] {
-         cursor: pointer !important ;
+         cursor: pointer !important;
      }
- 
+
 
      input,
      textarea {
-         cursor:    text !important ;
+         cursor: text !important;
      }

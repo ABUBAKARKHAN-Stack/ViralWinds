@@ -1,11 +1,10 @@
 import { DashboardHeader } from '@/components/admin/sections/dashboard'
 import { AppSidebar } from '@/components/layout/admin/AdminSidebar'
 import { SidebarInset } from '@/components/ui/sidebar'
-import { getServerSession } from '@/helpers/getServerSession'
+import { getAdminSession } from '@/lib/auth'
 import AdminProvider from '@/provider/AdminProvider'
 import { SanityLive } from '@/sanity/lib/live'
 import { Metadata } from 'next'
-import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 
 export const metadata: Metadata = {
@@ -16,14 +15,10 @@ export const metadata: Metadata = {
 }
 
 const AdminLayout = async ({ children }: { children: ReactNode }) => {
-
-    const session = await getServerSession()
-
-
-    if (!session) redirect("/")
+    const session = await getAdminSession()
 
     return (
-        <AdminProvider session={session}>
+        <AdminProvider session={session || undefined}>
             <div className="flex min-h-screen w-full">
                 <AppSidebar />
                 <SidebarInset className="flex-1">

@@ -1,6 +1,6 @@
 import { SiteSettingsProvider } from '@/context/SiteSettingsContext'
-import { getServerSession } from '@/helpers/getServerSession'
 import { getSiteSettings } from '@/helpers/site-settings.helpers'
+import { getAdminSession } from '@/lib/auth'
 import PublicProvider from '@/provider/PublicProvider'
 import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
@@ -8,11 +8,10 @@ import { ReactNode } from 'react'
 
 const AuthLayout = async ({ children }: { children: ReactNode }) => {
     const siteSettings = await getSiteSettings()
-    const session = await getServerSession()
+    const session = await getAdminSession()
 
-    if (session) {
-        return redirect('/admin/dashboard')
-    }
+    if (session) return redirect('/admin/dashboard')
+
 
     return (
         <SiteSettingsProvider settings={siteSettings}>

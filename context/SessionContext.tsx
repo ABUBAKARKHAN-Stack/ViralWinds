@@ -1,12 +1,11 @@
 "use client"
 
 import { Session } from "@/lib/auth";
-import { authClient } from "@/lib/auth-client";
 import { errorToast, successToast } from "@/lib/toastNotifications";
-import { LoadingStates } from "@/types/auth.types";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, ReactNode, useState } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 
+export type LoadingStates = 'logout' | "idle"
 interface SessionContextType {
     session: Session;
     logout: () => Promise<void>;
@@ -26,25 +25,20 @@ export function SessionProvider({
 
 
     const logout = async () => {
-        await authClient.signOut(
-            {},
-            {
-                onRequest(_context) {
-                    setLoading("logout")
-                },
-                onSuccess(_context) {
-                    successToast("Logout Successful!")
-                    router.push("/auth/signin")
-                },
-                onError(context) {
-                    const errMsg = context.error.message || "Failed To Logout. Try Again"
-                    errorToast(errMsg)
-                },
-                onResponse(_context) {
-                    setLoading("idle")
-                },
+        setLoading("logout")
+        try {
+            const res = await fetch("/api/admin/logout", { method: "POST" })
+            if (res.ok) {
+                successToast("Logout Successful!")
+                router.push("/auth/signin")
+            } else {
+                errorToast("Failed To Logout. Try Again")
             }
-        )
+        } catch (error) {
+            errorToast("An error occurred. Try Again")
+        } finally {
+            setLoading("idle")
+        }
     }
 
 
