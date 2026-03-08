@@ -24,7 +24,6 @@ import {
 import { ChevronRight } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRoleBasedNavigation } from "@/hooks/useRoleBasedNavigation";
-import { Roles } from "@/types/auth.types";
 import Link from "next/link";
 import { useSession } from "@/context/SessionContext";
 import { usePathname } from "next/navigation";
@@ -46,7 +45,7 @@ export function AppSidebar() {
     if (!session) return null;
 
     const user = session.user;
-    const navigationGroups = useRoleBasedNavigation(user.role as Roles)
+    const navigationGroups = useRoleBasedNavigation()
     const userInitial = user?.name?.charAt(0).toUpperCase() || "A";
 
     const handleLogout = async () => await logout()
