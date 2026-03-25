@@ -7,6 +7,7 @@ import { ContainerLayout } from "@/components/layout";
 import { cn } from "@/lib/utils";
 import { Areas, SectionHeadingType } from "@/types/services.types";
 import Link from "next/link";
+import Image from "next/image";
 
 
 type Props = {
@@ -24,7 +25,7 @@ const AreasWeServe = ({
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start end", "end start"],
-    });    
+    });
 
     const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -100]);
     const globeRotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
@@ -95,7 +96,7 @@ const AreasWeServe = ({
                         <div className="text-center">
                             <div className="text-4xl font-display font-bold text-accent">{areas.length}</div>
                             <div className="text-sm text-muted-foreground">
-                               Continents
+                                Continents
                             </div>
                         </div>
                         <div className="text-center">
@@ -145,7 +146,13 @@ const AreasWeServe = ({
 
                                 {/* Flag & Region */}
                                 <div className="flex items-center gap-3 mb-6">
-                                    <span className="text-4xl">{area.flag}</span>
+                                    <Image
+                                        src={`https://flagsapi.com/${area.flag.toUpperCase()}/shiny/64.png`}
+                                        alt={`${area.region} flag`}
+                                        width={64}
+                                        height={64}
+                                        className="rounded-md"
+                                    />
                                     <div>
                                         <h3 className="text-xl font-display font-bold">{area.region}</h3>
                                         <span className="text-xs text-muted-foreground">{area.clients} Clients</span>
@@ -205,7 +212,7 @@ const AreasWeServe = ({
                                 <div>
                                     <h4 className="text-lg font-display font-bold">Don't see your location?</h4>
                                     <p className="text-muted-foreground text-sm">
-                                      We work with clients worldwide. Let's connect!
+                                        We work with clients worldwide. Let's connect!
                                     </p>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ import { ContainerLayout } from "@/components/layout";
 import { cn } from "@/lib/utils";
 import { useLandingPageContent } from "@/context/LandingPageContentContext";
 import Link from "next/link";
+import Image from "next/image";
 
 
 const AreasWeServe = () => {
@@ -139,7 +140,13 @@ const AreasWeServe = () => {
 
                                 {/* Flag & Region */}
                                 <div className="flex items-center gap-3 mb-6">
-                                    <span className="text-4xl">{area.flag}</span>
+                                    <Image
+                                        src={`https://flagsapi.com/${area.flag.toUpperCase()}/shiny/64.png`}
+                                        alt={`${area.region} flag`}
+                                        width={64}
+                                        height={64}
+                                        className="rounded-md"
+                                    />
                                     <div>
                                         <h3 className="text-xl font-display font-bold">{area.region}</h3>
                                         <span className="text-xs text-muted-foreground">{area.clients} Clients</span>

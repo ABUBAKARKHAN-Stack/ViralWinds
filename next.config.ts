@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
       },
       {
         hostname: "cdn.sanity.io"
+      },
+      {
+        hostname: "flagsapi.com"
       }
     ]
   },
