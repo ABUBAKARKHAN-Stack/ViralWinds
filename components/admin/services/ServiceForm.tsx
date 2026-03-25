@@ -56,13 +56,7 @@ export function ServiceForm({
             description: "",
             heroImageAlt: "",
             items: ["", ""],
-            seo: {
-                metaTitle: "",
-                metaDescription: "",
-                focusKeyword: "",
-                relatedKeywords: [],
-                schemas: [""]
-            }
+
         } as ServiceFormValues,
     })
 
@@ -219,10 +213,7 @@ export function ServiceForm({
                                 Overview
                                 {hasTabErrors(['overviewSection', 'items']) && <ErrorDot />}
                             </TabsTrigger>
-                            <TabsTrigger value="seo" className="px-4 py-2 text-xs sm:text-sm relative">
-                                SEO
-                                {hasTabErrors(['seo']) && <ErrorDot />}
-                            </TabsTrigger>
+                          
                         </TabsList>
                     </div>
 
@@ -294,22 +285,6 @@ export function ServiceForm({
                                         <Plus className="mr-2 h-4 w-4" /> Add Item
                                     </Button>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-
-                    <TabsContent value="seo" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>SEO Settings</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <FormInput control={formControl} name="seo.metaTitle" label="Meta Title" />
-                                <FormInput control={formControl} name="seo.metaDescription" label="Meta Description" type="textarea" />
-                                <FormInput control={formControl} name="seo.focusKeyword" label="Focus Keyword" />
-                                <CommaKeywordsInput name="seo.relatedKeywords" label="Related Keywords" />
-                                <SchemaListInput name="seo.schemas" label="JSON-LD Schemas" />
                             </CardContent>
                         </Card>
                     </TabsContent>

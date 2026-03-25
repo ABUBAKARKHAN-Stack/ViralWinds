@@ -120,7 +120,6 @@ export async function createService(data: ServiceFormValues) {
                 }
             }),       
             items: validatedFields.items,
-            seo: validatedFields.seo
         }
 
         const result = await adminClient.create(doc)
@@ -150,7 +149,6 @@ export async function updateService(id: string, data: ServiceFormValues) {
                 }
             }),  
             items: validatedFields.items,
-            seo: validatedFields.seo
         }
 
         // Use createOrReplace to publish the document to the base ID

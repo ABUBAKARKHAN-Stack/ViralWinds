@@ -1,6 +1,6 @@
 "use client"
 import { urlFor } from '@/sanity/lib/image';
-import { SanityImage } from '@/types/services.types';
+import { SanityImage } from '@/types/image.types';
 import { useScroll, useTransform, motion } from 'motion/react';
 import Image from 'next/image';
 import  { useRef } from 'react'

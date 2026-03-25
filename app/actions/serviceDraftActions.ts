@@ -64,10 +64,6 @@ export async function saveServiceDraft(id: string, data: Partial<ServiceFormValu
 
         // 3. Items
         if (Array.isArray(sanitizedData.items)) toSet.items = sanitizedData.items;
-
-        // 4. SEO
-        if (sanitizedData.seo) toSet.seo = sanitizedData.seo;
-
         if (Object.keys(toSet).length === 0 && toUnset.length === 0) {
             return { success: true, message: "No data to update" };
         }

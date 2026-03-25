@@ -10,3 +10,8 @@ export interface SanityImageAsset {
     altText?: string
     caption?: string
 }
+
+export interface SanityImage {
+    alt: string;
+    source: string;
+}

@@ -41,12 +41,6 @@ export const serviceType = defineType({
             of: [{ type: 'localizedString' }],
             validation: Rule => Rule.min(1)
         }),
-
-        defineField({
-            name: 'seo',
-            type: 'seo',
-            validation: Rule => Rule.required()
-        }),
     ],
 
     preview: {

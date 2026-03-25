@@ -37,7 +37,8 @@ const ServiceCard = ({ service, index, onClick }: {
             onClick={onClick}
             ref={ref}
             style={{ opacity, y }}
-            className="group relative cursor-pointer"
+            data-cursor="pointer"
+            className="group relative"
         >
             {/* Card Container */}
             <div className="relative py-12 md:py-16 lg:py-20 border-b border-border/30 hover:border-accent/60 transition-all duration-500">
@@ -86,7 +87,7 @@ const ServiceCard = ({ service, index, onClick }: {
                         </motion.h3>
 
                         {/* Description */}
-                        <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-md line-clamp-4">
+                        <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-md line-clamp-5">
                             <LinkProcessor text={service.description} />
                         </p>
                     </div>

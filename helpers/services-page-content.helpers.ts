@@ -71,7 +71,6 @@ export const SERVICES_PAGE_CONTENT_QUERY = defineQuery(`*[_type == "servicesPage
     "services": servicesList.services[]->{
     "title": title,
     "description": description,
-    "slug": slug.current,
     "heroImage": {
       "alt":heroImage.heroImageAlt,
       "source": heroImage.asset._ref
