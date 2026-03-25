@@ -36,7 +36,6 @@ import { Badge } from "@/components/ui/badge"
 interface Service {
     _id: string
     title: string
-    slug: string
     heroImageUrl?: string
     _updatedAt: string
     status: 'Draft' | 'Published'
@@ -58,9 +57,8 @@ export function ServicesClient({ services }: ServicesClientProps) {
     const filteredServices = useMemo(() => {
         return services.filter(service => {
             const title = service.title?.toLowerCase() || ""
-            const slug = service.slug?.toLowerCase() || ""
             const query = searchQuery.toLowerCase()
-            return title.includes(query) || slug.includes(query)
+            return title.includes(query)
         })
     }, [services, searchQuery])
 
@@ -213,7 +211,6 @@ export function ServicesClient({ services }: ServicesClientProps) {
                             <TableHead className="w-[80px]">Preview</TableHead>
                             <TableHead className="min-w-[200px]">Title</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className="hidden md:table-cell">Slug</TableHead>
                             <TableHead className="hidden sm:table-cell">Updated</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
@@ -282,9 +279,7 @@ export function ServicesClient({ services }: ServicesClientProps) {
                                             {service.status}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell className="hidden md:table-cell text-muted-foreground font-mono text-xs">
-                                        {service.slug || "Slug is missing"}
-                                    </TableCell>
+                                
                                     <TableCell className="hidden sm:table-cell">
                                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                             <Calendar className="h-3 w-3" />

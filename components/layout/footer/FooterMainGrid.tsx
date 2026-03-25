@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { getIconByName } from "@/lib/icon-mapper";
 import MagneticButton from "@/components/MagneticButton";
@@ -9,9 +10,11 @@ import Logo from "@/components/ui/logo";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { resolveUrl } from "@/lib/menu-utils";
 import { BRAND_DESCRIPTION } from "@/constants/app.constants";
+import ContactDrawer from "@/components/sections/shared/ContactDrawer";
 
 const FooterMainGrid = () => {
     const { settings } = useSiteSettings()
+    const [service, setService] = useState<string | null>(null);
 
     return (
         <div className="grid lg:grid-cols-4 grid-cols-1 gap-12 mb-16">
@@ -65,6 +68,22 @@ const FooterMainGrid = () => {
                         {(column.children || []).map((item: any, index: number) => {
                             const href = resolveUrl(item);
                             const label = item.label || item.title;
+                            const isService = item.type === 'reference' && item.reference?._type === 'service';
+
+                            if (isService) {
+                                return (
+                                    <li key={item._key || index}>
+                                        <button
+                                            onClick={() => setService(label)}
+                                            className="text-sm text-foreground/70 hover:text-accent transition-colors inline-flex items-center gap-2 group cursor-pointer"
+                                        >
+                                            {label}
+                                            <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        </button>
+                                    </li>
+                                )
+                            }
+
                             return (
                                 <li key={item._key || index}>
                                     <Link
@@ -117,6 +136,12 @@ const FooterMainGrid = () => {
                     )}
                 </ul>
             </div>
+
+            <ContactDrawer
+                open={!!service}
+                onOpenChange={(open) => setService(open ? service : null)}
+                service={service || ""}
+            />
         </div>
     )
 }

@@ -14,7 +14,6 @@ export async function getDashboardServices() {
         const query = `*[_type == "service"] | order(_updatedAt desc) {
             _id,
             title,
-            slug,
             "heroImageUrl": heroImage.asset->url,
             _updatedAt
         }`
@@ -22,8 +21,6 @@ export async function getDashboardServices() {
             perspective: "raw",
             useCdn: false,
         })
-
-
 
         const serviceMap = new Map<string, any>()
 
@@ -89,37 +86,13 @@ export async function getServiceById(id: string) {
             _id,
             _type,
             title,
-            subtitle,
             description,
-            slug,
             heroImage {
                 ...,
                 asset,
                 "url": asset->url
             },
-            introTagLine,
-            introTitle,
-            introContent,
-            roleTitle,
-            roleContent,
-            howWeHelpSection,
-            howWeHelpPoints,
-            overviewSection,
             items,
-            processSection,
-            process,
-            areasSection,
-            areas,
-            industriesSection,
-            industries,
-            benifitsSection,
-            benefits,
-            whyChooseUsSection,
-            whyChooseUsPoints,
-            caseStudiesSection,
-            caseStudies,
-            faqsSection,
-            faqs,
             seo
         }`
 
@@ -134,48 +107,19 @@ export async function getServiceById(id: string) {
 export async function createService(data: ServiceFormValues) {
     try {
         const validatedFields = serviceFormSchema.parse(data)
-        const slug = validatedFields.slug || slugify(validatedFields.title)
 
         const doc = {
             _type: 'service',
             title: validatedFields.title,
-            subtitle: validatedFields.subtitle,
             description: validatedFields.description,
-            slug: { _type: 'slug', current: slug },
             ...(validatedFields.heroImage && {
                 heroImage: {
                     _type: 'image',
                     asset: validatedFields.heroImage.asset,
                     alt: validatedFields.heroImageAlt
                 }
-            }),
-            introTagLine: validatedFields.introTagLine,
-            introTitle: validatedFields.introTitle,
-            introContent: validatedFields.introContent,
-            roleTitle: validatedFields.roleTitle,
-            roleContent: validatedFields.roleContent,
-            howWeHelpSection: { _type: 'sectionHeading', ...validatedFields.howWeHelpSection },
-            howWeHelpPoints: validatedFields.howWeHelpPoints,
-            overviewSection: { _type: 'sectionHeading', ...validatedFields.overviewSection },
+            }),       
             items: validatedFields.items,
-            processSection: { _type: 'sectionHeading', ...validatedFields.processSection },
-            process: validatedFields.process,
-            areasSection: { _type: 'sectionHeading', ...validatedFields.areasSection },
-            areas: validatedFields.areas,
-            industriesSection: { _type: 'sectionHeading', ...validatedFields.industriesSection },
-            industries: validatedFields.industries,
-            benifitsSection: { _type: 'sectionHeading', ...validatedFields.benifitsSection },
-            benefits: validatedFields.benefits,
-            whyChooseUsSection: { _type: 'sectionHeading', ...validatedFields.whyChooseUsSection },
-            whyChooseUsPoints: validatedFields.whyChooseUsPoints,
-            caseStudiesSection: { _type: 'sectionHeading', ...validatedFields.caseStudiesSection },
-            caseStudies: validatedFields.caseStudies,
-            faqsSection: { _type: 'sectionHeading', ...validatedFields.faqsSection },
-            faqs: validatedFields.faqs,
-            otherServicesSection: { _type: 'sectionHeading', ...validatedFields.otherServicesSection },
-            otherServices: validatedFields.otherServices?.map(id => ({ _type: 'reference', _ref: id, _key: Math.random().toString(36).substring(2, 9) })),
-            otherServicesButtonText: validatedFields.otherServicesButtonText,
-            otherServicesButtonUrl: validatedFields.otherServicesButtonUrl,
             seo: validatedFields.seo
         }
 
@@ -197,58 +141,15 @@ export async function updateService(id: string, data: ServiceFormValues) {
         const docData: any = {
             _type: 'service',
             title: validatedFields.title,
-            subtitle: validatedFields.subtitle,
             description: validatedFields.description,
-            slug: { _type: 'slug', current: validatedFields.slug },
             ...(validatedFields.heroImage && {
                 heroImage: {
                     _type: 'image',
                     asset: validatedFields.heroImage.asset,
                     heroImageAlt: validatedFields.heroImageAlt
                 }
-            }),
-            introTagLine: validatedFields.introTagLine,
-            introTitle: validatedFields.introTitle,
-            introContent: validatedFields.introContent,
-            roleTitle: validatedFields.roleTitle,
-            roleContent: validatedFields.roleContent,
-            howWeHelpSection: { _type: 'sectionHeading', ...validatedFields.howWeHelpSection },
-            howWeHelpPoints: validatedFields.howWeHelpPoints,
-            overviewSection: { _type: 'sectionHeading', ...validatedFields.overviewSection },
+            }),  
             items: validatedFields.items,
-            processSection: { _type: 'sectionHeading', ...validatedFields.processSection },
-            process: validatedFields.process,
-            areasSection: { _type: 'sectionHeading', ...validatedFields.areasSection },
-            areas: validatedFields.areas.map((area: any) => ({
-                ...area,
-                _key: area._key || Math.random().toString(36).substring(2, 9)
-            })),
-            industriesSection: { _type: 'sectionHeading', ...validatedFields.industriesSection },
-            industries: validatedFields.industries.map((ind: any) => ({
-                ...ind,
-                _key: ind._key || Math.random().toString(36).substring(2, 9)
-            })),
-            benifitsSection: { _type: 'sectionHeading', ...validatedFields.benifitsSection },
-            benefits: validatedFields.benefits,
-            whyChooseUsSection: { _type: 'sectionHeading', ...validatedFields.whyChooseUsSection },
-            whyChooseUsPoints: validatedFields.whyChooseUsPoints.map((p: any) => ({
-                ...p,
-                _key: p._key || Math.random().toString(36).substring(2, 9)
-            })),
-            caseStudiesSection: { _type: 'sectionHeading', ...validatedFields.caseStudiesSection },
-            caseStudies: validatedFields.caseStudies.map((cs: any) => ({
-                ...cs,
-                _key: cs._key || Math.random().toString(36).substring(2, 9)
-            })),
-            faqsSection: { _type: 'sectionHeading', ...validatedFields.faqsSection },
-            faqs: validatedFields.faqs.map((f: any) => ({
-                ...f,
-                _key: f._key || Math.random().toString(36).substring(2, 9)
-            })),
-            otherServicesSection: { _type: 'sectionHeading', ...validatedFields.otherServicesSection },
-            otherServices: validatedFields.otherServices?.map(id => ({ _type: 'reference', _ref: id, _key: Math.random().toString(36).substring(2, 9) })),
-            otherServicesButtonText: validatedFields.otherServicesButtonText,
-            otherServicesButtonUrl: validatedFields.otherServicesButtonUrl,
             seo: validatedFields.seo
         }
 
@@ -283,39 +184,13 @@ export async function duplicateService(id: string) {
         const newDoc: any = {
             _type: 'service',
             title: `${sourceService.title} (Copy)`,
-            subtitle: sourceService.subtitle,
             description: sourceService.description,
-            // Slug is intentionally omitted
             heroImage: sourceService.heroImage?.asset ? {
                 _type: 'image',
                 asset: sourceService.heroImage.asset,
                 heroImageAlt: sourceService.heroImage.heroImageAlt
             } : undefined,
-            introTagLine: sourceService.introTagLine,
-            introTitle: sourceService.introTitle,
-            introContent: sourceService.introContent,
-            roleTitle: sourceService.roleTitle,
-            roleContent: sourceService.roleContent,
-            howWeHelpSection: sourceService.howWeHelpSection,
-            howWeHelpPoints: sourceService.howWeHelpPoints,
-            overviewSection: sourceService.overviewSection,
             items: sourceService.items,
-            processSection: sourceService.processSection,
-            process: sourceService.process,
-            areasSection: sourceService.areasSection,
-            areas: sourceService.areas,
-            industriesSection: sourceService.industriesSection,
-            industries: sourceService.industries,
-            benifitsSection: sourceService.benifitsSection,
-            benefits: sourceService.benefits,
-            whyChooseUsSection: sourceService.whyChooseUsSection,
-            whyChooseUsPoints: sourceService.whyChooseUsPoints,
-            caseStudiesSection: sourceService.caseStudiesSection,
-            caseStudies: sourceService.caseStudies,
-            faqsSection: sourceService.faqsSection,
-            faqs: sourceService.faqs,
-            blogsSection: sourceService.blogsSection,
-            blogs: sourceService.blogs,
             seo: sourceService.seo
         }
 

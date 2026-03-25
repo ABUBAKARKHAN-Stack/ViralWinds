@@ -42,11 +42,8 @@ export async function saveServiceDraft(id: string, data: Partial<ServiceFormValu
 
         // 1. Basic Info
         if (sanitizedData.title) toSet.title = sanitizedData.title;
-        if (sanitizedData.subtitle) toSet.subtitle = sanitizedData.subtitle;
         if (sanitizedData.description) toSet.description = sanitizedData.description;
-        if (sanitizedData.slug) {
-            toSet.slug = { _type: 'slug', current: sanitizedData.slug };
-        }
+    
 
         // 2. Hero
         if (sanitizedData.heroImage) {
@@ -65,76 +62,10 @@ export async function saveServiceDraft(id: string, data: Partial<ServiceFormValu
             toSet['heroImage.heroImageAlt'] = sanitizedData.heroImageAlt;
         }
 
-        // 3. Intro
-        if (sanitizedData.introTagLine) toSet.introTagLine = sanitizedData.introTagLine;
-        if (sanitizedData.introTitle) toSet.introTitle = sanitizedData.introTitle;
-        if (sanitizedData.introContent) toSet.introContent = sanitizedData.introContent;
-
-        // 4. Role
-        if (sanitizedData.roleTitle) toSet.roleTitle = sanitizedData.roleTitle;
-        if (Array.isArray(sanitizedData.roleContent)) toSet.roleContent = sanitizedData.roleContent;
-
-        // 5. How We Help
-        if (sanitizedData.howWeHelpSection) toSet.howWeHelpSection = sanitizedData.howWeHelpSection;
-        if (Array.isArray(sanitizedData.howWeHelpPoints)) toSet.howWeHelpPoints = sanitizedData.howWeHelpPoints.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 6. Overview
-        if (sanitizedData.overviewSection) toSet.overviewSection = sanitizedData.overviewSection;
+        // 3. Items
         if (Array.isArray(sanitizedData.items)) toSet.items = sanitizedData.items;
 
-        // 7. Process
-        if (sanitizedData.processSection) toSet.processSection = sanitizedData.processSection;
-        if (Array.isArray(sanitizedData.process)) toSet.process = sanitizedData.process.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 8. Areas
-        if (sanitizedData.areasSection) toSet.areasSection = sanitizedData.areasSection;
-        if (Array.isArray(sanitizedData.areas)) toSet.areas = sanitizedData.areas.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 9. Industries
-        if (sanitizedData.industriesSection) toSet.industriesSection = sanitizedData.industriesSection;
-        if (Array.isArray(sanitizedData.industries)) toSet.industries = sanitizedData.industries.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 10. Benefits
-        if (sanitizedData.benifitsSection) toSet.benifitsSection = sanitizedData.benifitsSection;
-        if (Array.isArray(sanitizedData.benefits)) toSet.benefits = sanitizedData.benefits;
-
-        // 11. Why Choose Us
-        if (sanitizedData.whyChooseUsSection) toSet.whyChooseUsSection = sanitizedData.whyChooseUsSection;
-        if (Array.isArray(sanitizedData.whyChooseUsPoints)) toSet.whyChooseUsPoints = sanitizedData.whyChooseUsPoints.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 12. Case Studies
-        if (sanitizedData.caseStudiesSection) toSet.caseStudiesSection = sanitizedData.caseStudiesSection;
-        if (Array.isArray(sanitizedData.caseStudies)) toSet.caseStudies = sanitizedData.caseStudies.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 13. FAQs
-        if (sanitizedData.faqsSection) toSet.faqsSection = sanitizedData.faqsSection;
-        if (Array.isArray(sanitizedData.faqs)) toSet.faqs = sanitizedData.faqs.map((p: any) => ({ ...p, _key: p._key || Math.random().toString(36).substring(2, 9) }));
-
-        // 14. Blogs
-        if (sanitizedData.blogsSection) toSet.blogsSection = { _type: 'sectionHeading', ...sanitizedData.blogsSection };
-        if (Array.isArray(sanitizedData.blogs)) {
-            toSet.blogs = sanitizedData.blogs.map((id: string) => ({
-                _type: 'reference',
-                _ref: id,
-                _key: Math.random().toString(36).substring(2, 9)
-            }));
-        }
-        if (sanitizedData.blogsButtonText) toSet.blogsButtonText = sanitizedData.blogsButtonText;
-        if (sanitizedData.blogsButtonUrl) toSet.blogsButtonUrl = sanitizedData.blogsButtonUrl;
-
-        // 14.5 Other Services
-        if (sanitizedData.otherServicesSection) toSet.otherServicesSection = { _type: 'sectionHeading', ...sanitizedData.otherServicesSection };
-        if (Array.isArray(sanitizedData.otherServices)) {
-            toSet.otherServices = sanitizedData.otherServices.map((id: string) => ({
-                _type: 'reference',
-                _ref: id,
-                _key: Math.random().toString(36).substring(2, 9)
-            }));
-        }
-        if (sanitizedData.otherServicesButtonText) toSet.otherServicesButtonText = sanitizedData.otherServicesButtonText;
-        if (sanitizedData.otherServicesButtonUrl) toSet.otherServicesButtonUrl = sanitizedData.otherServicesButtonUrl;
-
-        // 15. SEO
+        // 4. SEO
         if (sanitizedData.seo) toSet.seo = sanitizedData.seo;
 
         if (Object.keys(toSet).length === 0 && toUnset.length === 0) {

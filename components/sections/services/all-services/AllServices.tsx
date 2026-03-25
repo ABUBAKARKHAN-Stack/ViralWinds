@@ -4,24 +4,18 @@ import { ContainerLayout } from "../../../layout";
 import ServiceCard from "./ServiceCard";
 import BGDecorations from "./BG-Decorations";
 import SectionHeading from "@/components/ui/section-heading";
-import { SectionHeadingType } from "@/types/services.types";
+import { SectionHeadingType, ServiceType } from "@/types/services.types";
+import ContactDrawer from "../../shared/ContactDrawer";
+import { useState } from "react";
 
 type Props = {
   sectionHeading: SectionHeadingType;
-  services: {
-    title: string;
-    description: string;
-    slug: string;
-    heroImage: {
-      alt: string;
-      source: string;
-    };
-    items: string[];
-  }[];
+  services: ServiceType[];
 }
 
 
-const AllServices = ({ sectionHeading, services}: Props) => {
+const AllServices = ({ sectionHeading, services }: Props) => {
+  const [service, setService] = useState<string | null>(null);
 
   if (!services || !sectionHeading) return null
   return (
@@ -44,12 +38,22 @@ const AllServices = ({ sectionHeading, services}: Props) => {
         <div className="space-y-0">
           {services.map((service, i) => {
             return (
-              <ServiceCard key={`${service.title}-${i}`} service={service} index={i} />
+              <ServiceCard
+                onClick={() => setService(service.title)}
+                key={`${service.title}-${i}`}
+                service={service}
+                index={i}
+              />
             )
           })}
         </div>
       </ContainerLayout>
 
+      <ContactDrawer
+        open={!!service}
+        onOpenChange={(open) => setService(open ? service : null)}
+        service={service || ""}
+      />
     </section>
   );
 };

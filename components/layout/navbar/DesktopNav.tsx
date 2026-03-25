@@ -11,6 +11,7 @@ import Logo from "@/components/ui/logo";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 import { resolveUrl } from "@/lib/menu-utils";
+import ContactDrawer from "@/components/sections/shared/ContactDrawer";
 
 type Props = {
     isOpen: boolean
@@ -41,6 +42,8 @@ const DesktopNav: FC<Props> = ({
     const { settings } = useSiteSettings()
 
     const menuItems = (settings?.headerMenu?.items || []) as any[]
+
+    const [service, setService] = useState<string | null>(null)
 
 
     return (
@@ -114,43 +117,29 @@ const DesktopNav: FC<Props> = ({
                                                     >
                                                         <div className="bg-background/95 backdrop-blur-xl border border-border shadow-xl overflow-hidden">
                                                             <div className="max-h-[70vh] overflow-x-hidden overflow-y-auto">
-                                                                {item.children.map((child: any, i: number) => {
-                                                                    const childPath = resolveUrl(child)
-                                                                    return (
-                                                                        <motion.div
-                                                                            key={i}
-                                                                            initial={{ opacity: 0, x: -10 }}
-                                                                            animate={{ opacity: 1, x: 0 }}
-                                                                            transition={{ delay: i * 0.05 }}
-                                                                        >
-                                                                            <Link
-                                                                                href={childPath}
-                                                                                className={`block px-5 py-4 group transition-colors border-b border-border/50 last:border-b-0 hover:bg-accent/10 ${pathname === childPath ? 'bg-accent/10' : ''
-                                                                                    }`}
-                                                                            >
-                                                                                <span className={`block text-sm font-medium group-hover:text-accent transition-colors ${pathname === childPath ? 'text-accent' : ''
-                                                                                    }`}>
-                                                                                    {child.label}
-                                                                                </span>
-                                                                                {child.description ? (
-                                                                                    <span className="block text-[10px] text-muted-foreground mt-0.5">
-                                                                                        {child.description}
-                                                                                    </span>
-                                                                                ) : (child.reference as any)?.items && (
-                                                                                    <span className="block text-[10px] text-muted-foreground mt-0.5">
-                                                                                        {(child.reference as any).items.slice(0, 2).map((item: any) => item).join(', ')}
-                                                                                    </span>
-                                                                                )}
-                                                                            </Link>
-                                                                        </motion.div>
-                                                                    )
-                                                                })}
+
+                                                                {item.children.map((child: any, i: number) => (
+                                                                    <motion.button
+                                                                        key={i}
+                                                                        initial={{ opacity: 0, x: -10 }}
+                                                                        animate={{ opacity: 1, x: 0 }}
+                                                                        transition={{ delay: i * 0.05 }}
+                                                                        onClick={() => setService(child.label)}
+                                                                        className="block px-5 py-4 group transition-colors border-b border-border/40 cursor-pointer last:border-b-0 hover:bg-accent/10 backdrop-blur-xl"
+                                                                    >
+
+                                                                        <span className="block text-sm font-medium group-hover:text-accent transition-colors">
+                                                                            {child.label}
+                                                                        </span>
+                                                                    </motion.button>
+                                                                ))}
+
                                                             </div>
                                                             {/* Special case for services view all */}
                                                             {path.includes('/services') && (
                                                                 <div className="p-3 border-t border-border/50 bg-muted/30">
                                                                     <Link
-                                                                        href={`/services`}
+                                                                        href="/services"
                                                                         className="flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-accent transition-colors"
                                                                     >
                                                                         View All Services
@@ -194,6 +183,12 @@ const DesktopNav: FC<Props> = ({
                     </div>
                 </ContainerLayout>
             </nav>
+
+            <ContactDrawer
+                open={!!service}
+                onOpenChange={(open) => setService(open ? service : null)}
+                service={service || ""}
+            />
         </motion.header>
     )
 }

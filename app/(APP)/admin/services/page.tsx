@@ -3,19 +3,6 @@ import { Plus } from "lucide-react"
 import Link from "next/link"
 import { ServicesClient } from "@/components/admin/services/ServicesClient"
 import { Card } from "@/components/ui/card"
-import { sanityFetch } from "@/sanity/lib/live"
-
-// Define the type for the service data we're fetching
-interface Service {
-    _id: string
-    title: string
-    slug: string
-    heroImageUrl?: string
-    _updatedAt: string
-    status: 'Draft' | 'Published'
-    hasPublished?: boolean
-}
-
 import { getDashboardServices } from "@/app/actions/service"
 
 export default async function ServicesPage() {

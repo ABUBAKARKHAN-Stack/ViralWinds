@@ -1,135 +1,15 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { ServiceCTA, ServiceData, ServiceLightWeight } from "@/types/services.types";
+import { ServiceCTA, ServiceType } from "@/types/services.types";
 
 const SERVICE_QUERY = `{
   "title": title,
-  "subtitle": subtitle,
   "description": description,
-  "slug": slug.current,
   heroImage{
     "alt": alt,
     "source": asset._ref
   },
 
-  // Intro Section
-  "introTagLine": introTagLine,
-  "introTitle": introTitle,
-  "introContent": introContent,
-
-  // Role Section
-  "roleTitle": roleTitle,
-  "roleContent": roleContent[],
-
-  // How We Help Section
-  "howWeHelpSection": {
-    "eyebrow": howWeHelpSection.eyebrow,
-    "title": howWeHelpSection.title,
-    "description": howWeHelpSection.description
-  },
-
-  "howWeHelpPoints": howWeHelpPoints[]{
-    "title": title,
-    "description": description
-  },
-
-  // Overview & Items
-  "overviewSection": {
-    "eyebrow": overviewSection.eyebrow,
-    "title": overviewSection.title,
-    "description": overviewSection.description
-  },
   "items": items[],
-
-  // Process Section
-  "processSection": {
-    "eyebrow": processSection.eyebrow,
-    "title": processSection.title,
-    "description": processSection.description
-  },
-  "process": process[]{
-    step,
-    "title": title,
-    "desc": desc
-  },
-
-  // Areas Section
-  "areasSection": {
-    "eyebrow": areasSection.eyebrow,
-    "title": areasSection.title,
-    "description": areasSection.description
-  },
-  "areas": areas[]{
-    "region": region,
-    "locations": locations[],
-    featured,
-    clients,
-    flag
-  },
-
-  // Industries Section
-  "industriesSection": {
-    "eyebrow": industriesSection.eyebrow,
-    "title": industriesSection.title,
-    "description": industriesSection.description
-  },
-  "industries": industries[]{
-    "name": name,
-    "description": description
-  },
-
-  // Benefits
-   "benifitsSection": {
-    "eyebrow": benifitsSection.eyebrow,
-    "title": benifitsSection.title,
-    "description": benifitsSection.description
-  },
-  "benefits": benefits[],
-
-  // Why Choose Us
-   "whyChooseUsSection": {
-    "eyebrow": whyChooseUsSection.eyebrow,
-    "title": whyChooseUsSection.title,
-    "description": whyChooseUsSection.description
-  },
-  "whyChooseUsPoints": whyChooseUsPoints[]{
-    "title": title,
-    "description": description
-  },
-
-  // Case Studies
-  "caseStudiesSection": {
-    "eyebrow": caseStudiesSection.eyebrow,
-    "title": caseStudiesSection.title,
-    "description": caseStudiesSection.description
-  },
-  "caseStudies": caseStudies[]{
-    "title": title,
-    "problem": problem,
-    "solution": solution,
-    "result": result
-  },
-
-  // FAQs
-  "faqsSection": {
-    "eyebrow": faqsSection.eyebrow,
-    "title": faqsSection.title,
-    "description": faqsSection.description
-  },
-  "faqs": faqs[]{
-    "question": question,
-    "answer": answer
-  },
-
-  // Other Services
-  "otherServicesSection": otherServicesSection,
-  "otherServices": otherServices[]->{
-    "title": title,
-    "description": description,
-    "slug": slug.current,
-    "heroImageUrl": heroImage.asset->url
-  },
-  "otherServicesButtonText": otherServicesButtonText,
-  "otherServicesButtonUrl": otherServicesButtonUrl,
 
   // SEO
   seo,
@@ -186,7 +66,7 @@ const getService = async (
       },
       perspective: "published"
     })
-    const service = data as ServiceData;
+    const service = data as ServiceType;
     return service ?? null
   } catch (error) {
     console.log("Sanity Error :: ", error);
