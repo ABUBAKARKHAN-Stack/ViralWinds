@@ -59,7 +59,7 @@ const ServicesPage = async () => {
 
 
     //* Provide fallback if content not found
-    if (!pageContent || !cta) {
+    if (!pageContent) {
         return (
             <DataMissing
                 title="Services Overview Pending"

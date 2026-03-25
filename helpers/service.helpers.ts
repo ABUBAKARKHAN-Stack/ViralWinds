@@ -120,27 +120,6 @@ const SERVICE_QUERY = `{
     "answer": answer
   },
 
-  // Blogs Section
-  "blogsSection": {
-    "eyebrow": blogsSection.eyebrow,
-    "title": blogsSection.title,
-    "description": blogsSection.description
-  },
-  "blogs": blogs[]->{
-    "title": title,
-    "description": description,
-    "slug": slug.current,
-    "mainImage": {
-      "alt": mainImage.alt,
-      "source": mainImage.asset._ref
-    },
-    "categories": categories[]->title,
-    publishedAt,
-    readTime
-  },
-  "blogsButtonText": blogsButtonText,
-  "blogsButtonUrl": blogsButtonUrl,
-
   // Other Services
   "otherServicesSection": otherServicesSection,
   "otherServices": otherServices[]->{
@@ -156,12 +135,6 @@ const SERVICE_QUERY = `{
   seo,
 
 }`;
-
-const SERVICE_QUERY_LIGHT_WEIGHT = `{
-  "title": title,
-  "slug": slug.current,
-  "items": items[],
-}`
 
 const SERVICE_SEO_QUERY = `{
   "slug": slug.current,
