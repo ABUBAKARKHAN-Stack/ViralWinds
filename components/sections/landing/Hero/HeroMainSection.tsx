@@ -149,7 +149,7 @@ const HeroMainSection = ({
                                         initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.7 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                                        className="flex items-center gap-3 p-3.5 bg-muted/50 border border-border hover:border-accent/30 hover:bg-accent/5 transition-all group cursor-pointer"
+                                        className="flex w-full items-center gap-3 p-3.5 bg-muted/50 border border-border hover:border-accent/30 hover:bg-accent/5 transition-all group cursor-pointer"
                                         onClick={() => setService(service.title)}
                                     >
                                         <div className="w-7 h-7 bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">

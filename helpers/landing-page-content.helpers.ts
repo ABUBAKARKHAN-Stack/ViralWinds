@@ -55,28 +55,6 @@ export const LANDING_PAGE_CONTENT_QUERY = defineQuery(`
       "ctaUrl": aboutPreview.ctaUrl
     },
 
-    "blogPreview": {
-      "sectionHeading": {
-        "eyebrow": blogPreview.sectionHeading.eyebrow,
-        "title": blogPreview.sectionHeading.title,
-        "description": blogPreview.sectionHeading.description
-      },
-      "featuredBlogs": blogPreview.featuredBlogs[]->{
-        "title": title,
-        "description": description,
-        "slug": slug.current,
-        "mainImage": mainImage.asset->{
-          "alt": altText,
-          "source": _id
-        },
-        "categories": categories[]->title,
-        publishedAt,
-        readTime
-      },
-      "buttonText": blogPreview.buttonText,
-      "buttonUrl": blogPreview.buttonUrl
-    },
-
     "serviceHighlightsMarquee": {
       "highlights": serviceHighlightsMarquee.highlights[]{
         "text": text

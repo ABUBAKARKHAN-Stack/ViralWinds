@@ -30,16 +30,14 @@ export async function getGlobalSections() {
         description
       },
       featuredServices[]-> {
-        _id,
         title,
-        "slug": slug.current,
         description,
          "heroImage": {
       "alt":heroImage.heroImageAlt,
       "source": heroImage.asset._ref
     },
     "items": items[],
-  
+
       },
       buttonText,
       buttonUrl

@@ -2,16 +2,19 @@
 
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ContainerLayout } from "@/components/layout";
 import SectionHeading from "@/components/ui/section-heading";
 import { useGlobalContent } from "@/context/GlobalContentContext";
 import ServiceCard from "@/components/cards/ServiceCard";
+import ContactDrawer from "./ContactDrawer";
 
 
 const ServicesPreview = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [service, setService] = useState<string | null>(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -76,7 +79,12 @@ const ServicesPreview = () => {
         {/* Services Grid */}
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
           {featuredServices.map((service, index) => (
-            <ServiceCard key={`${service._id}-${index}`} service={service} index={index} />
+            <ServiceCard
+              key={`${service.title.slice(0, 10)}-${index}`}
+              onClick={() => setService(service.title)}
+              service={service}
+              index={index}
+            />
           ))}
         </div>
 
@@ -97,6 +105,12 @@ const ServicesPreview = () => {
           </Link>
         </motion.div>
       </ContainerLayout>
+
+      <ContactDrawer
+        open={!!service}
+        onOpenChange={(open) => setService(open ? service : null)}
+        service={service || ""}
+      />
     </section>
   );
 };

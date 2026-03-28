@@ -258,11 +258,6 @@ export const landingPageContentType = defineType({
         }),
 
 
-
-
-
-
-
         // SERVICE HIGHLIGHTS MARQUEE SECTION
         defineField({
             name: 'serviceHighlightsMarquee',
@@ -329,7 +324,6 @@ export const landingPageContentType = defineType({
                 })
             ]
         }),
-
 
         // CASE STUDIES PREVIEW SECTION
         defineField({

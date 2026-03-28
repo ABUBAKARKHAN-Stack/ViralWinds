@@ -11,6 +11,10 @@ import { Marquee } from "@/components/ui/marquee";
 import { useLandingPageContent } from "@/context/LandingPageContentContext";
 
 const PortfolioPreview = () => {
+  const { landingPageContent } = useLandingPageContent();
+
+  if (!landingPageContent?.portfolioPreview || !landingPageContent.portfolioPreview.featuredProjects) return null;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -18,9 +22,6 @@ const PortfolioPreview = () => {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
-  const { landingPageContent } = useLandingPageContent();
-
-  if (!landingPageContent?.portfolioPreview) return null;
 
 
   const portfolioPreviewData = landingPageContent.portfolioPreview;

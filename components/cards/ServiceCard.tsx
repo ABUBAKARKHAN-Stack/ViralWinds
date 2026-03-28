@@ -11,14 +11,16 @@ import Image from "next/image";
 import { useIsTouchDevice } from "@/hooks/useIsTouchDevice";
 import { urlFor } from "@/sanity/lib/image";
 import { LinkProcessor } from "../ui/LinkProcessor";
+import { ServiceType } from "@/types/services.types";
 
 interface ServiceCardProps {
-    service: { _id: string; title: string; slug: string; description: string; heroImage: { alt: string; source: string; }; items: string[]; };
+    service: ServiceType;
+    onClick: () => void;
     index: number;
 }
 
-const ServiceCard = ({ service, index }: ServiceCardProps) => {
-    const cardRef = useRef<HTMLAnchorElement>(null);
+const ServiceCard = ({ service, index, onClick }: ServiceCardProps) => {
+    const cardRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
     const isTouchDevice = useIsTouchDevice()
 
@@ -51,9 +53,10 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
 
 
     return (
-        <motion.a
+        <motion.div
             ref={cardRef}
-            href={`/services/${service.slug}`}
+            data-cursor="pointer"
+            onClick={onClick}
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
@@ -127,7 +130,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
 
                     {/* Header */}
                     <div className="flex items-start justify-between">
-                       <span className="block text-sm tracking-[0.4em] text-accent font-semibold mb-1">
+                        <span className="block text-sm tracking-[0.4em] text-accent font-semibold mb-1">
                             {index > 9 ? index + 1 : `0${index + 1}`}
                         </span>
 
@@ -144,7 +147,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
 
 
                     <div>
-                       
+
                         <motion.h3
                             className="text-xl line-clamp-2 lg:text-2xl font-bold tracking-tight font-display"
                             animate={{
@@ -179,10 +182,10 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                     }
 
                     {/* Tags */}
-                    <div className="grid grid-cols-2 gap-2 mt-auto">
-                        {service.items.slice(0, 3).map((feature) => (
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                        {service.items.slice(0, 3).map((feature, index) => (
                             <span
-                                key={feature}
+                                key={index}
                                 className="text-[10px] tracking-wider px-2 py-1 bg-muted/50 text-muted-foreground border border-border/50 group-hover:border-accent/30 group-hover:text-foreground transition-all truncate"
                             >
                                 {feature}
@@ -190,7 +193,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                         ))}
 
                         {service.items.length > 3 && (
-                            <span className="text-[10px] px-2 py-1 bg-accent/10 text-accent border border-accent/30">
+                            <span className="text-[10px] w-fit px-2 py-1 bg-accent/10 text-accent border border-accent/30">
                                 +{service.items.length - 3} more
                             </span>
                         )}
@@ -200,7 +203,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
                 {/* Bottom Glow */}
                 <div className="absolute -bottom-16 -right-16 w-32 h-32 bg-accent/5 rounded-full blur-2xl group-hover:bg-accent/15 transition-all duration-500" />
             </motion.div>
-        </motion.a>
+        </motion.div>
     );
 };
 

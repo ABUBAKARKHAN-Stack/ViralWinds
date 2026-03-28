@@ -60,7 +60,6 @@ export function LandingPageContentForm({
     })
 
     const formControl = form.control as any
-
     // Auto-save draft functionality
     const saveDraft = useCallback(
         debounce(async (data: Partial<CombinedValues>) => {

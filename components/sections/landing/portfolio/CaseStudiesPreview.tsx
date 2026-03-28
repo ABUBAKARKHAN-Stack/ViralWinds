@@ -82,13 +82,6 @@ const BeforeAfterSlider = ({ beforeImage, afterImage }: { beforeImage: { _id: st
 };
 
 const CaseStudiesPreview = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"],
-    });
-
-    const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
     const { landingPageContent } = useLandingPageContent();
 
     const caseStudiesPreviewData = landingPageContent?.caseStudiesPreview;
@@ -96,6 +89,15 @@ const CaseStudiesPreview = () => {
     const caseStudies = caseStudiesPreviewData?.featuredCaseStudies
 
     if (!caseStudiesPreviewData || !caseStudies || caseStudies.length === 0) return null;
+
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"],
+    });
+
+    const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
     return (
         <section ref={containerRef} className="lg:py-12.5 py-6.25 bg-muted/30 relative overflow-hidden">

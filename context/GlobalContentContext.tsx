@@ -1,5 +1,6 @@
 "use client";
 
+import { ServiceType } from "@/types/services.types";
 import { createContext, useContext, ReactNode } from "react";
 
 export type GlobalContentData = {
@@ -13,7 +14,7 @@ export type GlobalContentData = {
         sectionHeading: { eyebrow: string; title: string; description: string };
         buttonText: string;
         buttonUrl: string;
-        featuredServices: Array<{ _id: string; title: string; slug: string; description: string; heroImage: { alt: string; source: string }; items: string[] }>;
+        featuredServices: Array<ServiceType>;
     };
     whyChooseUs?: {
         sectionHeading?: { eyebrow?: string; title?: string; description?: string };
