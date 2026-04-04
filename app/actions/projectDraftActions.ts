@@ -37,7 +37,8 @@ export async function saveProjectDraft(id: string | undefined, data: Partial<Pro
                     title: data.caseStudy?.title || "",
                     testimonial: data.caseStudy?.testimonial || "",
                     results: []
-                }
+                },
+                gallery: []
             };
             const result = await adminClient.create(newDoc);
             // Sanity will return a published ID, we need the draft version
@@ -112,6 +113,21 @@ export async function saveProjectDraft(id: string | undefined, data: Partial<Pro
                             icon: res.icon || "TrendingUp",
                             value: res.value || "",
                             label: res.label || ""
+                        }));
+                    }
+                    continue;
+                }
+
+                // GALLERY ARRAY HANDLING
+                if (fullKey === "gallery") {
+                    if (Array.isArray(val)) {
+                        toSet[fullKey] = val.map(img => ({
+                            _type: 'image',
+                            _key: img._key || Math.random().toString(36).substring(2, 9),
+                            asset: {
+                                _type: 'reference',
+                                _ref: img._id || img.asset?._ref || img.asset?._id
+                            }
                         }));
                     }
                     continue;

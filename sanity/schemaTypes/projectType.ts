@@ -55,6 +55,27 @@ export const projectType = defineType({
 
         }),
         defineField({
+            name: 'gallery',
+            type: 'array',
+            title: 'Project Gallery',
+            description: 'Additional images for the project showcasing different aspects of the work.',
+            of: [
+                defineArrayMember({
+                    type: 'image',
+                    options: {
+                        hotspot: true,
+                    },
+                    fields: [
+                        defineField({
+                            name: 'alt',
+                            type: 'string',
+                            title: 'Alternative text',
+                        })
+                    ]
+                })
+            ]
+        }),
+        defineField({
             name: 'tags',
             type: 'localizedArray',
             title: 'Tags',

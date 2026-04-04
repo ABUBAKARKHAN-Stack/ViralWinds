@@ -104,6 +104,12 @@ export async function getProjectById(id: string) {
                     label
                 }
             },
+            "gallery": gallery[] {
+                "_key": _key,
+                "_id": asset->._id,
+                "url": asset->url,
+                "asset": asset
+            },
             seo
         }`
         const result = await adminClient.fetch(query, { id }, {
@@ -171,6 +177,7 @@ export async function getProjectForView(id: string) {
 export async function createProject(data: ProjectValues, id?: string) {
     try {
         const validated = projectSchema.parse(data)
+        const cleanId = id?.replace(/^(drafts\.)+/, '');
 
         const doc: any = {
             _type: 'project',
@@ -204,13 +211,18 @@ export async function createProject(data: ProjectValues, id?: string) {
                     label: res.label
                 }))
             } : undefined,
+            gallery: validated.gallery?.map(img => ({
+                _type: 'image',
+                _key: img._key || Math.random().toString(36).substring(2, 9),
+                asset: { _type: 'reference', _ref: img._id }
+            })),
             seo: validated.seo
         }
 
-        if (id) {
-            const docWithId = { ...doc, _id: id }
+        if (cleanId) {
+            const docWithId = { ...doc, _id: cleanId }
             const result = await adminClient.createOrReplace(docWithId)
-            await adminClient.delete(`drafts.${id}`).catch(() => { })
+            await adminClient.delete(`drafts.${cleanId}`).catch(() => { })
             revalidatePath('/admin/portfolio')
             revalidatePath(`/portfolio/${validated.slug.current}`)
             return { success: true, id: result._id }
@@ -229,6 +241,7 @@ export async function createProject(data: ProjectValues, id?: string) {
 export async function updateProject(id: string, data: ProjectValues) {
     try {
         const validated = projectSchema.parse(data)
+        const cleanId = id.replace(/^(drafts\.)+/, '');
 
         const toSet: any = {
             title: validated.title,
@@ -276,11 +289,21 @@ export async function updateProject(id: string, data: ProjectValues) {
             toUnset.push('mainImage')
         }
 
-        const patch = adminClient.patch(id).set(toSet)
+        if (validated.gallery && validated.gallery.length > 0) {
+            toSet.gallery = validated.gallery.map(img => ({
+                _type: 'image',
+                _key: img._key || Math.random().toString(36).substring(2, 9),
+                asset: { _type: 'reference', _ref: img._id }
+            }))
+        } else if (validated.gallery && validated.gallery.length === 0) {
+            toSet.gallery = []
+        }
+
+        const patch = adminClient.patch(cleanId).set(toSet)
         if (toUnset.length > 0) patch.unset(toUnset)
         await patch.commit()
 
-        await adminClient.delete(`drafts.${id}`).catch(() => { })
+        await adminClient.delete(`drafts.${cleanId}`).catch(() => { })
 
         revalidatePath('/admin/portfolio')
         if (validated.slug?.current) {
@@ -353,6 +376,11 @@ export async function duplicateProject(id: string) {
                     label: res.label
                 }))
             } : undefined,
+            gallery: sourceProject.gallery?.map((img: any) => ({
+                _type: 'image',
+                _key: Math.random().toString(36).substring(2, 9),
+                asset: { _type: 'reference', _ref: img._id }
+            })),
             seo: sourceProject.seo
         }
 

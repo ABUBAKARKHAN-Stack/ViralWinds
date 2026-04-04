@@ -28,7 +28,7 @@ export const ProjectHeroImage = ({
             >
                 <Image
                     src={urlFor(heroImage.source).quality(90).url()}
-                    alt={heroImage.alt}
+                    alt={heroImage.alt || "Hero Image"}
                     className="w-full h-full object-cover"
                     priority
                     fill

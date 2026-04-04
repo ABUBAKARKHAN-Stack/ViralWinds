@@ -10,10 +10,10 @@ import {
     PortfolioPageHero,
     CaseStudyResults,
     BeforeAfter,
-    ProjectHeroImage
+    ProjectHeroImage,
+    ProjectGallery
 } from "@/components/sections/portfolio/project-details"
 import { LinkProcessor } from "@/components/ui/LinkProcessor"
-import { DataMissing } from "@/components/ui/DataMissing"
 
 interface Props {
     params: Promise<{
@@ -119,7 +119,7 @@ export default async function PortfolioDetailsPage({ params }: Props) {
 
     return (
         <PageWrapper>
-            <JsonLd schemas={project.seo.schemas} />
+            <JsonLd schemas={project.seo?.schemas || []} />
 
             <PortfolioPageHero
                 projectTitle={project.title}
@@ -188,6 +188,11 @@ export default async function PortfolioDetailsPage({ params }: Props) {
                                 afterImage={caseStudy.afterImage}
                             />
                         </section>
+                    )}
+
+                    {/* Project Gallery */}
+                    {project.gallery && project.gallery.length > 0 && (
+                        <ProjectGallery images={project.gallery} />
                     )}
 
                     {/* Testimonial */}

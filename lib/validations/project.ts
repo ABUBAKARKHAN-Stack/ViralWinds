@@ -18,6 +18,11 @@ export const projectSchema = z.object({
         _id: z.string().min(1, "Main image is required"),
         url: z.string().optional(),
     }),
+    gallery: z.array(z.object({
+        _id: z.string().min(1, "Image ID is required"),
+        url: z.string().optional(),
+        _key: z.string().optional(),
+    })).optional(),
     caseStudy: z.object({
         title: requiredLocalizedStringSchema,
         beforeImage: z.object({

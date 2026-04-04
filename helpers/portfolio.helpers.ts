@@ -13,6 +13,10 @@ const PROJECT_QUERY = defineQuery(`*[_type == "project" && slug.current == $slug
     "source": _id,
     "alt": altText
   },
+  "gallery": gallery[] {
+    "url": asset->url,
+    "alt": alt
+  },
   "caseStudy": {
     "title": caseStudy.title,
     "category": caseStudy.category,

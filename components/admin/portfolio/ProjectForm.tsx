@@ -27,6 +27,7 @@ import { debounce } from "lodash"
 import { errorToast, successToast } from "@/lib/toastNotifications"
 import { Spinner } from "@/components/ui/spinner"
 import { ImageUpload } from "@/components/admin/form/ImageUpload"
+import { BulkImageUpload } from "@/components/admin/form/BulkImageUpload"
 import { IconSelect } from "@/components/admin/form/IconSelect"
 import { Separator } from "@/components/ui/separator"
 import { CommaKeywordsInput } from "@/components/admin/form/CommaKeywordsInput"
@@ -62,6 +63,7 @@ export function ProjectForm({
             description: "",
             category: "",
             tags: [],
+            gallery: [],
             caseStudy: {
                 title: "",
                 testimonial: "",
@@ -120,9 +122,9 @@ export function ProjectForm({
 
         startTransition(async () => {
             try {
-                const result = (isPublished || isEdit
+                const result = (isPublished
                     ? await updateProject(projectId!, values)
-                    : await createProject(values, currentProjectId)) as any
+                    : await createProject(values, projectId || currentProjectId)) as any
 
                 if (result.success) {
                     successToast(`Project ${isPublished ? 'updated' : 'published'} successfully`)
@@ -181,6 +183,7 @@ export function ProjectForm({
                     <TabsList className="mb-6 flex w-full h-auto flex-wrap gap-1 p-1 bg-muted/50 rounded-lg justify-start">
                         <TabsTrigger value="general" className="relative px-6 py-2">General Details</TabsTrigger>
                         <TabsTrigger value="casestudy" className="relative px-6 py-2">Case Study / Results</TabsTrigger>
+                        <TabsTrigger value="gallery" className="relative px-6 py-2">Project Gallery</TabsTrigger>
                         <TabsTrigger value="seo" className="relative px-6 py-2">SEO Settings</TabsTrigger>
                     </TabsList>
 
@@ -399,6 +402,28 @@ export function ProjectForm({
                                 </Card>
                             </div>
                         </div>
+                    </TabsContent>
+
+                    <TabsContent value="gallery" className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Project Gallery</CardTitle>
+                                <CardDescription>Additional images showcasing the project.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <FormField
+                                    control={form.control}
+                                    name="gallery"
+                                    render={({ field }) => (
+                                        <BulkImageUpload
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            label="Gallery Images"
+                                        />
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
                     </TabsContent>
 
                     <TabsContent value="seo" className="space-y-6">
