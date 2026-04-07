@@ -4,7 +4,6 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { SessionProvider } from '@/context/SessionContext'
 import { Session } from '@/lib/auth'
 import { ReactNode } from 'react'
-import "./admin.css"
 
 type Props = {
     children: ReactNode

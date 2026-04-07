@@ -40,7 +40,6 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                     >
                         <MagneticButton strength={0.2}>
                             <Link href="/" className="relative z-50">
-
                                 <Logo />
                             </Link>
                         </MagneticButton>
@@ -91,47 +90,6 @@ export const MobileMenu: FC<Props> = ({ isOpen, setIsOpen }) => {
                                             {item.label}
                                         </Link>
                                     </motion.div>
-
-                                    {/* Mobile service sub-links */}
-                                    {hasChildren && (
-                                        <motion.div
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            transition={{ delay: 0.2 + i * 0.08 }}
-                                            className="flex flex-wrap justify-center gap-x-4 gap-y-2 max-w-sm mt-4"
-                                        >
-                                            {item.children.map((child: any, j: number) => (
-                                                <Link
-                                                    key={j}
-                                                    href={resolveUrl(child)}
-                                                    onClick={() => setIsOpen(false)}
-                                                    className="
-                                                        flex
-                                                        flex-col
-                                                        items-center
-                                                        text-center
-                                                        gap-1
-                                                    "
-                                                >
-                                                    <span className="
-                                                        text-xs
-                                                        sm:text-sm
-                                                        tracking-wide
-                                                        text-background/60   
-                                                        transition-colors
-                                                        hover:text-accent
-                                                    ">
-                                                        {child.label}
-                                                    </span>
-                                                    {child.description && (
-                                                        <span className="text-[10px] text-background/40">
-                                                            {child.description}
-                                                        </span>
-                                                    )}
-                                                </Link>
-                                            ))}
-                                        </motion.div>
-                                    )}
                                 </div>
                             )
                         })}

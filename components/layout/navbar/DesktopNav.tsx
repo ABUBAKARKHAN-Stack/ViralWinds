@@ -125,7 +125,7 @@ const DesktopNav: FC<Props> = ({
                                                                         animate={{ opacity: 1, x: 0 }}
                                                                         transition={{ delay: i * 0.05 }}
                                                                         onClick={() => setService(child.label)}
-                                                                        className="block px-5 py-4 group transition-colors border-b border-border/40 cursor-pointer last:border-b-0 hover:bg-accent/10 backdrop-blur-xl"
+                                                                        className="block px-5 py-4 group transition-colors border-b text-start w-full border-border/40 cursor-pointer last:border-b-0 hover:bg-accent/10 backdrop-blur-xl"
                                                                     >
 
                                                                         <span className="block text-sm font-medium group-hover:text-accent transition-colors">
