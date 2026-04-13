@@ -51,7 +51,7 @@ const TrustedByBrands = () => {
 
         {/* Row 1 - Left direction */}
 
-        <Marquee pauseOnHover className="[--duration:25s] [--gap:0rem] md:[--gap:1.5rem]">
+        <Marquee pauseOnHover className="[--duration:25s] [--gap:1.5rem]">
           {firstRow.map((brand, i) => (
             <TrustedByBrandsCard
               key={brand.asset?._id || i}
@@ -64,7 +64,7 @@ const TrustedByBrands = () => {
         </Marquee>
 
         {/* Row 2 - Right direction (opposite) */}
-        <Marquee reverse pauseOnHover className="[--duration:20s] [--gap:0rem] md:[--gap:1.5rem]">
+        <Marquee reverse pauseOnHover className="[--duration:20s] [--gap:1.5rem]">
           {secondRow.map((brand, i) => (
             <TrustedByBrandsCard
               key={brand.asset?._id || i}
