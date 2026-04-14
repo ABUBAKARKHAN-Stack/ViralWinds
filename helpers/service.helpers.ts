@@ -12,6 +12,7 @@ const SERVICE_QUERY = `{
   "items": items[],
 }`;
 
+
 const SERVICE_CTA_QUERY = `{
   "badgeText": ctaBadgeText,
   "title": ctaTitle,
@@ -59,7 +60,8 @@ const getServicesCTA = async () => {
 
 }
 
+
 export {
   getService,
-  getServicesCTA
+  getServicesCTA,
 }
