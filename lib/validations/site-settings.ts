@@ -62,7 +62,7 @@ export const siteSettingsSchema = z.object({
         _key: z.string().optional(),
         label: requiredLocalizedStringSchema,
         icon: z.string().min(1, "Icon name is required"),
-        url: z.string().url("Must be a valid URL"),
+        url: z.string(),
     })).optional(),
 
     footerCTA: z.object({

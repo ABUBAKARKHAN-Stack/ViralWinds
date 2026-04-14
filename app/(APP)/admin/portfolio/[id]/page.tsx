@@ -20,9 +20,7 @@ export default async function ViewProjectPage({ params }: ViewProjectPageProps) 
         notFound()
     }
 
-    // Helper to extract localized values safely
-    const getVal = (val: any) => typeof val === 'string' ? val : (val?.en || val?.ar || (val && typeof val === 'object' ? Object.values(val)[0] : null));
-
+   
     return (
         <div className="space-y-6">
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
@@ -196,7 +194,6 @@ export default async function ViewProjectPage({ params }: ViewProjectPageProps) 
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
                         <SectionStatus label="Main Description" isActive={!!project.displayDescription} />
                         <SectionStatus label="Main Image" isActive={!!project.mainImageUrl} />
-                        <SectionStatus label="SEO Tags" isActive={!!(project.seo?.metaTitle && project.seo?.metaDescription)} />
                         <SectionStatus
                             label="Case Study"
                             isActive={!!project.caseStudy}

@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from "next"
 import { notFound } from "next/navigation"
-import { getProject, getProjectSeo, getProjectSlugs } from "@/helpers/portfolio.helpers"
+import { getProject, getProjectSlugs } from "@/helpers/portfolio.helpers"
 import { ContainerLayout, PageWrapper } from "@/components/layout"
 import { Quote } from "lucide-react"
 import { urlFor } from "@/sanity/lib/image"
@@ -36,7 +36,7 @@ export async function generateMetadata(
     _parent: ResolvingMetadata,
 ): Promise<Metadata> {
     const { slug } = await params;
-    const project = await getProjectSeo(slug);
+    const project = await getProject(slug);
 
     if (!project) {
         return {
@@ -47,11 +47,10 @@ export async function generateMetadata(
     }
 
     //* Base Metadata
-    const title = project.seo.metaTitle;
+    const title = project.title;
     const description =
-        project.seo.metaDescription;
-    const focusKeyword = project.seo.focusKeyword;
-    const relatedKeywords = project.seo.relatedKeywords;
+        project.description;
+    const keywords = project.tags;
 
     //* Open Graph Metadata
     const imageUrl = urlFor(project.mainImage.source)
@@ -68,7 +67,7 @@ export async function generateMetadata(
     return {
         title,
         description,
-        keywords: [focusKeyword, ...(relatedKeywords || [])].filter(Boolean) as string[],
+        keywords,
         publisher: APP_NAME,
         openGraph: {
             title,
@@ -115,12 +114,11 @@ export default async function PortfolioDetailsPage({ params }: Props) {
     }
 
     const { caseStudy } = project
-    
+
 
     return (
         <PageWrapper>
-            <JsonLd schemas={project.seo?.schemas || []} />
-
+            
             <PortfolioPageHero
                 projectTitle={project.title}
                 projectDescription={project.description}

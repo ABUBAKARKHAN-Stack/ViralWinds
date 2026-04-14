@@ -110,7 +110,6 @@ export async function getProjectById(id: string) {
                 "url": asset->url,
                 "asset": asset
             },
-            seo
         }`
         const result = await adminClient.fetch(query, { id }, {
             perspective: "raw",
@@ -216,7 +215,6 @@ export async function createProject(data: ProjectValues, id?: string) {
                 _key: img._key || Math.random().toString(36).substring(2, 9),
                 asset: { _type: 'reference', _ref: img._id }
             })),
-            seo: validated.seo
         }
 
         if (cleanId) {
@@ -262,7 +260,6 @@ export async function updateProject(id: string, data: ProjectValues) {
                     label: res.label
                 }))
             },
-            seo: validated.seo
         }
 
         if (validated.caseStudy.beforeImage?._id) {
@@ -381,7 +378,6 @@ export async function duplicateProject(id: string) {
                 _key: Math.random().toString(36).substring(2, 9),
                 asset: { _type: 'reference', _ref: img._id }
             })),
-            seo: sourceProject.seo
         }
 
         if (typeof newDoc.title === 'string') {

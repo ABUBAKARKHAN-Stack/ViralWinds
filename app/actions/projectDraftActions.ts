@@ -1,6 +1,6 @@
 'use server'
 
-import { projectSchema, ProjectValues } from "@/lib/validations/project"
+import {  ProjectValues } from "@/lib/validations/project"
 import { adminClient } from "@/sanity/lib/admin-client"
 import { revalidatePath } from "next/cache";
 

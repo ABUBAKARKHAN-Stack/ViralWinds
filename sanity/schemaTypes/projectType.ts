@@ -158,13 +158,7 @@ export const projectType = defineType({
                     validation: (Rule) => Rule.required().min(1),
                 }),
             ]
-        }),
-        defineField({
-            name: 'seo',
-            title: 'SEO Settings',
-            type: 'seo',
-            description: 'Custom SEO settings for this project'
-        }),
+        })
     ],
     preview: {
         select: {
