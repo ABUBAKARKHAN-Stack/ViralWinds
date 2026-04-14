@@ -12,6 +12,7 @@ import { getGlobalSections } from "@/helpers/global-sections.helpers";
 import { Metadata } from "next";
 import { urlFor } from "@/sanity/lib/image";
 import { APP_NAME, BASE_URL, BRAND_DESCRIPTION, TAGLINE } from "@/constants/app.constants";
+import FloatingWhatsAppBadge from "@/components/FloatingWhatsAppBadge";
 
 
 
@@ -155,8 +156,8 @@ export default async function PublicLayout({ children }: Props) {
                                 {children}
                             </AnimatePresence>
                         </main>
-
-                        <FloatingContactBadge />
+                        
+                        <FloatingWhatsAppBadge />
                         <Footer />
                     </div>
                 </PublicProvider>
