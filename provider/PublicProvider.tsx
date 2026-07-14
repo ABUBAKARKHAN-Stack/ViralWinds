@@ -1,8 +1,8 @@
-"use client"
+// "use client"
 
-import LoadingScreen from '@/components/LoadingScreen'
-import { AnimatePresence } from 'motion/react'
-import { FC, ReactNode, useState } from 'react'
+// import LoadingScreen from '@/components/LoadingScreen'
+// import { AnimatePresence } from 'motion/react'
+import {  ReactNode} from 'react'
 
 type Props = {
     children: ReactNode
@@ -11,22 +11,21 @@ type Props = {
 const PublicProvider: FC<Props> = ({
     children
 }) => {
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
 
-    return (
-        <>
-            <AnimatePresence mode="wait">
+    return children
+        
+            {/* <AnimatePresence mode="wait">
                 {isLoading && (
                     <LoadingScreen onComplete={() => setIsLoading(false)} />
                 )}
-            </AnimatePresence>
-            {!isLoading && (
-                <>
-                    {children}
-                </>
-            )}
-        </>
-    )
+            </AnimatePresence> */}
+            {/* {!isLoading && (
+                <> */}
+                    
+               {/* / */}
+        
+    
 }
 
 export default PublicProvider
